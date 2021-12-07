@@ -1,16 +1,31 @@
-# untitled
+![image](https://user-images.githubusercontent.com/60546290/145097606-c22ed7a6-0cbc-4779-9c38-074c60b1e8f8.png)
+# Команда FORWARDER пишет приложение AnyWay 
 
-A new Flutter project.
+## Идея
+В любом случае ты найдешь желаймую поездку, даже если ты пока не очень хочешь отдыхать)
 
-## Getting Started
+Пользователю предлагается пройти не очень большой опрос, состоящий из вопросов с ответами да/нет/далее, по результатам которого будет предложена оптимальная поездка.
+В любой момент можно досрочно завершить или пропустить вопросы, но в таком случае будет предложено большее количество вариантов.
+Каждый вопрос будет привязан к определенному фильтру(тернарному/бинарному), следовательно можно быстро поменять конфигурацию. 
+Будет разделение на зарубежные поездки и на переезды внутри родной страны.
+В детальной информации по стране/городу будет приведены данные о погоде, ситуации с covid-19, надобность визы, последние новости, возможно еще достопримечательности и экскурсии, заказ билетов или прямая пересылка на сайт авиокомпании(любой)... 
+Будут храниться избранные поездки, может быть фильтры(чтобы не настраивать заново).
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Возможно успеем (неважная часть)
+В планах нтегрировать карты(чтобы было удобнее смотреть ближайшие достопримечательности к городу назначения).
+Возможно добавим просмотр открытых камер для живого анализа пользователя.
+Система отзывов и добавления городов/мест.
+Важная информацияя будет храниться в FireBase. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Стек технологий Flutter приложения
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Hive/Drift - будет зависеть от типа данный (для отказоутойчивости предпочтем SQL)
+Block/Redux/GetX/Provider - в процессе выбора
+Dio/http - для работы с сетью
+Firebase/MongoDB - в процессе выбора
+может будут еще либы...
+
+## Дизайн
+![image](https://user-images.githubusercontent.com/60546290/145102342-4bb5f53a-b804-48e0-ab7f-68dcce5b9fa2.png)
+Можно посмотреть первые наброски в Figma [AnyWay design](https://www.figma.com/file/8qtjtMEJGiMcpRPFBUmOlV/Flutter-Intensive?node-id=0%3A1)
