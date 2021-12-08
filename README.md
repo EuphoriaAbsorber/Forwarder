@@ -20,11 +20,19 @@
 
 ## Стек технологий Flutter приложения
 
-Hive/Drift - будет зависеть от типа данный (для отказоустойчивости предпочтем SQL)
-Block/Redux/GetX/Provider - в процессе выбора
-Dio/http - для работы с сетью
-Firebase/MongoDB - в процессе выбора
-может будут еще либы...
+- Hive/Drift - будет зависеть от типа данный (для отказоустойчивости предпочтем SQL)
+- Block/Redux/GetX/Provider - в процессе выбора
+- Dio/http - для работы с сетью
+- Firebase/MongoDB - в процессе выбора
+- может будут еще либы...
+
+## Какие API мы будем использовать
+
+- [Flight Data](https://rapidapi.com/Travelpayouts/api/flight-data/details)
+- [Covid-19](https://datalens.yandex/7o7is1q6ikh23)
+- [OpenWebCam](https://rapidapi.com/webcams.travel/api/webcams-travel)
+- [Tour Data](https://www.multitour.ru/api_documentation/#geo_city)
+- [Covid News](https://rapidapi.com/SmartableAI/api/coronavirus-smartable/)
 
 ## Дизайн
 ![image](https://user-images.githubusercontent.com/60546290/145102342-4bb5f53a-b804-48e0-ab7f-68dcce5b9fa2.png)
