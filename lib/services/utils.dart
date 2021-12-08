@@ -1,12 +1,11 @@
 class New {
-  late final int id;
-  late final String title;
-  late final String excerpt;
+  final int id;
+  final String title;
+  final String excerpt;
   New(this.id, this.title, this.excerpt);
 }
 
 class City {
   late final String name;
-  City (this.name);
-
+  City(this.name);
 }
