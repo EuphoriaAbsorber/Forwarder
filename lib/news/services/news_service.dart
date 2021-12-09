@@ -1,12 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 
 class NewsService {
-  final Dio _dio;
-
-  const NewsService(this._dio);
-
   Future<void> fetchNews() async {
     try {
       final options = BaseOptions(queryParameters: {
@@ -14,9 +8,9 @@ class NewsService {
       });
       final Dio client = Dio(options);
       const url = 'https://coronavirus-smartable.p.rapidapi.com/news/v1/US/';
-      var response = await client.get(url);
-      var news = jsonDecode(response.data);
-      print(news);
+      //var response = await client.get(url);
+      //var news = jsonDecode(response.data);
+      //print(news);
     } on DioError catch (e) {
       print(e.toString());
     }
