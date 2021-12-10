@@ -10,12 +10,18 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   late int id;
+  late String name;
+  late String imgSrc;
+  late bool isFavorite;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     id = arguments['id'] ?? -1;
+    name = arguments['name'] ?? 'undefined';
+    imgSrc = arguments['imgSrc'] ?? 'undefined';
+    isFavorite = arguments['isFavorite'] ?? false;
   }
 
   @override
@@ -24,10 +30,16 @@ class _DetailsPageState extends State<DetailsPage> {
       body: Hero(
         tag: id,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CachedNetworkImage(
-              imageUrl: "https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg",
+              imageUrl: imgSrc,
               errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            isFavorite ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite_border, color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Text(name, style: const TextStyle(fontSize: 64.0, fontWeight: FontWeight.bold)),
             ),
             ElevatedButton(
               child: const Text('Close'),

@@ -1,6 +1,9 @@
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/ui/pages/details_page.dart';
 import 'package:untitled/ui/widgets/city_card_widget.dart';
+
+import '../../di.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,10 +15,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final TextEditingController _textController;
 
+  final _cityWorker = Dependencies.instance.cityWorker;
+  late Future<Map<CityItem, bool>> _cityItemsFuture = _cityWorker.getLatest();
+
+  final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController();
+    _textController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -23,8 +34,6 @@ class _HomePageState extends State<HomePage> {
     _textController.dispose();
     super.dispose();
   }
-
-  final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white,
                 shadowColor: Colors.transparent,
                 title: SizedBox(
                   height: 40.0,
@@ -124,26 +133,62 @@ class _HomePageState extends State<HomePage> {
               ),
             ];
           },
-          body: GridView.builder(
-              padding: const EdgeInsets.all(8.0),
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.75,
-              ),
-              itemCount: 1000,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  child: CityCard(id: index),
-                  onTap: () => Navigator.push(
-                    context,
-                    FadeRoute(page: const DetailsPage(), settings: RouteSettings(arguments: {'id': index})),
-                  ),
-                );
-              }),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              _cityItemsFuture = _cityWorker.getLatest();
+              setState(() {});
+            },
+            child: FutureBuilder<Map<CityItem, bool>>(
+              future: _cityItemsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.requireData;
+                  final cities = data.keys.where((element) => element.name.contains(_textController.text)).toList();
+                  return GridView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: cities.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          child: CityCard(
+                              city: cities[index],
+                              isFavorite: data[cities[index]] ?? false),
+                          onTap: () => Navigator.push(
+                            context,
+                            FadeRoute(
+                              page: const DetailsPage(),
+                              settings: RouteSettings(
+                                arguments: {
+                                  'id': cities[index].id,
+                                  'name': cities[index].name,
+                                  'imgSrc': cities[index].imgSrc,
+                                  'isFavorite': data[cities[index]] ?? false,
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                } else if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return const Center(
+                    child: Icon(Icons.error),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
         ),
+
         // bottomNavigationBar: BottomNavyBar(
         //   selectedIndex: _currentIndex,
         //   itemCornerRadius: 24,
@@ -181,41 +226,23 @@ class _HomePageState extends State<HomePage> {
 
 class FadeRoute extends PageRouteBuilder {
   FadeRoute({required Widget page, required RouteSettings settings})
-      : super(settings: settings,
-    pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        ) =>
-    page,
-    transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-        ) =>
-        FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-  );
-}
-
-class NoAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
-  NoAnimationMaterialPageRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
-    bool maintainState = true,
-    bool fullscreenDialog = false,
-  }) : super(
-      builder: builder,
-      maintainState: maintainState,
-      settings: settings,
-      fullscreenDialog: fullscreenDialog);
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    return child;
-  }
+      : super(
+          settings: settings,
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }
