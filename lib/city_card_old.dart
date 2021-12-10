@@ -11,17 +11,17 @@ class CityCard extends StatelessWidget{
     this.title,
   }) : super(key: key);
 
-  CityCard.fromJson(Map<String, dynamic> json)
-    : title = json['title'];
+  CityCard.fromJson(Map<String, dynamic> json, {Key? key})
+    : title = json['title'], super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card (
       margin: const EdgeInsets.all(10),
       color: Colors.green[100],
-      child: Container(
+      child: SizedBox(
           height: 100,
-          child: Text(this.title!)
+          child: Text(title!)
       ),
     );
   }
