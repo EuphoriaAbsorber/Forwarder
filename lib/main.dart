@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/ui/pages/details_page.dart';
+import 'package:untitled/ui/pages/home_page.dart';
 
-import 'city_page.dart';
+void main() => runApp(const AnyWayApp());
 
-void main() {
-  runApp(MyApp());
-}
+class AnyWayApp extends StatelessWidget {
+  const AnyWayApp({Key? key}) : super(key: key);
 
-class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(child:
-          CityPage(title: 'city'),
-        )
+    // Theme.of(context).
+    return MaterialApp(
+      theme: ThemeData.light().copyWith(
+
       ),
+
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => const HomePage(),
+        '/details': (context) => const DetailsPage(),
+      },
     );
   }
-
 }
