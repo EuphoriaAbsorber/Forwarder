@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/ui/pages/details_page.dart';
 import 'package:untitled/ui/widgets/city_card_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
-  final _appBarKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -133,12 +133,14 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 16.0,
                 childAspectRatio: 0.75,
               ),
-              itemCount: 32,
+              itemCount: 1000,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   child: CityCard(id: index),
-                  onTap: () => Navigator.of(context)
-                      .pushNamed("/details", arguments: {'id': index}),
+                  onTap: () => Navigator.push(
+                    context,
+                    FadeRoute(page: const DetailsPage(), settings: RouteSettings(arguments: {'id': index})),
+                  ),
                 );
               }),
         ),
@@ -174,5 +176,46 @@ class _HomePageState extends State<HomePage> {
         // ),
       ),
     );
+  }
+}
+
+class FadeRoute extends PageRouteBuilder {
+  FadeRoute({required Widget page, required RouteSettings settings})
+      : super(settings: settings,
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
+}
+
+class NoAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
+  NoAnimationMaterialPageRoute({
+    required WidgetBuilder builder,
+    RouteSettings? settings,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) : super(
+      builder: builder,
+      maintainState: maintainState,
+      settings: settings,
+      fullscreenDialog: fullscreenDialog);
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return child;
   }
 }

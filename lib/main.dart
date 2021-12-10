@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:untitled/ui/pages/details_page.dart';
 import 'package:untitled/ui/pages/home_page.dart';
 
@@ -9,12 +10,10 @@ class AnyWayApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Theme.of(context).
     return MaterialApp(
-      theme: ThemeData.light().copyWith(
-
+      theme: ThemeData(
+        brightness: Brightness.light
       ),
-
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const HomePage(),
