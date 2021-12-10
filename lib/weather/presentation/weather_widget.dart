@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/weather/presentation/weather_graphic.dart';
 import 'package:untitled/weather/services/weather_service.dart';
+import 'package:untitled/weather/weather_model.dart';
 
 import '../../city.dart';
 
@@ -14,15 +15,19 @@ class WeatherWidget extends StatefulWidget { // Хз statefl или stateless
 
 class _WeatherWidgetState extends State<WeatherWidget>{
   City city = City('Chicago','US');
-  Future<void> getWeather() async{
+  WeatherModel? _months;
+  
+  Future<WeatherModel?> getWeather() async{
     WeatherService service = WeatherService();
-    service.fetchWeather();
+    await service.fetchWeather();
   }
 
   @override
   void initState() {
     super.initState();
-    getWeather();
+    getWeather().then((value) {
+      _months = value;
+      print(_months.toString);});
   }
 
   @override

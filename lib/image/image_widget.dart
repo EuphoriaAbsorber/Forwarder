@@ -14,6 +14,7 @@ class ImageWidget extends StatefulWidget {
 
 class _ImageWidgetState extends State<ImageWidget> {
   City city = City('Chicago', 'US');
+  Image? image;
 
   Future<void> getImage() async {
     ImageService service = ImageService();
@@ -28,14 +29,10 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Container(
+    return Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(5),
         decoration: const BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+            color: Colors.black,),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: const [
@@ -45,7 +42,6 @@ class _ImageWidgetState extends State<ImageWidget> {
             ),
           ],
         ),
-      ),
     );
   }
 }
