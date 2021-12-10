@@ -1,5 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/ui/widgets/city_card_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -52,16 +53,15 @@ class _HomePageState extends State<HomePage> {
                 ),
                 contentPadding: const EdgeInsets.fromLTRB(16, 4, 4, 16),
                 hintText: 'Search your journey...',
-                hintStyle: const TextStyle(
-                    color: Colors.black38, fontSize: 18.0),
+                hintStyle:
+                const TextStyle(color: Colors.black38, fontSize: 18.0),
                 enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Colors.grey, width: 2.0),
+                  borderSide: const BorderSide(color: Colors.grey, width: 2.0),
                   borderRadius: BorderRadius.circular(32.0),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
-                      const BorderSide(color: Colors.deepOrange, width: 2.0),
+                  const BorderSide(color: Colors.deepOrange, width: 2.0),
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
@@ -76,7 +76,29 @@ class _HomePageState extends State<HomePage> {
                 Icons.sort,
                 color: Colors.black54,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        color: Colors.white,
+                        height: 300,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Text('Modal BottomSheet'),
+                              ElevatedButton(
+                                child: const Text('Close BottomSheet'),
+                                onPressed: () => Navigator.pop(context),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              },
             )
           ],
         ),
@@ -89,16 +111,14 @@ class _HomePageState extends State<HomePage> {
                 physics: const BouncingScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
                   childAspectRatio: 0.75,
                 ),
                 itemCount: 32,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    elevation: 2.0,
-                    child: Center(child: Text('$index', style: const TextStyle(fontSize: 64.0))),
-                  );
-                }
-            ),
+                  return CityCard();
+                }),
           ),
         ),
         bottomNavigationBar: BottomNavyBar(
