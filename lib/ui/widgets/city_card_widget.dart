@@ -3,7 +3,49 @@ import 'package:flutter/material.dart';
 
 class CityCard extends StatelessWidget {
   final int id;
-  const CityCard({Key? key, required this.id}) : super(key: key);
+  final String title;
+  final String titleEng;
+  final String country;
+  final String imageUrl;
+  final int price;
+  final int sea;
+  final int mountains;
+  final int culture;
+  final int architecture;
+  final int shopping;
+  final int entertainment;
+  final int nature;
+
+  const CityCard({Key? key,
+    required this.id,
+    required this.title,
+    required this.titleEng,
+    required this.country,
+    required this.imageUrl,
+    required this.price,
+    required this.sea,
+    required this.mountains,
+    required this.culture,
+    required this.architecture,
+    required this.shopping,
+    required this.entertainment,
+    required this.nature,
+  }) : super(key: key);
+
+  CityCard.fromJson(Map<String, dynamic> json, {Key? key})
+      : id = json['id'],
+        title = json['title'],
+        titleEng = json['title_eng'],
+        country = json['country'],
+        imageUrl = json['image_url'],
+        price = json['price'],
+        sea = json['sea'],
+        mountains = json['mountains'],
+        culture = json['culture'],
+        architecture = json['architecture'],
+        shopping = json['shopping'],
+        entertainment = json['entertainment'],
+        nature = json['nature'];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +65,7 @@ class CityCard extends StatelessWidget {
                 Positioned.fill(
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: "https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg",
+                    imageUrl: imageUrl,
                     errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
@@ -39,11 +81,11 @@ class CityCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(4.0),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            "Any city name",
-                            style: TextStyle(
+                            title,
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
