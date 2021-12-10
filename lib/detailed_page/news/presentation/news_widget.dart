@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:untitled/news/services/news_service.dart';
+import 'package:untitled/detailed_page/news/services/news_service.dart';
 
-import '../../city.dart';
+import '../../../city.dart';
 import 'news_card.dart';
 
 class NewsWidget extends StatefulWidget {

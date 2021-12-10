@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../city.dart';
+import '../../city.dart';
 import 'image_service.dart';
 
 class ImageWidget extends StatefulWidget {

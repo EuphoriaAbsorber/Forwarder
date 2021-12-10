@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:untitled/weather/month_temperature_model.dart';
 
+import 'month_temperature_model.dart';
 part 'weather_model.freezed.dart';
 part 'weather_model.g.dart';
 

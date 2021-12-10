@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:untitled/weather/weather_model.dart';
+
+import '../weather_model.dart';
 
 class WeatherService {
   //по хорошему тогда не weather а climat

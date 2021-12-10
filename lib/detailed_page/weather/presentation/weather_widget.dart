@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/weather/presentation/weather_graphic.dart';
-import 'package:untitled/weather/services/weather_service.dart';
-import 'package:untitled/weather/weather_model.dart';
+import 'package:untitled/detailed_page/weather/services/weather_service.dart';
 
-import '../../city.dart';
+import '../../../city.dart';
+import '../weather_model.dart';
 
 class WeatherWidget extends StatefulWidget { // Хз statefl или stateless
   final String title;
@@ -45,7 +44,7 @@ class _WeatherWidgetState extends State<WeatherWidget>{
             mainAxisSize: MainAxisSize.min,
             children: const [
               Text("Погода", style: TextStyle(color: Colors.white, fontSize: 30),),
-              Flexible(child: WeatherGraphic()),
+              //Flexible(child: WeatherGraphic('graphic')),
             ],
           ),
         ),

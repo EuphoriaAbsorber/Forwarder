@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../city.dart';
+import '../../city.dart';
 import 'tickets_service.dart';
 
 class TicketsWidget extends StatefulWidget {
@@ -39,7 +39,7 @@ class _TicketsWidgetState extends State<TicketsWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: const [
-            Text(
+            const Text(
               "Билеты",
               style: TextStyle(color: Colors.white, fontSize: 30),
             ),

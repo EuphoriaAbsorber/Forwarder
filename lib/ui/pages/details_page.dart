@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
+import 'package:untitled/detailed_page/news/presentation/news_widget.dart';
+import 'package:untitled/detailed_page/tickets/tickets_widget.dart';
+import 'package:untitled/detailed_page/weather/presentation/weather_widget.dart';
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
 
@@ -21,20 +23,28 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Hero(
-        tag: id,
-        child: Column(
-          children: [
-            CachedNetworkImage(
+      body: Column(
+        children: [
+          Hero(
+            tag: id,
+            child: CachedNetworkImage(
               imageUrl: "https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg",
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            ElevatedButton(
-              child: const Text('Close'),
-              onPressed: () => Navigator.pop(context),
-            )
-          ],
-        ),
+          ),
+
+          const Text(
+            'City', //TODO: добавить название города
+            //style: TextStyle(color: Colors.black),
+          ),
+          const TicketsWidget(title: 'tickets'),
+          const WeatherWidget(title: 'weather'),
+          const NewsWidget(title: 'news'),
+          ElevatedButton(
+            child: const Text('Close'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
       ),
     );
   }
