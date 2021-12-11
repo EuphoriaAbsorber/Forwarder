@@ -106,11 +106,11 @@ class _CityCardState extends State<CityCard> {
     if (widget.isFavorite) {
       _cityWorker.removeFromFavorites(item);
       widget.isFavorite = false;
-      _showSnack('Удалено из избраного');
+      //_showSnack('Удалено из избраного');
     } else {
       _cityWorker.addToFavorites(item);
       widget.isFavorite = true;
-      _showSnack('Добавлено в избранные');
+      //_showSnack('Добавлено в избранные');
     }
     setState(() {});
   }

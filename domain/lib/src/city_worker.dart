@@ -13,10 +13,14 @@ class CityWorker {
   Future<List<CityItem>> getFavorites() => _cityDao.getAll();
 
   Future<Map<CityItem, bool>> getLatest() async {
-    final items = await _cityApi.getLatest();
     final favorites = await _cityDao.getAll();
-    final favoriteIds = favorites.map((e) => e.id).toSet();
-    return Map.fromEntries(
-        items.map((e) => MapEntry(e, favoriteIds.contains(e.id))));
+    try {
+      final items = await _cityApi.getLatest();
+      final favoriteIds = favorites.map((e) => e.id).toSet();
+      return Map.fromEntries(
+          items.map((e) => MapEntry(e, favoriteIds.contains(e.id))));
+    } catch(e) {
+      return Map.fromEntries(favorites.map((e) => MapEntry(e, true)));
+    }
   }
 }
