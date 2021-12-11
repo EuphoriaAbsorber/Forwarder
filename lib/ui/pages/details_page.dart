@@ -38,7 +38,7 @@ class _DetailsPageState extends State<DetailsPage> {
             //style: TextStyle(color: Colors.black),
           ),
           const TicketsWidget(title: 'tickets'),
-          const WeatherWidget(title: 'weather'),
+          //const WeatherWidget(title: 'weather'),
           const NewsWidget(title: 'news'),
           ElevatedButton(
             child: const Text('Close'),
