@@ -6,11 +6,11 @@ part 'city_network_model.g.dart';
 
 @JsonSerializable()
 class CityNetworkModel {
-  @JsonKey(name: "id")
+  @JsonKey(name: 'id')
   final int id;
-  @JsonKey(name: "title")
+  @JsonKey(name: 'title')
   final String name;
-  @JsonKey(name: "image_url")
+  @JsonKey(name: 'image_url')
   final String imgSrc;
 
   const CityNetworkModel({required this.id, required this.name, required this.imgSrc});

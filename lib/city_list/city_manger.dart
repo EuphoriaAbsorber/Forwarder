@@ -1,6 +1,4 @@
-
 import 'package:models/models.dart';
-
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
 

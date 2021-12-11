@@ -6,6 +6,7 @@ part 'city_list_network_model.g.dart';
 
 @JsonSerializable()
 class CityListNetworkModel {
+  @JsonKey(name: 'data')
   final List<CityNetworkModel> cityList;
 
   const CityListNetworkModel({required this.cityList});
