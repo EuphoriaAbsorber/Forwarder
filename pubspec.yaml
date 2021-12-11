@@ -6,16 +6,24 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
-
 dependencies:
   flutter:
     sdk: flutter
 
-  dio: ^4.0.4
+  data:
+    path: data
+
+  domain:
+    path: domain
+
+  data_interface_impl:
+    path: data_interface_impl
+
   cupertino_icons: ^1.0.2
   bottom_navy_bar: ^6.0.0
   cached_network_image: ^3.2.0
   provider: ^6.0.1
+
 
 dev_dependencies:
   flutter_test:
