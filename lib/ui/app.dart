@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'pages/details_page.dart';
-import 'pages/home_page.dart';
-
+import '../city_details/presentation/details_page.dart';
+import '../city_list/presentation/home_page.dart';
 import '../di.dart';
 
 class AnyWayApp extends StatefulWidget {
@@ -16,8 +15,7 @@ class _AnyWayAppState extends State<AnyWayApp> {
   late final _buildFuture = Dependencies.build();
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
+  Widget build(BuildContext context) => FutureBuilder(
       future: _buildFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -33,5 +31,4 @@ class _AnyWayAppState extends State<AnyWayApp> {
         }
       },
     );
-  }
 }
