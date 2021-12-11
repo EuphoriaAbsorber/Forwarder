@@ -1,6 +1,9 @@
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/ui/pages/details_page.dart';
 import 'package:untitled/ui/widgets/city_card_widget.dart';
-import 'package:dio/dio.dart';
+
+import '../../di.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,35 +15,25 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final TextEditingController _textController;
 
+  final _cityWorker = Dependencies.instance.cityWorker;
+  late Future<Map<CityItem, bool>> _cityItemsFuture = _cityWorker.getLatest();
+
+  final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
+  final _appBarKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController();
+    _textController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
     _textController.dispose();
     super.dispose();
-  }
-
-  final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
-  final _appBarKey = GlobalKey();
-
-  bool loading = true;
-  List<CityCard> cities = [];
-  int count = 0;
-
-  void getCities() async{
-    final dio = Dio();
-    final response =   await dio.get('https://anyway-forwarder-serv.herokuapp.com');
-    List<CityCard> s = [];
-    for(var m in response.data){
-      CityCard d = CityCard.fromJson(m);
-      s.add(d);
-    }
-    setState(() {cities = s;loading = !loading;count = s.length;});
-    //print(cities[0].title);
   }
 
   @override
@@ -54,8 +47,10 @@ class _HomePageState extends State<HomePage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                key: _appBarKey,
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
+                elevation: 0.0,
                 title: SizedBox(
                   height: 40.0,
                   child: TextField(
@@ -71,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                         icon: const Icon(Icons.clear, color: Colors.black54),
                         onPressed: () => _textController.text = "",
                       ),
-                      contentPadding: const EdgeInsets.fromLTRB(16, 4, 4, 16),
+                      contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
                       hintText: 'Search your journey...',
                       hintStyle: const TextStyle(
                           color: Colors.black38, fontSize: 18.0),
@@ -98,7 +93,6 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black54,
                     ),
                     onPressed: () {
-                      getCities();
                       showModalBottomSheet<void>(
                           // barrierColor: Colors.bla.withOpacity(0.1),
                           shape: const RoundedRectangleBorder(
@@ -142,24 +136,61 @@ class _HomePageState extends State<HomePage> {
               ),
             ];
           },
-          body: GridView.builder(
-              padding: const EdgeInsets.all(8.0),
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.75,
-              ),
-              itemCount: count,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  child: cities[index],
-                  onTap: () => Navigator.of(context)
-                      .pushNamed("/details", arguments: {'id': index}),
-                );
-              }),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              _cityItemsFuture = _cityWorker.getLatest();
+              await _cityItemsFuture;
+              setState(() {});
+            },
+            child: FutureBuilder<Map<CityItem, bool>>(
+              future: _cityItemsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.requireData;
+                  final cities = data.keys
+                      .where((element) =>
+                          element.name.contains(_textController.text))
+                      .toList();
+                  return GridView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: cities.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          child: CityCard(
+                              city: cities[index],
+                              isFavorite: data[cities[index]] ?? false),
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            "/details",
+                            arguments: {
+                              'id': cities[index].id,
+                              'name': cities[index].name,
+                              'imgSrc': cities[index].imgSrc,
+                              'isFavorite': data[cities[index]] ?? false,
+                            },
+                          ),
+                        );
+                      });
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Icon(Icons.error),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
         ),
+
         // bottomNavigationBar: BottomNavyBar(
         //   selectedIndex: _currentIndex,
         //   itemCornerRadius: 24,
@@ -194,3 +225,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+// class FadeRoute extends PageRouteBuilder {
+//   FadeRoute({required Widget page, required RouteSettings settings})
+//       : super(
+//           settings: settings,
+//           pageBuilder: (
+//             BuildContext context,
+//             Animation<double> animation,
+//             Animation<double> secondaryAnimation,
+//           ) =>
+//               page,
+//           transitionsBuilder: (
+//             BuildContext context,
+//             Animation<double> animation,
+//             Animation<double> secondaryAnimation,
+//             Widget child,
+//           ) =>
+//               FadeTransition(
+//             opacity: animation,
+//             child: child,
+//           ),
+//         );
+// }
