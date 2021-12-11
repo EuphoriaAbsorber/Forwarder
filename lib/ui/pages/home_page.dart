@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                   final data = snapshot.requireData;
                   final cities = data.keys
                       .where((element) =>
-                          element.name.contains(_textController.text))
+                          element.name.toLowerCase().contains(_textController.text.toLowerCase()))
                       .toList();
                   return GridView.builder(
                       padding: const EdgeInsets.all(8.0),
@@ -167,15 +167,14 @@ class _HomePageState extends State<HomePage> {
                           child: CityCard(
                               city: cities[index],
                               isFavorite: data[cities[index]] ?? false),
-                          onTap: () => Navigator.pushNamed(
+                          onTap: () => Navigator.push(
                             context,
-                            "/details",
-                            arguments: {
+                            FadeRoute(page: const DetailsPage(), settings: RouteSettings(arguments: {
                               'id': cities[index].id,
                               'name': cities[index].name,
                               'imgSrc': cities[index].imgSrc,
                               'isFavorite': data[cities[index]] ?? false,
-                            },
+                            },))
                           ),
                         );
                       });
@@ -226,25 +225,21 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// class FadeRoute extends PageRouteBuilder {
-//   FadeRoute({required Widget page, required RouteSettings settings})
-//       : super(
-//           settings: settings,
-//           pageBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//           ) =>
-//               page,
-//           transitionsBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//             Widget child,
-//           ) =>
-//               FadeTransition(
-//             opacity: animation,
-//             child: child,
-//           ),
-//         );
-// }
+class FadeRoute extends PageRouteBuilder {
+  FadeRoute({required Widget page, required RouteSettings settings})
+      : super(
+          settings: settings,
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) => child
+        );
+}

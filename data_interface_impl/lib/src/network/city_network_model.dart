@@ -7,9 +7,9 @@ part 'city_network_model.g.dart';
 class CityNetworkModel {
   @JsonKey(name: "id")
   final int id;
-  @JsonKey(name: "name")
+  @JsonKey(name: "title")
   final String name;
-  @JsonKey(name: "imgSrc")
+  @JsonKey(name: "image_url")
   final String imgSrc;
 
   CityNetworkModel({required this.id, required this.name, required this.imgSrc});
@@ -19,5 +19,5 @@ class CityNetworkModel {
 
   Map<String, dynamic> toJson() => _$CityNetworkModelToJson(this);
 
-  CityItem toFeedItem() => CityItem(id: id, name: name, imgSrc: imgSrc);
+  CityItem toCityItem() => CityItem(id: id, name: name, imgSrc: imgSrc);
 }
