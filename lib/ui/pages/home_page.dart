@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/ui/widgets/city_card_widget.dart';
+import 'package:dio/dio.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,6 +26,22 @@ class _HomePageState extends State<HomePage> {
 
   final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
   final _appBarKey = GlobalKey();
+
+  bool loading = true;
+  List<CityCard> cities = [];
+  int count = 0;
+
+  void getCities() async{
+    final dio = Dio();
+    final response =   await dio.get('https://anyway-forwarder-serv.herokuapp.com');
+    List<CityCard> s = [];
+    for(var m in response.data){
+      CityCard d = CityCard.fromJson(m);
+      s.add(d);
+    }
+    setState(() {cities = s;loading = !loading;count = s.length;});
+    //print(cities[0].title);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +98,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black54,
                     ),
                     onPressed: () {
+                      getCities();
                       showModalBottomSheet<void>(
                           // barrierColor: Colors.bla.withOpacity(0.1),
                           shape: const RoundedRectangleBorder(
@@ -133,10 +151,10 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 16.0,
                 childAspectRatio: 0.75,
               ),
-              itemCount: 32,
+              itemCount: count,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  child: CityCard(id: index),
+                  child: cities[index],
                   onTap: () => Navigator.of(context)
                       .pushNamed("/details", arguments: {'id': index}),
                 );
