@@ -19,7 +19,8 @@ class _CityCardState extends State<CityCard> {
   
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return Hero(
+      tag: widget.city.id,
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.grey,
@@ -32,7 +33,7 @@ class _CityCardState extends State<CityCard> {
             children: [
               Positioned.fill(
                 child: CachedNetworkImage(
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight,
                   imageUrl: widget.city.imgSrc,
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
@@ -51,12 +52,15 @@ class _CityCardState extends State<CityCard> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          widget.city.name,
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            widget.city.name,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                       ),
@@ -82,9 +86,12 @@ class _CityCardState extends State<CityCard> {
                 alignment: Alignment.bottomCenter,
               ),
               Align(
-                child: IconButton(
-                    onPressed: () => _addToFavorite(widget.city),
-                    icon: widget.isFavorite ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite_border, color: Colors.grey),
+                child: Material(
+                  color: Colors.transparent,
+                  child: IconButton(
+                      onPressed: () => _addToFavorite(widget.city),
+                      icon: widget.isFavorite ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite_border, color: Colors.grey),
+                  ),
                 ),
                 alignment: Alignment.topRight,
               ),

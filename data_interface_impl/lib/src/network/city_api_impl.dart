@@ -23,7 +23,7 @@ class CityApiImpl extends CityApi {
         .toList();*/
 
     //ToDo: Пока возращает заглушку
-    return Future.delayed(Duration(seconds: 5)).then((value) => [
+    return Future.delayed(Duration(seconds: 1)).then((value) => [
       CityItem(id: 0, name: "Test0", imgSrc: "https://pbs.twimg.com/media/ED_yIKlWwAAAQQF.jpg"),
       CityItem(id: 1, name: "Test1", imgSrc: "https://pbs.twimg.com/media/ED_yIKlWwAAAQQF.jpg"),
       CityItem(id: 2, name: "Test2", imgSrc: "https://pbs.twimg.com/media/ED_yIKlWwAAAQQF.jpg"),

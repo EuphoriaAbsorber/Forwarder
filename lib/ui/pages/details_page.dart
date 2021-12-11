@@ -26,26 +26,35 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Hero(
-        tag: id,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CachedNetworkImage(
-              imageUrl: imgSrc,
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            isFavorite ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite_border, color: Colors.grey),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(name, style: const TextStyle(fontSize: 64.0, fontWeight: FontWeight.bold)),
-            ),
-            ElevatedButton(
-              child: const Text('Close'),
-              onPressed: () => Navigator.pop(context),
-            )
-          ],
+    return Hero(
+      tag: id,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CachedNetworkImage(
+                imageUrl: imgSrc,
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+              isFavorite
+                  ? const Icon(Icons.favorite, color: Colors.red)
+                  : const Icon(Icons.favorite_border, color: Colors.grey),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Material(
+                    color: Colors.transparent,
+                    child: Text(name,
+                        style: const TextStyle(
+                            fontSize: 64.0, fontWeight: FontWeight.bold))),
+              ),
+              ElevatedButton(
+                child: const Material(
+                    color: Colors.transparent, child: Text('Close')),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          ),
         ),
       ),
     );

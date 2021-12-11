@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   late Future<Map<CityItem, bool>> _cityItemsFuture = _cityWorker.getLatest();
 
   final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
+  final _appBarKey = GlobalKey();
 
   @override
   void initState() {
@@ -46,8 +47,10 @@ class _HomePageState extends State<HomePage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                backgroundColor: Colors.white,
+                key: _appBarKey,
+                backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
+                elevation: 0.0,
                 title: SizedBox(
                   height: 40.0,
                   child: TextField(
@@ -63,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                         icon: const Icon(Icons.clear, color: Colors.black54),
                         onPressed: () => _textController.text = "",
                       ),
-                      contentPadding: const EdgeInsets.fromLTRB(16, 4, 4, 16),
+                      contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
                       hintText: 'Search your journey...',
                       hintStyle: const TextStyle(
                           color: Colors.black38, fontSize: 18.0),
@@ -136,6 +139,7 @@ class _HomePageState extends State<HomePage> {
           body: RefreshIndicator(
             onRefresh: () async {
               _cityItemsFuture = _cityWorker.getLatest();
+              await _cityItemsFuture;
               setState(() {});
             },
             child: FutureBuilder<Map<CityItem, bool>>(
@@ -143,7 +147,10 @@ class _HomePageState extends State<HomePage> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final data = snapshot.requireData;
-                  final cities = data.keys.where((element) => element.name.contains(_textController.text)).toList();
+                  final cities = data.keys
+                      .where((element) =>
+                          element.name.contains(_textController.text))
+                      .toList();
                   return GridView.builder(
                       padding: const EdgeInsets.all(8.0),
                       physics: const BouncingScrollPhysics(),
@@ -160,24 +167,19 @@ class _HomePageState extends State<HomePage> {
                           child: CityCard(
                               city: cities[index],
                               isFavorite: data[cities[index]] ?? false),
-                          onTap: () => Navigator.push(
+                          onTap: () => Navigator.pushNamed(
                             context,
-                            FadeRoute(
-                              page: const DetailsPage(),
-                              settings: RouteSettings(
-                                arguments: {
-                                  'id': cities[index].id,
-                                  'name': cities[index].name,
-                                  'imgSrc': cities[index].imgSrc,
-                                  'isFavorite': data[cities[index]] ?? false,
-                                },
-                              ),
-                            ),
+                            "/details",
+                            arguments: {
+                              'id': cities[index].id,
+                              'name': cities[index].name,
+                              'imgSrc': cities[index].imgSrc,
+                              'isFavorite': data[cities[index]] ?? false,
+                            },
                           ),
                         );
                       });
                 } else if (snapshot.hasError) {
-                  print(snapshot.error);
                   return const Center(
                     child: Icon(Icons.error),
                   );
@@ -224,25 +226,25 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class FadeRoute extends PageRouteBuilder {
-  FadeRoute({required Widget page, required RouteSettings settings})
-      : super(
-          settings: settings,
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
-}
+// class FadeRoute extends PageRouteBuilder {
+//   FadeRoute({required Widget page, required RouteSettings settings})
+//       : super(
+//           settings: settings,
+//           pageBuilder: (
+//             BuildContext context,
+//             Animation<double> animation,
+//             Animation<double> secondaryAnimation,
+//           ) =>
+//               page,
+//           transitionsBuilder: (
+//             BuildContext context,
+//             Animation<double> animation,
+//             Animation<double> secondaryAnimation,
+//             Widget child,
+//           ) =>
+//               FadeTransition(
+//             opacity: animation,
+//             child: child,
+//           ),
+//         );
+// }
