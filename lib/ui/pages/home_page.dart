@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                                     ElevatedButton(
                                       child: const Text('Close BottomSheet'),
                                       onPressed: () => Navigator.pop(context),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -148,8 +148,9 @@ class _HomePageState extends State<HomePage> {
                 if (snapshot.hasData) {
                   final data = snapshot.requireData;
                   final cities = data.keys
-                      .where((element) =>
-                          element.name.toLowerCase().contains(_textController.text.toLowerCase()))
+                      .where((element) => _textController.text
+                          .toLowerCase()
+                          .isSubsequence(element.name.toLowerCase()))
                       .toList();
                   return GridView.builder(
                       padding: const EdgeInsets.all(8.0),
@@ -168,14 +169,18 @@ class _HomePageState extends State<HomePage> {
                               city: cities[index],
                               isFavorite: data[cities[index]] ?? false),
                           onTap: () => Navigator.push(
-                            context,
-                            FadeRoute(page: const DetailsPage(), settings: RouteSettings(arguments: {
-                              'id': cities[index].id,
-                              'name': cities[index].name,
-                              'imgSrc': cities[index].imgSrc,
-                              'isFavorite': data[cities[index]] ?? false,
-                            },))
-                          ),
+                              context,
+                              FadeRoute(
+                                  page: const DetailsPage(),
+                                  settings: RouteSettings(
+                                    arguments: {
+                                      'id': cities[index].id,
+                                      'name': cities[index].name,
+                                      'imgSrc': cities[index].imgSrc,
+                                      'isFavorite':
+                                          data[cities[index]] ?? false,
+                                    },
+                                  ))),
                         );
                       });
                 } else if (snapshot.hasError) {
@@ -228,18 +233,33 @@ class _HomePageState extends State<HomePage> {
 class FadeRoute extends PageRouteBuilder {
   FadeRoute({required Widget page, required RouteSettings settings})
       : super(
-          settings: settings,
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) =>
-              page,
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) => child
-        );
+            settings: settings,
+            pageBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) =>
+                page,
+            transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+            ) =>
+                child);
+}
+
+extension StringExtension on String {
+  bool isSubsequence(String other) {
+    if (isEmpty) return true;
+
+    if (other.isEmpty) return false;
+
+    for (int i = 0, j = 0; i < other.length; ++i) {
+      if (this[j] == other[i]) {
+        if (++j == length) return true;
+      }
+    }
+    return false;
+  }
 }
