@@ -10,15 +10,7 @@ class CityApi {
 
   Future<List<City>> getLatest() async {
     final response = await _dio.get(cityApiPath);
-    print(response);
-    final cityList =
-        CityListNetworkModel.fromJson(response.data as Map<String, dynamic>)
-            .cityList;
-
-    for(final c in cityList) {
-      print(c.toCityItem());
-    }
-
-    return cityList.map((e) => e.toCityItem()).toList();
+    final cityList = CityListNetworkModel.fromJson(response.data as Map<String, dynamic>).cityList.map((e) => e.toCityItem()).toList();
+    return cityList;
   }
 }
