@@ -8,13 +8,13 @@ class CityManager {
 
   CityManager(this._cityDao, this._cityApi);
 
-  Future<void> addToFavorites(CityItem item) => _cityDao.save(item);
+  Future<void> addToFavorites(City item) => _cityDao.save(item);
 
-  void removeFromFavorites(CityItem item) => _cityDao.delete(item);
+  void removeFromFavorites(City item) => _cityDao.delete(item);
 
-  Future<List<CityItem>> getFavorites() => _cityDao.getAll();
+  Future<List<City>> getFavorites() => _cityDao.getAll();
 
-  Future<Map<CityItem, bool>> getLatest() async {
+  Future<Map<City, bool>> getLatest() async {
     final favorites = await _cityDao.getAll();
     try {
       final items = await _cityApi.getLatest();

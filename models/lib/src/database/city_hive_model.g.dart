@@ -17,22 +17,25 @@ class CityHiveModelAdapter extends TypeAdapter<CityHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CityHiveModel(
-      fields[0] as int,
-      fields[1] as String,
-      fields[2] as String,
+      id: fields[0] as int,
+      name: fields[1] as String,
+      imgSrc: fields[2] as String,
+      filter: fields[3] as FilterHiveModel,
     );
   }
 
   @override
   void write(BinaryWriter writer, CityHiveModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.imgSrc);
+      ..write(obj.imgSrc)
+      ..writeByte(3)
+      ..write(obj.filter);
   }
 
   @override

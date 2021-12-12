@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../models.dart';
+import '../base/city.dart';
+import 'filter_network_model.dart';
 
 part 'city_network_model.g.dart';
 
@@ -12,13 +13,26 @@ class CityNetworkModel {
   final String name;
   @JsonKey(name: 'image_url')
   final String imgSrc;
+  @JsonKey(name: 'filters')
+  final FilterNetworkModel filter;
 
-  const CityNetworkModel({required this.id, required this.name, required this.imgSrc});
+
+  const CityNetworkModel({
+    required this.id,
+    required this.name,
+    required this.imgSrc,
+    required this.filter,
+  });
 
   factory CityNetworkModel.fromJson(Map<String, dynamic> json) =>
       _$CityNetworkModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CityNetworkModelToJson(this);
 
-  CityItem toCityItem() => CityItem(id: id, name: name, imgSrc: imgSrc);
+  City toCityItem() => City(
+        id: id,
+        name: name,
+        imgSrc: imgSrc,
+        filter: filter.toFilter(),
+      );
 }

@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   late final TextEditingController _textController;
 
   final _cityWorker = Dependencies.instance.cityWorker;
-  late Future<Map<CityItem, bool>> _cityItemsFuture = _cityWorker.getLatest();
+  late Future<Map<City, bool>> _cityItemsFuture = _cityWorker.getLatest();
 
   final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
   final _appBarKey = GlobalKey();
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
               await _cityItemsFuture;
               setState(() {});
             },
-            child: FutureBuilder<Map<CityItem, bool>>(
+            child: FutureBuilder<Map<City, bool>>(
               future: _cityItemsFuture,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {

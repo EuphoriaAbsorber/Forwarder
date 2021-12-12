@@ -5,7 +5,7 @@ import 'package:models/models.dart';
 import '../../di.dart';
 
 class CityCard extends StatefulWidget {
-  final CityItem city;
+  final City city;
   bool isFavorite;
 
   CityCard({
@@ -106,7 +106,7 @@ class _CityCardState extends State<CityCard> {
       ),
     );
 
-  void _addToFavorite(CityItem item) {
+  void _addToFavorite(City item) {
     if (widget.isFavorite) {
       _cityWorker.removeFromFavorites(item);
       widget.isFavorite = false;

@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
-import '../../models.dart';
+import '../base/city.dart';
+import 'filter_hive_model.dart';
 
 part 'city_hive_model.g.dart';
 
@@ -12,13 +13,21 @@ class CityHiveModel extends HiveObject {
   final String name;
   @HiveField(2)
   final String imgSrc;
+  @HiveField(3)
+  final FilterHiveModel filter;
 
-  CityHiveModel(this.id, this.name, this.imgSrc);
+  CityHiveModel({
+    required this.id,
+    required this.name,
+    required this.imgSrc,
+    required this.filter,
+  });
 
-  CityHiveModel.fromFeed(CityItem feedItem)
-      : id = feedItem.id,
-        name = feedItem.name,
-        imgSrc = feedItem.imgSrc;
+  CityHiveModel.fromCity(City city)
+      : id = city.id,
+        name = city.name,
+        imgSrc = city.imgSrc,
+        filter = FilterHiveModel.fromFilter(city.filter);
 
-  CityItem toCityItem() => CityItem(id: id, name: name, imgSrc: imgSrc);
+  City toCityItem() => City(id: id, name: name, imgSrc: imgSrc, filter: filter.toFilter());
 }

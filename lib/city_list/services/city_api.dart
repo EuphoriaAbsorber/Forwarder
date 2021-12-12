@@ -8,11 +8,17 @@ class CityApi {
 
   CityApi(this._dio);
 
-  Future<List<CityItem>> getLatest() async {
+  Future<List<City>> getLatest() async {
     final response = await _dio.get(cityApiPath);
+    print(response);
     final cityList =
         CityListNetworkModel.fromJson(response.data as Map<String, dynamic>)
             .cityList;
+
+    for(final c in cityList) {
+      print(c.toCityItem());
+    }
+
     return cityList.map((e) => e.toCityItem()).toList();
   }
 }
