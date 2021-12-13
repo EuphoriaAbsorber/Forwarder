@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:untitled/detailed_page/tickets/models/ticket_model.dart';
+
+import 'ticket_model.dart';
 
 part 'ticket_price_model.freezed.dart';
 part 'ticket_price_model.g.dart';

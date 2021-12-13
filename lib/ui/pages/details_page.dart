@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/detailed_page/covid/presentation/covid_widget.dart';
-import 'package:untitled/detailed_page/info_widget.dart';
-import 'package:untitled/detailed_page/tickets/presentation/tickets_widget.dart';
-import 'package:untitled/detailed_page/weather/presentation/weather_widget.dart';
+
+import '../../detailed_page/covid/presentation/covid_widget.dart';
+import '../../detailed_page/info_widget.dart';
+import '../../detailed_page/tickets/presentation/tickets_widget.dart';
+import '../../detailed_page/weather/presentation/weather_widget.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -21,16 +22,15 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    dynamic arguments = ModalRoute.of(context)?.settings.arguments;
+    /*dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     id = arguments['id'] ?? -1;
     name = arguments['name'] ?? 'undefined';
     imgSrc = arguments['imgSrc'] ?? 'undefined';
-    isFavorite = arguments['isFavorite'] ?? false;
+    isFavorite = arguments['isFavorite'] ?? false;*/
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Hero(
+  Widget build(BuildContext context) => Hero(
       tag: id,
       child: Scaffold(
         body: SingleChildScrollView(
@@ -41,9 +41,8 @@ class _DetailsPageState extends State<DetailsPage> {
                 imageUrl: imgSrc,
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              isFavorite
-                  ? const Icon(Icons.favorite, color: Colors.red)
-                  : const Icon(Icons.favorite_border, color: Colors.grey),
+              if (isFavorite) const Icon(Icons.favorite, color: Colors.red)
+              else const Icon(Icons.favorite_border, color: Colors.grey),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Material(
@@ -68,5 +67,4 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       ),
     );
-  }
 }

@@ -14,8 +14,7 @@ class WeatherService {
     try {
       final response = await client.get(url, queryParameters: {'lat':60.99,
       'lon': 30.9,
-      'dt' : 1586468027});
-      final weatherData = 0;//WeatherModel.fromJson(response.data);
+      'dt' : 1586468027});/WeatherModel.fromJson(response.data);
       //return weatherData;
       //print(weatherData.toString());
     } on DioError catch (e) {

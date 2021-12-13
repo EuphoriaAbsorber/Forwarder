@@ -1,4 +1,3 @@
-import 'package:data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +9,7 @@ class InfoWidget extends StatelessWidget {
   const InfoWidget({Key? key, required this.title, required this.child }): super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
         //width: double.infinity,
@@ -35,5 +33,4 @@ class InfoWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

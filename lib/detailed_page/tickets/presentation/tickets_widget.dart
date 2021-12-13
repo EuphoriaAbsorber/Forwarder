@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/detailed_page/tickets/models/ticket_price_model.dart';
-import 'package:untitled/detailed_page/tickets/presentation/city_name_card.dart';
 
 import '../../../city.dart';
+import '../models/ticket_price_model.dart';
 import '../tickets_service.dart';
+import 'city_name_card.dart';
 
 class TicketsWidget extends StatefulWidget {
   const TicketsWidget({Key? key}) : super(key: key);
@@ -16,10 +16,10 @@ class _TicketsWidgetState extends State<TicketsWidget> {
   City city = City('Chicago', 'US');
   String startCityName = 'Москва';
   String endCityName = 'Санкт-Петербург';
-  String? ticketsCost ;
+  String? ticketsCost;
 
   Future<TicketPriceModel?> getTickets() async {
-    TicketsService service = TicketsService();
+    final service = TicketsService();
     return service.fetchTickets();
   }
 
@@ -29,8 +29,7 @@ class _TicketsWidgetState extends State<TicketsWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
         children: [
           Center(
             child: Row(
@@ -42,27 +41,24 @@ class _TicketsWidgetState extends State<TicketsWidget> {
                   color: Colors.black,
                 ),
                 CityNameCard(cityName: endCityName)
-                ],
+              ],
             ),
           ),
-
-            Center(
-              child: FutureBuilder<TicketPriceModel?>(
+          Center(
+            child: FutureBuilder<TicketPriceModel?>(
                 future: getTickets(),
-                builder: (context, snapshot) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Самый дешёвый билет за 2 дня стоит ${snapshot.data?.data?[0].price}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        color: Colors.black,
-                      ),),
-                  );
-                }
-              ),
-            ),
+                builder: (context, snapshot) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Самый дешёвый билет за 2 дня стоит ${snapshot.data?.data?[0].price}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.black,
+                        ),
+                      ),
+                    )),
+          ),
         ],
-    );
-  }
+      );
 }

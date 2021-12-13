@@ -2,6 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
+import '../../detailed_page/covid/presentation/covid_widget.dart';
+import '../../detailed_page/info_widget.dart';
+import '../../detailed_page/tickets/presentation/tickets_widget.dart';
+import '../../detailed_page/weather/presentation/weather_widget.dart';
+
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
 
@@ -63,6 +68,12 @@ class _DetailsPageState extends State<DetailsPage> {
                           style: const TextStyle(
                               fontSize: 64.0, fontWeight: FontWeight.bold))),
                 ),
+                const InfoWidget(title: 'Погода',
+                  child: WeatherWidget(),),
+                const InfoWidget(title: 'Covid-19',
+                  child: CovidWidget(),),
+                const InfoWidget(title: 'Билеты',
+                  child: TicketsWidget(),),
                 ElevatedButton(
                   child: const Material(
                       color: Colors.transparent, child: Text('Close')),

@@ -1,10 +1,6 @@
-import 'package:data/data.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:untitled/detailed_page/covid/services/covid_service.dart';
-import 'package:untitled/detailed_page/info_widget.dart';
 
-import '../../../city.dart';
+import '../services/covid_service.dart';
 import 'covid_card.dart';
 
 class CovidWidget extends StatefulWidget {

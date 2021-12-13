@@ -56,9 +56,9 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   //WeatherModel? _months;
 
   Future<List<Weather>?> getWeather() async {
-    WeatherFactory wf = WeatherFactory('660591836ec3ecb62d7152096a6026b5',
+    final wf = WeatherFactory('660591836ec3ecb62d7152096a6026b5',
         language: Language.RUSSIAN);
-    List<Weather> forecast = await wf.fiveDayForecastByCityName('London');
+    final forecast = await wf.fiveDayForecastByCityName('London');
     return forecast;
   }
   void makeList(List<Weather>? w5) {
@@ -85,8 +85,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   bool isPlaying = false;
 
   @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
+  Widget build(BuildContext context) => AspectRatio(
       aspectRatio: 1,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -97,8 +96,6 @@ class _WeatherWidgetState extends State<WeatherWidget> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Expanded(
                     child: Padding(
@@ -121,18 +118,16 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         ),
       ),
     );
-  }
 
   BarChartData barData() {
-    int maxTemp = t5.reduce(max);
-    int minTemp = t5.reduce(min);
+    final maxTemp = t5.reduce(max);
+    final minTemp = t5.reduce(min);
     return BarChartData(
       maxY: maxTemp + 1,
       minY: min(minTemp.toDouble(), 0),
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-            getTooltipItem: (group, groupIndex, rod, rodIndex) {
-          return BarTooltipItem(
+            getTooltipItem: (group, groupIndex, rod, rodIndex) => BarTooltipItem(
             /*monthsNames[group.x.toInt()] +*/ '',
             const TextStyle(
               color: Colors.white,
@@ -141,7 +136,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: (rod.y - 1).toStringAsFixed(0)+'°C',
+                text: '${(rod.y - 1).toStringAsFixed(0)}°C',
                 style: const TextStyle(
                   color: Colors.yellow,
                   fontSize: 16,
@@ -149,8 +144,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                 ),
               ),
             ],
-          );
-        }),
+          )),
         touchCallback: (FlTouchEvent event, barTouchResponse) {
           setState(() {
             if (!event.isInterestedForInteractions ||
@@ -173,15 +167,14 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           showTitles: true,
           getTextStyles: (context, value) =>
           const TextStyle(color: Colors.white, fontSize: 15),
-          getTitles: (double value) {
-            return dates.isEmpty?'':dates[value.toInt()].day.toString()+'.'+dates[value.toInt()].month.toString();
-          },
+          getTitles: (value) => dates.isEmpty?'':'${dates[value.toInt()].day}.${dates[value.toInt()].month}',
         ),
         leftTitles: SideTitles(
           showTitles: true,
           getTitles: (value) {
-            if(value == minTemp || value == maxTemp)
-              return value.toStringAsFixed(0)+'°C';
+            if(value == minTemp || value == maxTemp) {
+              return '${value.toStringAsFixed(0)}°C';
+            }
             return '';
           },
           interval: 1,
@@ -197,9 +190,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
-        checkToShowHorizontalLine: (double value) {
-          return value.toInt() == minTemp.toInt() || value.toInt() == maxTemp.toInt();
-        },
+        checkToShowHorizontalLine: (value) => value.toInt() == minTemp.toInt() || value.toInt() == maxTemp.toInt(),
         getDrawingHorizontalLine: (value) {
           if(isRead){
             return FlLine(color: Colors.amber, strokeWidth: 1);
@@ -221,8 +212,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     Color barColor = Colors.white,
     double width = 24,
     List<int> showTooltips = const [],
-  }) {
-    return BarChartGroupData(
+  }) => BarChartGroupData(
       x: x,
       barRods: [
         BarChartRodData(
@@ -230,18 +220,12 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           colors: isTouched ? [Colors.yellow] : [barColor],
           width: width,
           borderSide: isTouched
-              ? BorderSide(color: Colors.yellow, width: 1)
+              ? const BorderSide(color: Colors.yellow)
               : const BorderSide(color: Colors.white, width: 0),
-/*backDrawRodData: BackgroundBarChartRodData(
-            show: true,
-            y: maxTemp,
-            colors: [barBackgroundColor],
-          ),*/
         ),
       ],
       showingTooltipIndicators: showTooltips,
     );
-  }
 
   Future<dynamic> refreshState() async {
     setState(() {});
