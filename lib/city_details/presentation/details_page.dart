@@ -20,8 +20,8 @@ class _DetailsPageState extends State<DetailsPage> {
     city = arguments['city'] as City? ??
         City(
           id: -1,
-          name: "undefined",
-          imgSrc: "undefined",
+          name: 'undefined',
+          imgSrc: 'undefined',
           filter: Filter(
             price: 0,
             sea: 0,
@@ -32,6 +32,9 @@ class _DetailsPageState extends State<DetailsPage> {
             entertainment: 0,
             nature: 0,
           ),
+          country: 'undefined',
+          coords: 'undefined',
+          description: 'undefined',
         );
     isFavorite = arguments['isFavorite'] as bool? ?? false;
   }

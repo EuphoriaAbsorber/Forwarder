@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../city_details/presentation/details_page.dart';
-import '../city_list/presentation/home_page.dart';
+import '../city_list/presentation/city_list_page.dart';
 import '../di.dart';
 
 class AnyWayApp extends StatefulWidget {
@@ -22,7 +22,7 @@ class _AnyWayAppState extends State<AnyWayApp> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             routes: {
-              '/': (context) => const HomePage(),
+              '/': (context) => const CityListPage(),
               '/details': (context) => const DetailsPage(),
             },
           );

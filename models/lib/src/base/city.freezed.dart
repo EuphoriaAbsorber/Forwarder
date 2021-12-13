@@ -21,11 +21,17 @@ class _$CityTearOff {
       {required int id,
       required String name,
       required String imgSrc,
+      required String country,
+      required String coords,
+      required String description,
       required Filter filter}) {
     return _City(
       id: id,
       name: name,
       imgSrc: imgSrc,
+      country: country,
+      coords: coords,
+      description: description,
       filter: filter,
     );
   }
@@ -39,6 +45,9 @@ mixin _$City {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get imgSrc => throw _privateConstructorUsedError;
+  String get country => throw _privateConstructorUsedError;
+  String get coords => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   Filter get filter => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -49,7 +58,14 @@ mixin _$City {
 abstract class $CityCopyWith<$Res> {
   factory $CityCopyWith(City value, $Res Function(City) then) =
       _$CityCopyWithImpl<$Res>;
-  $Res call({int id, String name, String imgSrc, Filter filter});
+  $Res call(
+      {int id,
+      String name,
+      String imgSrc,
+      String country,
+      String coords,
+      String description,
+      Filter filter});
 
   $FilterCopyWith<$Res> get filter;
 }
@@ -67,6 +83,9 @@ class _$CityCopyWithImpl<$Res> implements $CityCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? imgSrc = freezed,
+    Object? country = freezed,
+    Object? coords = freezed,
+    Object? description = freezed,
     Object? filter = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,6 +100,18 @@ class _$CityCopyWithImpl<$Res> implements $CityCopyWith<$Res> {
       imgSrc: imgSrc == freezed
           ? _value.imgSrc
           : imgSrc // ignore: cast_nullable_to_non_nullable
+              as String,
+      country: country == freezed
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      coords: coords == freezed
+          ? _value.coords
+          : coords // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       filter: filter == freezed
           ? _value.filter
@@ -102,7 +133,14 @@ abstract class _$CityCopyWith<$Res> implements $CityCopyWith<$Res> {
   factory _$CityCopyWith(_City value, $Res Function(_City) then) =
       __$CityCopyWithImpl<$Res>;
   @override
-  $Res call({int id, String name, String imgSrc, Filter filter});
+  $Res call(
+      {int id,
+      String name,
+      String imgSrc,
+      String country,
+      String coords,
+      String description,
+      Filter filter});
 
   @override
   $FilterCopyWith<$Res> get filter;
@@ -122,6 +160,9 @@ class __$CityCopyWithImpl<$Res> extends _$CityCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? imgSrc = freezed,
+    Object? country = freezed,
+    Object? coords = freezed,
+    Object? description = freezed,
     Object? filter = freezed,
   }) {
     return _then(_City(
@@ -136,6 +177,18 @@ class __$CityCopyWithImpl<$Res> extends _$CityCopyWithImpl<$Res>
       imgSrc: imgSrc == freezed
           ? _value.imgSrc
           : imgSrc // ignore: cast_nullable_to_non_nullable
+              as String,
+      country: country == freezed
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      coords: coords == freezed
+          ? _value.coords
+          : coords // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       filter: filter == freezed
           ? _value.filter
@@ -152,6 +205,9 @@ class _$_City implements _City {
       {required this.id,
       required this.name,
       required this.imgSrc,
+      required this.country,
+      required this.coords,
+      required this.description,
       required this.filter});
 
   @override
@@ -161,11 +217,17 @@ class _$_City implements _City {
   @override
   final String imgSrc;
   @override
+  final String country;
+  @override
+  final String coords;
+  @override
+  final String description;
+  @override
   final Filter filter;
 
   @override
   String toString() {
-    return 'City(id: $id, name: $name, imgSrc: $imgSrc, filter: $filter)';
+    return 'City(id: $id, name: $name, imgSrc: $imgSrc, country: $country, coords: $coords, description: $description, filter: $filter)';
   }
 
   @override
@@ -176,6 +238,10 @@ class _$_City implements _City {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.imgSrc, imgSrc) &&
+            const DeepCollectionEquality().equals(other.country, country) &&
+            const DeepCollectionEquality().equals(other.coords, coords) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.filter, filter));
   }
 
@@ -185,6 +251,9 @@ class _$_City implements _City {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(imgSrc),
+      const DeepCollectionEquality().hash(country),
+      const DeepCollectionEquality().hash(coords),
+      const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(filter));
 
   @JsonKey(ignore: true)
@@ -198,6 +267,9 @@ abstract class _City implements City {
       {required int id,
       required String name,
       required String imgSrc,
+      required String country,
+      required String coords,
+      required String description,
       required Filter filter}) = _$_City;
 
   @override
@@ -206,6 +278,12 @@ abstract class _City implements City {
   String get name;
   @override
   String get imgSrc;
+  @override
+  String get country;
+  @override
+  String get coords;
+  @override
+  String get description;
   @override
   Filter get filter;
   @override

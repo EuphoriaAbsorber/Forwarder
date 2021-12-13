@@ -9,6 +9,9 @@ class City  with _$City {
     required int id,
     required String name,
     required String imgSrc,
+    required String country,
+    required String coords,
+    required String description,
     required Filter filter,
   }) = _City;
 }

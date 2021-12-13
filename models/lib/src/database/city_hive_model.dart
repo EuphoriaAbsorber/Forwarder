@@ -12,14 +12,23 @@ class CityHiveModel extends HiveObject {
   @HiveField(1)
   final String name;
   @HiveField(2)
-  final String imgSrc;
+  final String country;
   @HiveField(3)
+  final String description;
+  @HiveField(4)
+  final String imgSrc;
+  @HiveField(5)
+  final String coords;
+  @HiveField(6)
   final FilterHiveModel filter;
 
   CityHiveModel({
     required this.id,
     required this.name,
     required this.imgSrc,
+    required this.country,
+    required this.coords,
+    required this.description,
     required this.filter,
   });
 
@@ -27,7 +36,19 @@ class CityHiveModel extends HiveObject {
       : id = city.id,
         name = city.name,
         imgSrc = city.imgSrc,
+        country = city.country,
+        coords = city.coords,
+        description = city.description,
         filter = FilterHiveModel.fromFilter(city.filter);
 
-  City toCityItem() => City(id: id, name: name, imgSrc: imgSrc, filter: filter.toFilter());
+
+  City toCityItem() => City(
+        id: id,
+        name: name,
+        imgSrc: imgSrc,
+        country: country,
+        coords: coords,
+        description: description,
+        filter: filter.toFilter(),
+      );
 }

@@ -13,14 +13,22 @@ class CityNetworkModel {
   final String name;
   @JsonKey(name: 'image_url')
   final String imgSrc;
+  @JsonKey(name: 'country')
+  final String country;
+  @JsonKey(name: 'coords')
+  final String coords;
+  @JsonKey(name: 'description')
+  final String description;
   @JsonKey(name: 'filters')
   final FilterNetworkModel filter;
-
 
   const CityNetworkModel({
     required this.id,
     required this.name,
     required this.imgSrc,
+    required this.country,
+    required this.coords,
+    required this.description,
     required this.filter,
   });
 
@@ -33,6 +41,9 @@ class CityNetworkModel {
         id: id,
         name: name,
         imgSrc: imgSrc,
+        country: country,
+        coords: coords,
+        description: description,
         filter: filter.toFilter(),
       );
 }

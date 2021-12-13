@@ -3,17 +3,17 @@ import 'package:models/models.dart';
 
 import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
-import '../../ui/widgets/city_card_widget.dart';
 import 'bottom_sheet_filter.dart';
+import 'city_card_widget.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class CityListPage extends StatefulWidget {
+  const CityListPage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _CityListPageState createState() => _CityListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CityListPageState extends State<CityListPage> {
   late final TextEditingController _textController;
 
   final _cityWorker = Dependencies.instance.cityWorker;
@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                             .isSubsequence(element.name.toLowerCase()) && check(filter, element.filter)).toList();
 
                     return GridView.builder(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 32.0),
                         physics: const BouncingScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
