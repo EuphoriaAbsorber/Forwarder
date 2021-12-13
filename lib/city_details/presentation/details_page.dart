@@ -68,12 +68,18 @@ class _DetailsPageState extends State<DetailsPage> {
                           style: const TextStyle(
                               fontSize: 64.0, fontWeight: FontWeight.bold))),
                 ),
-                const InfoWidget(title: 'Погода',
-                  child: WeatherWidget(),),
-                const InfoWidget(title: 'Covid-19',
-                  child: CovidWidget(),),
-                const InfoWidget(title: 'Билеты',
-                  child: TicketsWidget(),),
+                const InfoWidget(
+                  title: 'Погода',
+                  child: WeatherWidget(),
+                ),
+                const InfoWidget(
+                  title: 'Covid-19',
+                  child: CovidWidget(),
+                ),
+                const InfoWidget(
+                  title: 'Билеты',
+                  child: TicketsWidget(),
+                ),
                 ElevatedButton(
                   child: const Material(
                       color: Colors.transparent, child: Text('Close')),
