@@ -14,6 +14,8 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   late City city;
   late bool isFavorite;
+  final _mapKey = GlobalKey();
+  final _key = GlobalKey();
 
   @override
   void didChangeDependencies() {
@@ -47,9 +49,11 @@ class _DetailsPageState extends State<DetailsPage> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 CachedNetworkImage(
+                  key: _key,
                   imageUrl: city.imgSrc,
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
@@ -80,6 +84,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: MapInfo(
+                      key: _mapKey,
                       lat: city.coords
                           .split(';')
                           .map((e) => double.parse(e))

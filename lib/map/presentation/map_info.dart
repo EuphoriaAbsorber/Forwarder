@@ -17,7 +17,7 @@ class MapInfo extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: GoogleMap(
-          mapType: MapType.hybrid,
+            mapType: MapType.hybrid,
             initialCameraPosition: CameraPosition(
             target: LatLng(
               lat,
@@ -25,6 +25,7 @@ class MapInfo extends StatelessWidget {
             ),
             zoom: 11,
           ),
+          myLocationButtonEnabled: false,
         ),
       ),
     );
