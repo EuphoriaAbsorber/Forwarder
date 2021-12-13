@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 
 //ToDo: Заполнить базовый адрес api
-final BASE_API_URL= '';
+final BASE_API_URL= '/';
 
 class DioBuilder {
   DioBuilder._();

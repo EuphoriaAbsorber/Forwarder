@@ -9,13 +9,13 @@ part of 'city_network_model.dart';
 CityNetworkModel _$CityNetworkModelFromJson(Map<String, dynamic> json) =>
     CityNetworkModel(
       id: json['id'] as int,
-      name: json['name'] as String,
-      imgSrc: json['imgSrc'] as String,
+      name: json['title'] as String,
+      imgSrc: json['image_url'] as String,
     );
 
 Map<String, dynamic> _$CityNetworkModelToJson(CityNetworkModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'imgSrc': instance.imgSrc,
+      'title': instance.name,
+      'image_url': instance.imgSrc,
     };
