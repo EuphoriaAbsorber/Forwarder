@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../detailed_page/covid/presentation/covid_widget.dart';
-import '../../detailed_page/info_widget.dart';
+import '../../city_details/detailed_page/covid/presentation/covid_widget.dart';
+import '../../city_details/detailed_page/info_widget.dart';
+import '../../city_details/detailed_page/tickets/presentation/tickets_widget.dart';
+import '../../city_details/detailed_page/weather/presentation/weather_widget.dart';
 import '../../detailed_page/tickets/presentation/tickets_widget.dart';
-import '../../detailed_page/weather/presentation/weather_widget.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
