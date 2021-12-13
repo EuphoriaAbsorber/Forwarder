@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
+import '../../map/presentation/map_info.dart';
+
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
 
@@ -43,29 +45,62 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) => Hero(
         tag: city.id,
         child: Scaffold(
+          backgroundColor: Colors.white,
           body: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CachedNetworkImage(
                   imageUrl: city.imgSrc,
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 if (isFavorite)
-                  const Icon(Icons.favorite, color: Colors.red)
+                  const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  )
                 else
-                  const Icon(Icons.favorite_border, color: Colors.grey),
+                  const Icon(
+                    Icons.favorite_border,
+                    color: Colors.grey,
+                  ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Material(
                       color: Colors.transparent,
-                      child: Text(city.name,
+                      child: FittedBox(
+                        child: Text(
+                          city.name,
                           style: const TextStyle(
-                              fontSize: 64.0, fontWeight: FontWeight.bold))),
+                            fontSize: 48.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MapInfo(
+                      lat: city.coords
+                          .split(';')
+                          .map((e) => double.parse(e))
+                          .toList()[0],
+                      lng: city.coords
+                          .split(';')
+                          .map((e) => double.parse(e))
+                          .toList()[1]),
+                ),
+                Text(
+                  city.description,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                  ),
                 ),
                 ElevatedButton(
                   child: const Material(
-                      color: Colors.transparent, child: Text('Close')),
+                    color: Colors.transparent,
+                    child: Text('Close'),
+                  ),
                   onPressed: () => Navigator.pop(context),
                 )
               ],

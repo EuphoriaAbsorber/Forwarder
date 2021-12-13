@@ -208,8 +208,7 @@ class FadeRoute extends PageRouteBuilder {
               animation,
               secondaryAnimation,
               child,
-            ) =>
-                child);
+            ) => child);
 }
 
 extension StringExtension on String {
