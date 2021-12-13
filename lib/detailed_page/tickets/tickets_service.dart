@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 
+import 'models/ticket_price_model.dart';
+
 class TicketsService {
-  Future<void> fetchTickets() async {
+  Future<TicketPriceModel?> fetchTickets() async {
     try {
       final options = BaseOptions(queryParameters: {
         'token': 'cd472db01937d97c5a3ba5a12ca47ab0',
@@ -10,16 +12,20 @@ class TicketsService {
       });
       final Dio client = Dio(options);
       const url =
-          'https://travelpayouts-travelpayouts-flight-data-v1.p.rapidapi.com/v1/prices/cheap';
+          'http://api.travelpayouts.com/v2/prices/latest?period_type=year&page=1&limit=30&show_to_affiliates=true&sorting=price&trip_class=0';
       var response = await client.get(url, queryParameters: {
         'origin': 'MOW',
         'destination': 'LED',
         'currency': 'RUB',
       });
-      var tickets = response.data;
-      //print(tickets);
+      var ticketPrice = TicketPriceModel.fromJson(response.data);
+      print(ticketPrice.data?[0].price);
+      return ticketPrice;
     } on DioError catch (e) {
       print(e.toString());
     }
   }
+}
+
+class TicketPrice {
 }

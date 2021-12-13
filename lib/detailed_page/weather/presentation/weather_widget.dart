@@ -1,53 +1,251 @@
+import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/detailed_page/weather/services/weather_service.dart';
+import 'package:weather/weather.dart';
 
-import '../../../city.dart';
-import '../weather_model.dart';
+List<double> testMonthsData = [-3, -1, 13, 18, 22, 25, 25, 20, 16, 10, 0, -5];
+/*List<String> monthsShortNames = [
+  'Я',
+  'Ф',
+  'М',
+  'А',
+  'М',
+  'И',
+  'И',
+  'А',
+  'С',
+  'О',
+  'Н',
+  'Д'
+];*/
+/*List<String> monthsNames = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь',
+];*/
 
-class WeatherWidget extends StatefulWidget { // Хз statefl или stateless
-  final String title;
-  const WeatherWidget({Key? key, required this.title}): super(key: key);
+class WeatherWidget extends StatefulWidget {
+// Хз statefl или stateless
+  const WeatherWidget({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _WeatherWidgetState();
 }
 
-class _WeatherWidgetState extends State<WeatherWidget>{
-  City city = City('Chicago','US');
-  WeatherModel? _months;
-  
-  Future<WeatherModel?> getWeather() async{
-    WeatherService service = WeatherService();
-    await service.fetchWeather();
+class _WeatherWidgetState extends State<WeatherWidget> {
+  late List<Weather> forecast = [];
+  bool isRead = false;
+  List<int> t5 = [0, 0, 0, 0, 0];
+  List<DateTime> dates = [];
+
+/*double maxTemp = testMonthsData.reduce(max);
+  double minTemp = testMonthsData.reduce(min);*/
+
+//City city = City('Chicago', 'US');
+
+  //WeatherModel? _months;
+
+  Future<List<Weather>?> getWeather() async {
+    WeatherFactory wf = WeatherFactory('660591836ec3ecb62d7152096a6026b5',
+        language: Language.RUSSIAN);
+    List<Weather> forecast = await wf.fiveDayForecastByCityName('London');
+    return forecast;
+  }
+  void makeList(List<Weather>? w5) {
+    if (w5 != null) {
+      for (var i = 0; i < 5; i += 1) {
+        dates.add(w5[8*i].date!);
+        t5[i] = w5[8*i].temperature!.celsius!.toInt();
+      }
+      isRead = true;
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getWeather().then((value) {
-      _months = value;
-      print(_months.toString);});
   }
+
+  final Color barBackgroundColor = Colors.grey;
+  final Color backgroundColor = Colors.black26;
+  final Duration animDuration = const Duration(milliseconds: 250);
+
+  int touchedIndex = -1;
+
+  bool isPlaying = false;
 
   @override
   Widget build(BuildContext context) {
-      return Padding (
-        padding: const EdgeInsets.all(20),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Text("Погода", style: TextStyle(color: Colors.white, fontSize: 30),),
-              //Flexible(child: WeatherGraphic('graphic')),
-            ],
-          ),
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        color: backgroundColor,
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: FutureBuilder<List<Weather>?>(
+                          future: getWeather(),
+                          builder: (context, snapshot) {
+                            makeList(snapshot.data);
+                            return BarChart(
+                              barData(),
+                              swapAnimationDuration: animDuration,
+                            );
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+      ),
     );
+  }
+
+  BarChartData barData() {
+    int maxTemp = t5.reduce(max);
+    int minTemp = t5.reduce(min);
+    return BarChartData(
+      maxY: maxTemp + 1,
+      minY: min(minTemp.toDouble(), 0),
+      barTouchData: BarTouchData(
+        touchTooltipData: BarTouchTooltipData(
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+          return BarTooltipItem(
+            /*monthsNames[group.x.toInt()] +*/ '',
+            const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: (rod.y - 1).toStringAsFixed(0)+'°C',
+                style: const TextStyle(
+                  color: Colors.yellow,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          );
+        }),
+        touchCallback: (FlTouchEvent event, barTouchResponse) {
+          setState(() {
+            if (!event.isInterestedForInteractions ||
+                barTouchResponse == null ||
+                barTouchResponse.spot == null) {
+              touchedIndex = -1;
+              return;
+            }
+            touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
+          });
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: SideTitles(showTitles: false),
+        topTitles: SideTitles(
+          showTitles: false,
+        ),
+        bottomTitles: SideTitles(
+          showTitles: true,
+          getTextStyles: (context, value) =>
+          const TextStyle(color: Colors.white, fontSize: 15),
+          getTitles: (double value) {
+            return dates.isEmpty?'':dates[value.toInt()].day.toString()+'.'+dates[value.toInt()].month.toString();
+          },
+        ),
+        leftTitles: SideTitles(
+          showTitles: true,
+          getTitles: (value) {
+            if(value == minTemp || value == maxTemp)
+              return value.toStringAsFixed(0)+'°C';
+            return '';
+          },
+          interval: 1,
+          reservedSize: 40,
+          getTextStyles: (context, value) =>
+          const TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      ),
+      borderData: FlBorderData(
+        show: false,
+      ),
+      barGroups: showingGroups(t5),
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: false,
+        checkToShowHorizontalLine: (double value) {
+          return value.toInt() == minTemp.toInt() || value.toInt() == maxTemp.toInt();
+        },
+        getDrawingHorizontalLine: (value) {
+          if(isRead){
+            return FlLine(color: Colors.amber, strokeWidth: 1);
+          }
+          return FlLine(color: Colors.transparent);
+        }
+      ),
+    );
+  }
+
+  List<BarChartGroupData> showingGroups(List<int> monthData) =>
+      List.generate(t5.length,
+          (i) => makeGroupData(i, monthData[i].toDouble(), isTouched: i == touchedIndex));
+
+  BarChartGroupData makeGroupData(
+    int x,
+    double y, {
+    bool isTouched = false,
+    Color barColor = Colors.white,
+    double width = 24,
+    List<int> showTooltips = const [],
+  }) {
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          y: isTouched ? y + 1 : y,
+          colors: isTouched ? [Colors.yellow] : [barColor],
+          width: width,
+          borderSide: isTouched
+              ? BorderSide(color: Colors.yellow, width: 1)
+              : const BorderSide(color: Colors.white, width: 0),
+/*backDrawRodData: BackgroundBarChartRodData(
+            show: true,
+            y: maxTemp,
+            colors: [barBackgroundColor],
+          ),*/
+        ),
+      ],
+      showingTooltipIndicators: showTooltips,
+    );
+  }
+
+  Future<dynamic> refreshState() async {
+    setState(() {});
+    await Future<dynamic>.delayed(
+        animDuration + const Duration(milliseconds: 50));
   }
 }

@@ -14,11 +14,11 @@ class NewsCard extends StatelessWidget {
       child: Column(
         children: const [
           Text(
-            "news title",
+            "covid title",
             style: TextStyle(color: Colors.blue, fontSize: 30),
           ),
           Text(
-            "news description",
+            "covid description",
             style: TextStyle(color: Colors.blue, fontSize: 20),
           )
         ],
