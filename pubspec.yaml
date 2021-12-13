@@ -1,4 +1,4 @@
-name: untitled
+name: anyway
 description: A new Flutter project.
 
 version: 1.0.0+1
@@ -10,14 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  data:
-    path: data
-
-  domain:
-    path: domain
-
-  data_interface_impl:
-    path: data_interface_impl
+  models:
+    path: models
 
   cupertino_icons: ^1.0.2
   bottom_navy_bar: ^6.0.0

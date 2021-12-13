@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:models/models.dart';
 
 import '../../di.dart';
 
 class CityCard extends StatefulWidget {
-  CityItem city;
+  final City city;
   bool isFavorite;
 
-  CityCard({Key? key, required this.city, required this.isFavorite}) : super(key: key);
+  CityCard({
+    required this.city,
+    required this.isFavorite,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CityCard> createState() => _CityCardState();
@@ -16,10 +20,9 @@ class CityCard extends StatefulWidget {
 
 class _CityCardState extends State<CityCard> {
   final _cityWorker = Dependencies.instance.cityWorker;
-  
+
   @override
-  Widget build(BuildContext context) {
-    return Hero(
+  Widget build(BuildContext context) => Hero(
       tag: widget.city.id,
       child: Container(
         decoration: const BoxDecoration(
@@ -39,6 +42,7 @@ class _CityCardState extends State<CityCard> {
                 ),
               ),
               Align(
+                alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 90,
                   width: double.infinity,
@@ -83,26 +87,26 @@ class _CityCardState extends State<CityCard> {
                     ],
                   ),
                 ),
-                alignment: Alignment.bottomCenter,
               ),
               Align(
+                alignment: Alignment.topRight,
                 child: Material(
                   color: Colors.transparent,
                   child: IconButton(
-                      onPressed: () => _addToFavorite(widget.city),
-                      icon: widget.isFavorite ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite_border, color: Colors.grey),
+                    onPressed: () => _addToFavorite(widget.city),
+                    icon: widget.isFavorite
+                        ? const Icon(Icons.favorite, color: Colors.red)
+                        : const Icon(Icons.favorite_border, color: Colors.grey),
                   ),
                 ),
-                alignment: Alignment.topRight,
               ),
             ],
           ),
         ),
       ),
     );
-  }
 
-  void _addToFavorite(CityItem item) {
+  void _addToFavorite(City item) {
     if (widget.isFavorite) {
       _cityWorker.removeFromFavorites(item);
       widget.isFavorite = false;
@@ -120,13 +124,12 @@ class _CityCardState extends State<CityCard> {
     ..showSnackBar(SnackBar(content: Text(text)));
 }
 
-
 class BottomDialog {
   static void show(BuildContext context, {Widget? title, Widget? body}) {
     showModalBottomSheet(
       barrierColor: Theme.of(context).shadowColor.withOpacity(0.1),
       elevation: 0.5,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(32),
           topLeft: Radius.circular(32),
@@ -134,13 +137,12 @@ class BottomDialog {
       ),
       isScrollControlled: true,
       context: context,
-      builder: (context) {
-        return Wrap(
+      builder: (context) => Wrap(
           children: [
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(32),
                   topLeft: Radius.circular(32),
                 ),
@@ -155,14 +157,14 @@ class BottomDialog {
                         height: 8,
                         width: 56,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                           color: Theme.of(context).primaryColorLight,
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Padding(
-                      padding: EdgeInsets.only(left: 16),
+                      padding: const EdgeInsets.only(left: 16),
                       child: DefaultTextStyle(
                         style: Theme.of(context).textTheme.headline1!,
                         child: title ?? Spacer(),
@@ -174,9 +176,7 @@ class BottomDialog {
               ),
             )
           ],
-        );
-      },
+        ),
     );
   }
 }
-
