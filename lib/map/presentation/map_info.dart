@@ -30,10 +30,6 @@ class MapInfo extends StatelessWidget {
             zoom: 12,
           ),
           myLocationButtonEnabled: false,
-          // rotateGesturesEnabled: false,
-          // scrollGesturesEnabled: false,
-          // zoomGesturesEnabled: false,
-          // tiltGesturesEnabled: false,
         ),
       ),
     );

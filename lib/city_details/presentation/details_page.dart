@@ -4,6 +4,7 @@ import 'package:models/models.dart';
 
 import '../../di.dart';
 import '../../map/presentation/map_info.dart';
+import '../../weather/presentation/weather_info.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -52,8 +53,7 @@ class _DetailsPageState extends State<DetailsPage> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) =>
-            [
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
                 key: _appBarKey,
                 pinned: true,
@@ -80,13 +80,13 @@ class _DetailsPageState extends State<DetailsPage> {
                     onPressed: () => _addToFavorite(city),
                     icon: isFavorite
                         ? const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    )
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
                         : const Icon(
-                      Icons.favorite_border,
-                      color: Colors.grey,
-                    ),
+                            Icons.favorite_border,
+                            color: Colors.grey,
+                          ),
                   ),
                 ],
                 backgroundColor: Colors.white,
@@ -105,7 +105,8 @@ class _DetailsPageState extends State<DetailsPage> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fitWidth,
                         imageUrl: city.imgSrc,
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -116,7 +117,6 @@ class _DetailsPageState extends State<DetailsPage> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 18.0,
-
                       ),
                     ),
                   ),
@@ -128,6 +128,56 @@ class _DetailsPageState extends State<DetailsPage> {
                       lng: city.coords.lng,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [BoxShadow(blurRadius: 2.0)],
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text('Weather', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),),
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: WeatherInfo(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: WeatherInfo(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: WeatherInfo(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: WeatherInfo(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: WeatherInfo(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: WeatherInfo(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
