@@ -24,6 +24,7 @@ dependencies:
   weather: ^2.0.1
   swipe_cards: ^0.1.0
 
+  google_maps_flutter: ^2.0.6
 
 dev_dependencies:
   flutter_test:

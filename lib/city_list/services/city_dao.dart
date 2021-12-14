@@ -8,7 +8,7 @@ class CityDao {
   CityDao(this._box);
 
   Future<List<City>> getAll() async =>
-      _box.values.map((item) => item.toCityItem()).toList();
+      _box.values.map((item) => item.toCity()).toList();
 
   Future<void> save(City item) async =>
       _box.put(item.id, CityHiveModel.fromCity(item));

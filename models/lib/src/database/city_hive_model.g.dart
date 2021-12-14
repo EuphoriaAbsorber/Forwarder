@@ -21,7 +21,7 @@ class CityHiveModelAdapter extends TypeAdapter<CityHiveModel> {
       name: fields[1] as String,
       imgSrc: fields[4] as String,
       country: fields[2] as String,
-      coords: fields[5] as String,
+      coords: fields[5] as CoordsHiveModel,
       description: fields[3] as String,
       filter: fields[6] as FilterHiveModel,
     );

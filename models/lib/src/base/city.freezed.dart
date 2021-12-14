@@ -22,7 +22,7 @@ class _$CityTearOff {
       required String name,
       required String imgSrc,
       required String country,
-      required String coords,
+      required Coords coords,
       required String description,
       required Filter filter}) {
     return _City(
@@ -46,7 +46,7 @@ mixin _$City {
   String get name => throw _privateConstructorUsedError;
   String get imgSrc => throw _privateConstructorUsedError;
   String get country => throw _privateConstructorUsedError;
-  String get coords => throw _privateConstructorUsedError;
+  Coords get coords => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Filter get filter => throw _privateConstructorUsedError;
 
@@ -63,10 +63,11 @@ abstract class $CityCopyWith<$Res> {
       String name,
       String imgSrc,
       String country,
-      String coords,
+      Coords coords,
       String description,
       Filter filter});
 
+  $CoordsCopyWith<$Res> get coords;
   $FilterCopyWith<$Res> get filter;
 }
 
@@ -108,7 +109,7 @@ class _$CityCopyWithImpl<$Res> implements $CityCopyWith<$Res> {
       coords: coords == freezed
           ? _value.coords
           : coords // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Coords,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -118,6 +119,13 @@ class _$CityCopyWithImpl<$Res> implements $CityCopyWith<$Res> {
           : filter // ignore: cast_nullable_to_non_nullable
               as Filter,
     ));
+  }
+
+  @override
+  $CoordsCopyWith<$Res> get coords {
+    return $CoordsCopyWith<$Res>(_value.coords, (value) {
+      return _then(_value.copyWith(coords: value));
+    });
   }
 
   @override
@@ -138,10 +146,12 @@ abstract class _$CityCopyWith<$Res> implements $CityCopyWith<$Res> {
       String name,
       String imgSrc,
       String country,
-      String coords,
+      Coords coords,
       String description,
       Filter filter});
 
+  @override
+  $CoordsCopyWith<$Res> get coords;
   @override
   $FilterCopyWith<$Res> get filter;
 }
@@ -185,7 +195,7 @@ class __$CityCopyWithImpl<$Res> extends _$CityCopyWithImpl<$Res>
       coords: coords == freezed
           ? _value.coords
           : coords // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Coords,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -219,7 +229,7 @@ class _$_City implements _City {
   @override
   final String country;
   @override
-  final String coords;
+  final Coords coords;
   @override
   final String description;
   @override
@@ -268,7 +278,7 @@ abstract class _City implements City {
       required String name,
       required String imgSrc,
       required String country,
-      required String coords,
+      required Coords coords,
       required String description,
       required Filter filter}) = _$_City;
 
@@ -281,7 +291,7 @@ abstract class _City implements City {
   @override
   String get country;
   @override
-  String get coords;
+  Coords get coords;
   @override
   String get description;
   @override

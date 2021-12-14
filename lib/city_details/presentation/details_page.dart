@@ -2,10 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
-import '../../detailed_page/covid/presentation/covid_widget.dart';
-import '../../detailed_page/info_widget.dart';
-import '../../detailed_page/tickets/presentation/tickets_widget.dart';
-import '../../detailed_page/weather/presentation/weather_widget.dart';
+import '../../map/presentation/map_info.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -17,6 +14,8 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   late City city;
   late bool isFavorite;
+  final _mapKey = GlobalKey();
+  final _appBarKey = GlobalKey();
 
   @override
   void didChangeDependencies() {
@@ -38,7 +37,7 @@ class _DetailsPageState extends State<DetailsPage> {
             nature: 0,
           ),
           country: 'undefined',
-          coords: 'undefined',
+          coords: Coords(lat: 0.0, lng: 0.0),
           description: 'undefined',
         );
     isFavorite = arguments['isFavorite'] as bool? ?? false;
@@ -48,38 +47,82 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) => Hero(
         tag: city.id,
         child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CachedNetworkImage(
-                  imageUrl: city.imgSrc,
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+          backgroundColor: Colors.white,
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) =>
+            [
+              SliverAppBar(
+                key: _appBarKey,
+                pinned: true,
+                title: Material(
+                  color: Colors.transparent,
+                  child: FittedBox(
+                    child: Text(
+                      city.name,
+                      style: const TextStyle(
+                        fontSize: 36.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-                if (isFavorite)
-                  const Icon(Icons.favorite, color: Colors.red)
-                else
-                  const Icon(Icons.favorite_border, color: Colors.grey),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                      color: Colors.transparent,
-                      child: Text(city.name,
-                          style: const TextStyle(
-                              fontSize: 64.0, fontWeight: FontWeight.bold))),
-                ),
-                const InfoWidget(title: 'Погода',
-                  child: WeatherWidget(),),
-                const InfoWidget(title: 'Covid-19',
-                  child: CovidWidget(),),
-                const InfoWidget(title: 'Билеты',
-                  child: TicketsWidget(),),
-                ElevatedButton(
-                  child: const Material(
-                      color: Colors.transparent, child: Text('Close')),
+                leading: IconButton(
+                  splashRadius: 24.0,
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
                   onPressed: () => Navigator.pop(context),
-                )
-              ],
+                ),
+                actions: [
+                  IconButton(
+                    splashRadius: 24.0,
+                    onPressed: () {},
+                    icon: isFavorite
+                        ? const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    )
+                        : const Icon(
+                      Icons.favorite_border,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+                backgroundColor: Colors.white,
+                forceElevated: innerBoxIsScrolled,
+              ),
+            ],
+            physics: const BouncingScrollPhysics(),
+            body: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fitWidth,
+                        imageUrl: city.imgSrc,
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: MapInfo(
+                      key: _mapKey,
+                      lat: city.coords.lat,
+                      lng: city.coords.lng,
+                    ),
+                  ),
+                  Text(
+                    city.description,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 24.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

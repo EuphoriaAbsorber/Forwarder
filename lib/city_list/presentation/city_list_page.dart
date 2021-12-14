@@ -19,7 +19,6 @@ class _CityListPageState extends State<CityListPage> {
   final _cityWorker = Dependencies.instance.cityWorker;
   late Future<Map<City, bool>> _cityItemsFuture = _cityWorker.getLatest();
 
-  final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
   final _appBarKey = GlobalKey();
 
   Filter filter = Filter(
@@ -51,7 +50,6 @@ class _CityListPageState extends State<CityListPage> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          key: _homeKey,
           body: NestedScrollView(
             physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
@@ -62,32 +60,39 @@ class _CityListPageState extends State<CityListPage> {
                 elevation: 0.0,
                 title: SizedBox(
                   height: 40.0,
-                  child: TextField(
-                    controller: _textController,
-                    scrollPhysics: const BouncingScrollPhysics(),
-                    cursorColor: Colors.deepOrange,
-                    style: const TextStyle(color: Colors.black, fontSize: 18.0),
-                    decoration: InputDecoration(
-                      prefixIcon:
-                          const Icon(Icons.search, color: Colors.black54),
-                      suffixIcon: IconButton(
-                        splashRadius: 16.0,
-                        icon: const Icon(Icons.clear, color: Colors.black54),
-                        onPressed: () => _textController.text = '',
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                        boxShadow: [BoxShadow(blurRadius: 2.0)],
                       ),
-                      contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
-                      hintText: 'Search your journey...',
-                      hintStyle: const TextStyle(
-                          color: Colors.black38, fontSize: 18.0),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 2.0),
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.deepOrange, width: 2.0),
-                        borderRadius: BorderRadius.circular(32.0),
+                    child: TextField(
+                      controller: _textController,
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      cursorColor: Colors.deepOrange,
+                      style: const TextStyle(color: Colors.black, fontSize: 18.0),
+                      decoration: InputDecoration(
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.black54),
+                        suffixIcon: IconButton(
+                          splashRadius: 16.0,
+                          icon: const Icon(Icons.clear, color: Colors.black54),
+                          onPressed: () => _textController.text = '',
+                        ),
+                        contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
+                        hintText: 'Search your journey...',
+                        hintStyle: const TextStyle(
+                            color: Colors.black38, fontSize: 18.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.grey, width: 0.5),
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.deepOrange, width: 2.5),
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
                       ),
                     ),
                   ),
@@ -208,8 +213,7 @@ class FadeRoute extends PageRouteBuilder {
               animation,
               secondaryAnimation,
               child,
-            ) =>
-                child);
+            ) => child);
 }
 
 extension StringExtension on String {

@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'coords.dart';
 import 'filter.dart';
 
 part 'city.freezed.dart';
@@ -10,7 +12,7 @@ class City  with _$City {
     required String name,
     required String imgSrc,
     required String country,
-    required String coords,
+    required Coords coords,
     required String description,
     required Filter filter,
   }) = _City;

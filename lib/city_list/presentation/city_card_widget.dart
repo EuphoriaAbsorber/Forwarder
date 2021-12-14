@@ -28,7 +28,7 @@ class _CityCardState extends State<CityCard> {
           decoration: const BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.all(Radius.circular(16.0)),
-            boxShadow: [BoxShadow(color: Colors.black, blurRadius: 2.0)],
+            boxShadow: [BoxShadow(blurRadius: 2.0)],
           ),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(16.0)),
@@ -52,53 +52,53 @@ class _CityCardState extends State<CityCard> {
                       color: Colors.white,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Material(
                             color: Colors.transparent,
-                            child: Text(
-                              widget.city.name,
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                overflow: TextOverflow.ellipsis,
+                            child: FittedBox(
+                              child: Text(
+                                widget.city.name,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: FittedBox(
-                            alignment: Alignment.centerRight,
                             child: Row(
                               children: [
-                                if(widget.city.filter.price == 2)
-                                const Icon(Icons.paid,
-                                    color: Colors.yellow, size: 32.0),
-                                if(widget.city.filter.sea == 2)
-                                const Icon(Icons.pool,
-                                    color: Colors.blue, size: 32.0),
-                                if(widget.city.filter.mountains == 2)
-                                const Icon(Icons.landscape,
-                                    color: Colors.brown, size: 32.0),
-                                if(widget.city.filter.culture == 2)
-                                const Icon(Icons.palette,
-                                    color: Colors.red, size: 32.0),
-                                if(widget.city.filter.nature == 2)
-                                const Icon(Icons.eco,
-                                       color: Colors.lightGreenAccent, size: 32.0),
-                                if(widget.city.filter.architecture == 2)
-                                const Icon(Icons.account_balance_rounded,
-                                     color: Colors.grey, size: 32.0),
-                                if(widget.city.filter.shopping == 2)
-                                const Icon(Icons.shopping_bag,
-                                    color: Colors.orange, size: 32.0),
-                                if(widget.city.filter.entertainment == 2)
-                                const Icon(Icons.attractions,
-                                    color: Colors.deepPurple, size: 32.0),
+                                if (widget.city.filter.price == 2)
+                                  const Icon(Icons.paid,
+                                      color: Colors.yellow, size: 32.0),
+                                if (widget.city.filter.sea == 2)
+                                  const Icon(Icons.pool,
+                                      color: Colors.blue, size: 32.0),
+                                if (widget.city.filter.mountains == 2)
+                                  const Icon(Icons.landscape,
+                                      color: Colors.brown, size: 32.0),
+                                if (widget.city.filter.culture == 2)
+                                  const Icon(Icons.palette,
+                                      color: Colors.red, size: 32.0),
+                                if (widget.city.filter.nature == 2)
+                                  const Icon(Icons.eco,
+                                      color: Colors.lightGreenAccent,
+                                      size: 32.0),
+                                if (widget.city.filter.architecture == 2)
+                                  const Icon(Icons.account_balance_rounded,
+                                      color: Colors.grey, size: 32.0),
+                                if (widget.city.filter.shopping == 2)
+                                  const Icon(Icons.shopping_bag,
+                                      color: Colors.orange, size: 32.0),
+                                if (widget.city.filter.entertainment == 2)
+                                  const Icon(Icons.attractions,
+                                      color: Colors.deepPurple, size: 32.0),
                               ],
                             ),
                           ),
@@ -109,11 +109,11 @@ class _CityCardState extends State<CityCard> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: () => _addToFavorite(widget.city),
-                      icon: widget.isFavorite
+                  child: GestureDetector(
+                    onTap: () => _addToFavorite(widget.city),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: widget.isFavorite
                           ? const Icon(Icons.favorite, color: Colors.red)
                           : const Icon(Icons.favorite_border,
                               color: Colors.grey),

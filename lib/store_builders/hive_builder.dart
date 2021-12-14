@@ -11,6 +11,7 @@ class HiveBuilder {
     await Hive.initFlutter();
     Hive.registerAdapter(CityHiveModelAdapter());
     Hive.registerAdapter(FilterHiveModelAdapter());
+    Hive.registerAdapter(CoordsHiveModelAdapter());
     return HiveBuilder._(
       await Hive.openBox('cities'),
       await Hive.openBox('filters'),
