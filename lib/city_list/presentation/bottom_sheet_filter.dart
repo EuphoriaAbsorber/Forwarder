@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
+import 'city_list_page.dart';
 
 class BottomSheetFilter extends StatefulWidget {
   final Filter initFilter;
@@ -154,11 +155,20 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                       widget.onFilterChanged(filter);
                     },
                   ),
+                  ElevatedButton(
+                    child: const Material(
+                        color: Colors.transparent, child: Text('Test')),
+                    onPressed: () => Navigator.pushNamed(
+                        context,  '/questions'
+                    )
+                  )
                 ],
               ),
             )
           ],
+
         ),
+
       ),
     );
 }
