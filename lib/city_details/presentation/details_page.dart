@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
+import '../../di.dart';
 import '../../map/presentation/map_info.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class _DetailsPageState extends State<DetailsPage> {
   late bool isFavorite;
   final _mapKey = GlobalKey();
   final _appBarKey = GlobalKey();
+
+  final _cityWorker = Dependencies.instance.cityWorker;
 
   @override
   void didChangeDependencies() {
@@ -74,7 +77,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 actions: [
                   IconButton(
                     splashRadius: 24.0,
-                    onPressed: () {},
+                    onPressed: () => _addToFavorite(city),
                     icon: isFavorite
                         ? const Icon(
                       Icons.favorite,
@@ -92,7 +95,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ],
             physics: const BouncingScrollPhysics(),
             body: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Padding(
@@ -107,18 +110,22 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                   Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      city.description,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+
+                      ),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: MapInfo(
                       key: _mapKey,
                       lat: city.coords.lat,
                       lng: city.coords.lng,
-                    ),
-                  ),
-                  Text(
-                    city.description,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 24.0,
                     ),
                   ),
                 ],
@@ -127,4 +134,17 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
         ),
       );
+
+  void _addToFavorite(City item) {
+    if (isFavorite) {
+      _cityWorker.removeFromFavorites(item);
+      isFavorite = false;
+      //_showSnack('Удалено из избраного');
+    } else {
+      _cityWorker.addToFavorites(item);
+      isFavorite = true;
+      //_showSnack('Добавлено в избранные');
+    }
+    setState(() {});
+  }
 }

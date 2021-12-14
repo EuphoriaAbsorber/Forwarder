@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
-import '../../di.dart';
-
 class CityCard extends StatefulWidget {
   final City city;
   bool isFavorite;
@@ -19,7 +17,6 @@ class CityCard extends StatefulWidget {
 }
 
 class _CityCardState extends State<CityCard> {
-  final _cityWorker = Dependencies.instance.cityWorker;
 
   @override
   Widget build(BuildContext context) => Hero(
@@ -109,15 +106,11 @@ class _CityCardState extends State<CityCard> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () => _addToFavorite(widget.city),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: widget.isFavorite
-                          ? const Icon(Icons.favorite, color: Colors.red)
-                          : const Icon(Icons.favorite_border,
-                              color: Colors.grey),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: widget.isFavorite
+                        ? const Icon(Icons.favorite, color: Colors.red)
+                        : const Icon(Icons.favorite_border, color: Colors.grey),
                   ),
                 ),
               ],
@@ -125,19 +118,6 @@ class _CityCardState extends State<CityCard> {
           ),
         ),
       );
-
-  void _addToFavorite(City item) {
-    if (widget.isFavorite) {
-      _cityWorker.removeFromFavorites(item);
-      widget.isFavorite = false;
-      //_showSnack('Удалено из избраного');
-    } else {
-      _cityWorker.addToFavorites(item);
-      widget.isFavorite = true;
-      //_showSnack('Добавлено в избранные');
-    }
-    setState(() {});
-  }
 
   void _showSnack(String text) => ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()

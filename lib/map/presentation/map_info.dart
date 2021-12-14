@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,11 +15,13 @@ class MapInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-      height: 180,
+      height: 240,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: GoogleMap(
             mapType: MapType.hybrid,
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
+            ..add( Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer())),
             initialCameraPosition: CameraPosition(
             target: LatLng(
               lat,
@@ -26,10 +30,10 @@ class MapInfo extends StatelessWidget {
             zoom: 12,
           ),
           myLocationButtonEnabled: false,
-          rotateGesturesEnabled: false,
-          scrollGesturesEnabled: false,
-          zoomGesturesEnabled: false,
-          tiltGesturesEnabled: false,
+          // rotateGesturesEnabled: false,
+          // scrollGesturesEnabled: false,
+          // zoomGesturesEnabled: false,
+          // tiltGesturesEnabled: false,
         ),
       ),
     );
