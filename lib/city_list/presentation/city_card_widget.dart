@@ -55,23 +55,23 @@ class _CityCardState extends State<CityCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Material(
                             color: Colors.transparent,
-                            child: Text(
-                              widget.city.name,
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                overflow: TextOverflow.ellipsis,
+                            child: FittedBox(
+                              child: Text(
+                                widget.city.name,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: FittedBox(
-                            alignment: Alignment.centerRight,
                             child: Row(
                               children: [
                                 if (widget.city.filter.price == 2)

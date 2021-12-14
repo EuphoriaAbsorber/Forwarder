@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../base/city.dart';
+import 'coords_network_model.dart';
 import 'filter_network_model.dart';
 
 part 'city_network_model.g.dart';
@@ -16,7 +17,7 @@ class CityNetworkModel {
   @JsonKey(name: 'country')
   final String country;
   @JsonKey(name: 'coords')
-  final String coords;
+  final CoordsNetworkModel coords;
   @JsonKey(name: 'description')
   final String description;
   @JsonKey(name: 'filters')
@@ -42,7 +43,7 @@ class CityNetworkModel {
         name: name,
         imgSrc: imgSrc,
         country: country,
-        coords: coords,
+        coords: coords.toCoords(),
         description: description,
         filter: filter.toFilter(),
       );

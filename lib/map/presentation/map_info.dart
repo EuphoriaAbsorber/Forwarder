@@ -13,7 +13,7 @@ class MapInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-      height: 240,
+      height: 180,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: GoogleMap(
@@ -23,9 +23,13 @@ class MapInfo extends StatelessWidget {
               lat,
               lng,
             ),
-            zoom: 11,
+            zoom: 12,
           ),
           myLocationButtonEnabled: false,
+          rotateGesturesEnabled: false,
+          scrollGesturesEnabled: false,
+          zoomGesturesEnabled: false,
+          tiltGesturesEnabled: false,
         ),
       ),
     );

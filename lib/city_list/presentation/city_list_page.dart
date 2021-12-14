@@ -19,7 +19,6 @@ class _CityListPageState extends State<CityListPage> {
   final _cityWorker = Dependencies.instance.cityWorker;
   late Future<Map<City, bool>> _cityItemsFuture = _cityWorker.getLatest();
 
-  final GlobalKey<ScaffoldState> _homeKey = GlobalKey();
   final _appBarKey = GlobalKey();
 
   Filter filter = Filter(
@@ -51,7 +50,6 @@ class _CityListPageState extends State<CityListPage> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          key: _homeKey,
           body: NestedScrollView(
             physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
