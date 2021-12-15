@@ -12,7 +12,8 @@ CityNetworkModel _$CityNetworkModelFromJson(Map<String, dynamic> json) =>
       name: json['title'] as String,
       imgSrc: json['image_url'] as String,
       country: json['country'] as String,
-      coords: json['coords'] as String,
+      coords:
+          CoordsNetworkModel.fromJson(json['coords'] as Map<String, dynamic>),
       description: json['description'] as String,
       filter:
           FilterNetworkModel.fromJson(json['filters'] as Map<String, dynamic>),

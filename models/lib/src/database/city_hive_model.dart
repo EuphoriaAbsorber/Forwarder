@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
 import '../base/city.dart';
+import 'coords_hive_model.dart';
 import 'filter_hive_model.dart';
 
 part 'city_hive_model.g.dart';
@@ -18,7 +19,7 @@ class CityHiveModel extends HiveObject {
   @HiveField(4)
   final String imgSrc;
   @HiveField(5)
-  final String coords;
+  final CoordsHiveModel coords;
   @HiveField(6)
   final FilterHiveModel filter;
 
@@ -37,17 +38,17 @@ class CityHiveModel extends HiveObject {
         name = city.name,
         imgSrc = city.imgSrc,
         country = city.country,
-        coords = city.coords,
+        coords = CoordsHiveModel.fromCoords(city.coords),
         description = city.description,
         filter = FilterHiveModel.fromFilter(city.filter);
 
 
-  City toCityItem() => City(
+  City toCity() => City(
         id: id,
         name: name,
         imgSrc: imgSrc,
         country: country,
-        coords: coords,
+        coords: coords.toCoords(),
         description: description,
         filter: filter.toFilter(),
       );
