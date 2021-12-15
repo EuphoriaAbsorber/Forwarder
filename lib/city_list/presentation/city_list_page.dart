@@ -16,8 +16,7 @@ class CityListPage extends StatefulWidget {
 class _CityListPageState extends State<CityListPage> {
   late final TextEditingController _textController;
 
-  final _cityWorker = Dependencies.instance.cityManager;
-  late Future<Map<City, bool>> _cityItemsFuture = _cityWorker.getLatest();
+  final _cityManager = Dependencies.instance.cityManager;
 
   final _appBarKey = GlobalKey();
 
@@ -34,6 +33,7 @@ class _CityListPageState extends State<CityListPage> {
   @override
   void initState() {
     super.initState();
+    _cityManager.fetchCities();
     _textController = TextEditingController();
     _textController.addListener(() {
       setState(() {});
@@ -54,7 +54,7 @@ class _CityListPageState extends State<CityListPage> {
             physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
               SliverAppBar(
-                key: _appBarKey,
+                // key: _appBarKey,
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
                 elevation: 0.0,
@@ -67,20 +67,21 @@ class _CityListPageState extends State<CityListPage> {
                       scrollPhysics: const BouncingScrollPhysics(),
                       cursorColor: Colors.deepOrange,
                       textAlignVertical: TextAlignVertical.center,
-                      style: const TextStyle(color: Colors.black, fontSize: 18.0),
+                      style:
+                          const TextStyle(color: Colors.black, fontSize: 18.0),
                       decoration: InputDecoration(
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                        prefixIcon:
-                            const Icon(Icons.search, color: Colors.black54),
-                        suffixIcon: IconButton(
-                          splashRadius: 16.0,
-                          icon: const Icon(Icons.clear, color: Colors.black54),
-                          onPressed: () => _textController.text = '',
-                        ),
-                        hintText: 'Найди свое...',
-                        border: InputBorder.none
-                      ),
+                          fillColor: Colors.grey[300],
+                          filled: true,
+                          prefixIcon:
+                              const Icon(Icons.search, color: Colors.black54),
+                          suffixIcon: IconButton(
+                            splashRadius: 16.0,
+                            icon:
+                                const Icon(Icons.clear, color: Colors.black54),
+                            onPressed: () => _textController.text = '',
+                          ),
+                          hintText: 'Найди свое...',
+                          border: InputBorder.none),
                     ),
                   ),
                 ),
@@ -95,21 +96,22 @@ class _CityListPageState extends State<CityListPage> {
                     ),
                     onPressed: () {
                       showModalBottomSheet<void>(
-                          // barrierColor: Colors.bla.withOpacity(0.1),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(32.0)),
-                          ),
-                          context: context,
-                          builder: (context) => BottomSheetFilter(
-                            initFilter: filter,
-                            onFilterChanged: (changes) {
-                              setState(() {
-                                filter = changes;
-                              });
-                            },
-                          ),
-                      ).whenComplete(() => print("Closed!")); //ToDo: Применять поиск когда закрывается!
+                        // barrierColor: Colors.bla.withOpacity(0.1),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(32.0)),
+                        ),
+                        context: context,
+                        builder: (context) => BottomSheetFilter(
+                          initFilter: filter,
+                          onFilterChanged: (changes) {
+                            setState(() {
+                              filter = changes;
+                            });
+                          },
+                        ),
+                      ).whenComplete(() => print(
+                          "Closed!")); //ToDo: Применять поиск когда закрывается!
                     },
                   )
                 ],
@@ -117,48 +119,50 @@ class _CityListPageState extends State<CityListPage> {
               ),
             ],
             body: RefreshIndicator(
-              onRefresh: () async {
-                _cityItemsFuture = _cityWorker.getLatest();
-                await _cityItemsFuture;
-                setState(() {});
-              },
-              child: FutureBuilder<Map<City, bool>>(
-                future: _cityItemsFuture,
+              onRefresh: () => _cityManager.fetchCities(),
+              child: StreamBuilder<Map<City, bool>>(
+                stream: _cityManager.stream,
                 builder: (context, snapshot) {
+                  print('futureBuilder ${snapshot.hasData}');
                   if (snapshot.hasData) {
                     final data = snapshot.requireData;
                     final cities = data.keys
-                        .where((element) => _textController.text
-                            .toLowerCase()
-                            .isSubsequence(element.name.toLowerCase()) && check(filter, element.filter)).toList();
+                        .where((element) =>
+                            _textController.text
+                                .toLowerCase()
+                                .isSubsequence(element.name.toLowerCase()) &&
+                            check(filter, element.filter))
+                        .toList();
 
                     return GridView.builder(
-                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 32.0),
-                        physics: const BouncingScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16.0,
-                          mainAxisSpacing: 16.0,
-                          childAspectRatio: 0.75,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 32.0),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: cities.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        child: CityCard(
+                            city: cities[index],
+                            isFavorite: data[cities[index]] ?? false),
+                        onTap: () => Navigator.push(
+                          context,
+                          FadeRoute(
+                            page: const DetailsPage(),
+                            settings: RouteSettings(
+                              arguments: {
+                                'city': cities[index],
+                                'isFavorite': data[cities[index]] ?? false,
+                              },
+                            ),
+                          ),
                         ),
-                        itemCount: cities.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                              child: CityCard(
-                                  city: cities[index],
-                                  isFavorite: data[cities[index]] ?? false),
-                              onTap: () => Navigator.push(
-                                  context,
-                                  FadeRoute(
-                                      page: const DetailsPage(),
-                                      settings: RouteSettings(
-                                        arguments: {
-                                          'city': cities[index],
-                                          'isFavorite':
-                                              data[cities[index]] ?? false,
-                                        },
-                                      ))),
-                            ));
+                      ),
+                    );
                   } else if (snapshot.hasError) {
                     return const Center(
                       child: Icon(Icons.error),
@@ -173,16 +177,15 @@ class _CityListPageState extends State<CityListPage> {
         ),
       );
 
-bool check(Filter key, Filter value) =>
-    value.price >= key.price &&
-        value.sea >= key.sea &&
-        value.mountains >= key.mountains &&
-        value.culture >= key.culture &&
-        value.architecture >= key.architecture &&
-        value.shopping >= key.shopping &&
-        value.entertainment >= key.entertainment &&
-        value.nature >= key.nature;
-
+  bool check(Filter key, Filter value) =>
+      value.price >= key.price &&
+      value.sea >= key.sea &&
+      value.mountains >= key.mountains &&
+      value.culture >= key.culture &&
+      value.architecture >= key.architecture &&
+      value.shopping >= key.shopping &&
+      value.entertainment >= key.entertainment &&
+      value.nature >= key.nature;
 }
 
 class FadeRoute extends PageRouteBuilder {
@@ -200,7 +203,8 @@ class FadeRoute extends PageRouteBuilder {
               animation,
               secondaryAnimation,
               child,
-            ) => child);
+            ) =>
+                child);
 }
 
 extension StringExtension on String {
@@ -223,7 +227,3 @@ extension StringExtension on String {
     return false;
   }
 }
-
-
-
-

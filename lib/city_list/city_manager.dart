@@ -1,17 +1,32 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:models/models.dart';
 
 import '../utils/network_info.dart';
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
 
-class CityManager extends ChangeNotifier {
+class Pair<T,R> {
+  final T first;
+  final R second;
+
+  const Pair({required this.first, required this.second});
+}
+
+class CityManager extends BaseManager<Map<City, bool>> {
   final CityDao _cityDao;
   final CityApi _cityApi;
+
+  // final _streamController = StreamController<bool>.broadcast();
 
   final _networkInfo = NetworkInfo();
 
   CityManager(this._cityDao, this._cityApi);
+
+  Future<void> fetchCities() async {
+    final data = await getLatest();
+    super.addData(data);
+  }
 
   Future<void> addToFavorites(City item) => _cityDao.save(item);
 
@@ -29,4 +44,14 @@ class CityManager extends ChangeNotifier {
       return Map.fromEntries(favorites.map((e) => MapEntry(e, true)));
     }
   }
+}
+
+abstract class BaseManager<T> {
+  final _streamController = StreamController<T>.broadcast();
+
+  void addData(T data) {
+    _streamController.add(data);
+  }
+
+  Stream<T> get stream => _streamController.stream;
 }

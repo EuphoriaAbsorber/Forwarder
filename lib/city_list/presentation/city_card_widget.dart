@@ -17,106 +17,114 @@ class CityCard extends StatefulWidget {
 }
 
 class _CityCardState extends State<CityCard> {
-
   @override
-  Widget build(BuildContext context) => Hero(
-        tag: widget.city.id,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-            boxShadow: [BoxShadow(blurRadius: 6.0, color: Colors.black.withOpacity(0.5), offset: Offset(0.0, 3.0))],
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: CachedNetworkImage(
-                    fit: BoxFit.fitHeight,
-                    imageUrl: widget.city.imgSrc,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 90,
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: FittedBox(
-                              child: Text(
-                                widget.city.name,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: FittedBox(
-                            child: Row(
-                              children: [
-                                if (widget.city.filter.price == 2)
-                                  const Icon(Icons.paid,
-                                      color: Colors.yellow, size: 32.0),
-                                if (widget.city.filter.sea == 2)
-                                  const Icon(Icons.pool,
-                                      color: Colors.blue, size: 32.0),
-                                if (widget.city.filter.mountains == 2)
-                                  const Icon(Icons.landscape,
-                                      color: Colors.brown, size: 32.0),
-                                if (widget.city.filter.culture == 2)
-                                  const Icon(Icons.palette,
-                                      color: Colors.red, size: 32.0),
-                                if (widget.city.filter.nature == 2)
-                                  const Icon(Icons.eco,
-                                      color: Colors.lightGreenAccent,
-                                      size: 32.0),
-                                if (widget.city.filter.architecture == 2)
-                                  const Icon(Icons.account_balance_rounded,
-                                      color: Colors.grey, size: 32.0),
-                                if (widget.city.filter.shopping == 2)
-                                  const Icon(Icons.shopping_bag,
-                                      color: Colors.orange, size: 32.0),
-                                if (widget.city.filter.entertainment == 2)
-                                  const Icon(Icons.attractions,
-                                      color: Colors.deepPurple, size: 32.0),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: widget.isFavorite
-                        ? const Icon(Icons.favorite, color: Colors.red)
-                        : const Icon(Icons.favorite_border, color: Colors.grey),
-                  ),
-                ),
-              ],
-            ),
-          ),
+  Widget build(BuildContext context) =>
+      // Hero(
+      //   tag: widget.city.id,
+      //   child:
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: 6.0,
+                color: Colors.black.withOpacity(0.5),
+                offset: const Offset(0.0, 3.0))
+          ],
         ),
+        clipBehavior: Clip.antiAlias,
+        child:
+            // ClipRRect(
+            //   borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+            //   child:
+            Stack(
+          children: [
+            Positioned.fill(
+              // child: Container(
+              //   color: Colors.red,
+              // ),
+              child: CachedNetworkImage(
+                fit: BoxFit.fitHeight,
+                imageUrl: widget.city.imgSrc,
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 90,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Material(
+                        color: Colors.transparent,
+                        child: FittedBox(
+                          child: Text(
+                            widget.city.name,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      FittedBox(
+                        child: Row(
+                          children: [
+                            if (widget.city.filter.price == 2)
+                              const Icon(Icons.paid,
+                                  color: Colors.yellow, size: 32.0),
+                            if (widget.city.filter.sea == 2)
+                              const Icon(Icons.pool,
+                                  color: Colors.blue, size: 32.0),
+                            if (widget.city.filter.mountains == 2)
+                              const Icon(Icons.landscape,
+                                  color: Colors.brown, size: 32.0),
+                            if (widget.city.filter.culture == 2)
+                              const Icon(Icons.palette,
+                                  color: Colors.red, size: 32.0),
+                            if (widget.city.filter.nature == 2)
+                              const Icon(Icons.eco,
+                                  color: Colors.lightGreenAccent, size: 32.0),
+                            if (widget.city.filter.architecture == 2)
+                              const Icon(Icons.account_balance_rounded,
+                                  color: Colors.grey, size: 32.0),
+                            if (widget.city.filter.shopping == 2)
+                              const Icon(Icons.shopping_bag,
+                                  color: Colors.orange, size: 32.0),
+                            if (widget.city.filter.entertainment == 2)
+                              const Icon(Icons.attractions,
+                                  color: Colors.deepPurple, size: 32.0),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: widget.isFavorite
+                    ? const Icon(Icons.favorite, color: Colors.red)
+                    : const Icon(Icons.favorite_border, color: Colors.grey),
+              ),
+            ),
+          ],
+          // ),
+        ),
+        //  ),
       );
 
   void _showSnack(String text) => ScaffoldMessenger.of(context)
