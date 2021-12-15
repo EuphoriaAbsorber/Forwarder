@@ -24,13 +24,14 @@ class CityHiveModelAdapter extends TypeAdapter<CityHiveModel> {
       coords: fields[5] as CoordsHiveModel,
       description: fields[3] as String,
       filter: fields[6] as FilterHiveModel,
+      airport: fields[7] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, CityHiveModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class CityHiveModelAdapter extends TypeAdapter<CityHiveModel> {
       ..writeByte(5)
       ..write(obj.coords)
       ..writeByte(6)
-      ..write(obj.filter);
+      ..write(obj.filter)
+      ..writeByte(7)
+      ..write(obj.airport);
   }
 
   @override

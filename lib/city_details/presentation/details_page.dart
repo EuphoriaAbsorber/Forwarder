@@ -1,8 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
+import 'package:weather/weather.dart';
 
-import '../../map/presentation/map_info.dart';
+import '../../di.dart';
+import '../detailed_page/covid/presentation/covid_widget.dart';
+import '../detailed_page/info_widget.dart';
+import '../detailed_page/map/presentation/map_info.dart';
+import '../detailed_page/tickets/presentation/tickets_widget.dart';
+import '../detailed_page/weather/presentation/weather_info_list.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -16,6 +22,9 @@ class _DetailsPageState extends State<DetailsPage> {
   late bool isFavorite;
   final _mapKey = GlobalKey();
   final _appBarKey = GlobalKey();
+
+  final _cityManager = Dependencies.instance.cityManager;
+  final _weatherManager = Dependencies.instance.weatherManager;
 
   @override
   void didChangeDependencies() {
@@ -37,6 +46,7 @@ class _DetailsPageState extends State<DetailsPage> {
             nature: 0,
           ),
           country: 'undefined',
+          airport: 'undefined',
           coords: Coords(lat: 0.0, lng: 0.0),
           description: 'undefined',
         );
@@ -49,8 +59,7 @@ class _DetailsPageState extends State<DetailsPage> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) =>
-            [
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
                 key: _appBarKey,
                 pinned: true,
@@ -74,16 +83,16 @@ class _DetailsPageState extends State<DetailsPage> {
                 actions: [
                   IconButton(
                     splashRadius: 24.0,
-                    onPressed: () {},
+                    onPressed: () => _addToFavorite(city),
                     icon: isFavorite
                         ? const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    )
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
                         : const Icon(
-                      Icons.favorite_border,
-                      color: Colors.grey,
-                    ),
+                            Icons.favorite_border,
+                            color: Colors.grey,
+                          ),
                   ),
                 ],
                 backgroundColor: Colors.white,
@@ -92,7 +101,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ],
             physics: const BouncingScrollPhysics(),
             body: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Padding(
@@ -102,29 +111,63 @@ class _DetailsPageState extends State<DetailsPage> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fitWidth,
                         imageUrl: city.imgSrc,
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      city.description,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: MapInfo(
                       key: _mapKey,
                       lat: city.coords.lat,
                       lng: city.coords.lng,
                     ),
                   ),
-                  Text(
-                    city.description,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                    ),
+                  FutureBuilder<List<Weather>>(
+                    future: _weatherManager.getForecast(
+                        city.coords.lat, city.coords.lng),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return InfoWidget(
+                          title: 'Погода',
+                          child: WeatherInfoList(
+                              weatherList: snapshot.data ?? []),
+                        );
+                      } else {
+                        return const Material();
+                      }
+                    },
                   ),
+                   InfoWidget(title: 'Билеты', child: TicketsWidget(city.name, city.airport)),
+                   const InfoWidget(title: 'Covid-19', child: CovidWidget()),
                 ],
               ),
             ),
           ),
         ),
       );
+
+  void _addToFavorite(City item) {
+    if (isFavorite) {
+      _cityManager.removeFromFavorites(item);
+      isFavorite = false;
+      //_showSnack('Удалено из избраного');
+    } else {
+      _cityManager.addToFavorites(item);
+      isFavorite = true;
+      //_showSnack('Добавлено в избранные');
+    }
+    setState(() {});
+  }
 }

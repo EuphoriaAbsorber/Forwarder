@@ -22,6 +22,8 @@ class CityHiveModel extends HiveObject {
   final CoordsHiveModel coords;
   @HiveField(6)
   final FilterHiveModel filter;
+  @HiveField(7)
+  final String airport;
 
   CityHiveModel({
     required this.id,
@@ -31,6 +33,7 @@ class CityHiveModel extends HiveObject {
     required this.coords,
     required this.description,
     required this.filter,
+    required this.airport,
   });
 
   CityHiveModel.fromCity(City city)
@@ -40,8 +43,8 @@ class CityHiveModel extends HiveObject {
         country = city.country,
         coords = CoordsHiveModel.fromCoords(city.coords),
         description = city.description,
-        filter = FilterHiveModel.fromFilter(city.filter);
-
+        filter = FilterHiveModel.fromFilter(city.filter),
+        airport = city.airport;
 
   City toCity() => City(
         id: id,
@@ -51,5 +54,6 @@ class CityHiveModel extends HiveObject {
         coords: coords.toCoords(),
         description: description,
         filter: filter.toFilter(),
+        airport: airport,
       );
 }

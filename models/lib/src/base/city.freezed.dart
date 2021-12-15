@@ -22,6 +22,7 @@ class _$CityTearOff {
       required String name,
       required String imgSrc,
       required String country,
+      required String airport,
       required Coords coords,
       required String description,
       required Filter filter}) {
@@ -30,6 +31,7 @@ class _$CityTearOff {
       name: name,
       imgSrc: imgSrc,
       country: country,
+      airport: airport,
       coords: coords,
       description: description,
       filter: filter,
@@ -46,6 +48,7 @@ mixin _$City {
   String get name => throw _privateConstructorUsedError;
   String get imgSrc => throw _privateConstructorUsedError;
   String get country => throw _privateConstructorUsedError;
+  String get airport => throw _privateConstructorUsedError;
   Coords get coords => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   Filter get filter => throw _privateConstructorUsedError;
@@ -63,6 +66,7 @@ abstract class $CityCopyWith<$Res> {
       String name,
       String imgSrc,
       String country,
+      String airport,
       Coords coords,
       String description,
       Filter filter});
@@ -85,6 +89,7 @@ class _$CityCopyWithImpl<$Res> implements $CityCopyWith<$Res> {
     Object? name = freezed,
     Object? imgSrc = freezed,
     Object? country = freezed,
+    Object? airport = freezed,
     Object? coords = freezed,
     Object? description = freezed,
     Object? filter = freezed,
@@ -105,6 +110,10 @@ class _$CityCopyWithImpl<$Res> implements $CityCopyWith<$Res> {
       country: country == freezed
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      airport: airport == freezed
+          ? _value.airport
+          : airport // ignore: cast_nullable_to_non_nullable
               as String,
       coords: coords == freezed
           ? _value.coords
@@ -146,6 +155,7 @@ abstract class _$CityCopyWith<$Res> implements $CityCopyWith<$Res> {
       String name,
       String imgSrc,
       String country,
+      String airport,
       Coords coords,
       String description,
       Filter filter});
@@ -171,6 +181,7 @@ class __$CityCopyWithImpl<$Res> extends _$CityCopyWithImpl<$Res>
     Object? name = freezed,
     Object? imgSrc = freezed,
     Object? country = freezed,
+    Object? airport = freezed,
     Object? coords = freezed,
     Object? description = freezed,
     Object? filter = freezed,
@@ -191,6 +202,10 @@ class __$CityCopyWithImpl<$Res> extends _$CityCopyWithImpl<$Res>
       country: country == freezed
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
+              as String,
+      airport: airport == freezed
+          ? _value.airport
+          : airport // ignore: cast_nullable_to_non_nullable
               as String,
       coords: coords == freezed
           ? _value.coords
@@ -216,6 +231,7 @@ class _$_City implements _City {
       required this.name,
       required this.imgSrc,
       required this.country,
+      required this.airport,
       required this.coords,
       required this.description,
       required this.filter});
@@ -229,6 +245,8 @@ class _$_City implements _City {
   @override
   final String country;
   @override
+  final String airport;
+  @override
   final Coords coords;
   @override
   final String description;
@@ -237,7 +255,7 @@ class _$_City implements _City {
 
   @override
   String toString() {
-    return 'City(id: $id, name: $name, imgSrc: $imgSrc, country: $country, coords: $coords, description: $description, filter: $filter)';
+    return 'City(id: $id, name: $name, imgSrc: $imgSrc, country: $country, airport: $airport, coords: $coords, description: $description, filter: $filter)';
   }
 
   @override
@@ -249,6 +267,7 @@ class _$_City implements _City {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.imgSrc, imgSrc) &&
             const DeepCollectionEquality().equals(other.country, country) &&
+            const DeepCollectionEquality().equals(other.airport, airport) &&
             const DeepCollectionEquality().equals(other.coords, coords) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
@@ -262,6 +281,7 @@ class _$_City implements _City {
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(imgSrc),
       const DeepCollectionEquality().hash(country),
+      const DeepCollectionEquality().hash(airport),
       const DeepCollectionEquality().hash(coords),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(filter));
@@ -278,6 +298,7 @@ abstract class _City implements City {
       required String name,
       required String imgSrc,
       required String country,
+      required String airport,
       required Coords coords,
       required String description,
       required Filter filter}) = _$_City;
@@ -290,6 +311,8 @@ abstract class _City implements City {
   String get imgSrc;
   @override
   String get country;
+  @override
+  String get airport;
   @override
   Coords get coords;
   @override

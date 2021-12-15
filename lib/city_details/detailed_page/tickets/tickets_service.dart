@@ -2,9 +2,8 @@ import 'package:dio/dio.dart';
 
 import 'models/ticket_price_model.dart';
 
-
 class TicketsService {
-  Future<TicketPriceModel?> fetchTickets() async {
+  Future<TicketPriceModel?> fetchTickets(String? cityAirport) async {
     try {
       final options = BaseOptions(queryParameters: {
         'token': 'cd472db01937d97c5a3ba5a12ca47ab0',
@@ -14,19 +13,20 @@ class TicketsService {
       final client = Dio(options);
       const url =
           'http://api.travelpayouts.com/v2/prices/latest?period_type=year&page=1&limit=30&show_to_affiliates=true&sorting=price&trip_class=0';
-      final response = await client.get(url, queryParameters: {
-        'origin': 'MOW',
-        'destination': 'LED',
+      final response =
+          await client.get<Map<String, dynamic>>(url, queryParameters: {
+        'origin': 'SVO',
+        'destination': cityAirport,
         'currency': 'RUB',
       });
-      final ticketPrice = TicketPriceModel.fromJson(response.data);//wtf??
-      print(ticketPrice.data?[0].price);
-      return ticketPrice;
+      final data = response.data;
+      if (data != null) {
+        final ticketPrice = TicketPriceModel.fromJson(data);
+        print(ticketPrice.data?[0].price);
+        return ticketPrice;
+      }
     } on DioError catch (e) {
       print(e.toString());
     }
   }
-}
-
-class TicketPrice {
 }

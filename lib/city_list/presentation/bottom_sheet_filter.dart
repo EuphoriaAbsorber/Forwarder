@@ -39,7 +39,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'Filter',
+                'Фильтр',
                 style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
               ),
             ),
@@ -51,7 +51,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 children: [
                   ChoiceChip(
                     label: const Text(
-                      'price',
+                      'дорого',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.price != 0,
@@ -64,7 +64,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'sea',
+                      'море',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.sea != 0,
@@ -77,7 +77,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'mountains',
+                      'горы',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.mountains != 0,
@@ -90,7 +90,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'culture',
+                      'культура',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.culture != 0,
@@ -103,7 +103,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'nature',
+                      'природа',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.nature != 0,
@@ -116,7 +116,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'architecture',
+                      'архитектура',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.architecture != 0,
@@ -130,7 +130,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'shopping',
+                      'шопинг',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.shopping != 0,
@@ -143,7 +143,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   ),
                   ChoiceChip(
                     label: const Text(
-                      'entertainment',
+                      'развлечения',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.entertainment != 0,
