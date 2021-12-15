@@ -22,6 +22,8 @@ class CityNetworkModel {
   final String description;
   @JsonKey(name: 'filters')
   final FilterNetworkModel filter;
+  @JsonKey(name: 'airport')
+  final String airport;
 
   const CityNetworkModel({
     required this.id,
@@ -31,6 +33,7 @@ class CityNetworkModel {
     required this.coords,
     required this.description,
     required this.filter,
+    required this.airport,
   });
 
   factory CityNetworkModel.fromJson(Map<String, dynamic> json) =>
@@ -46,5 +49,6 @@ class CityNetworkModel {
         coords: coords.toCoords(),
         description: description,
         filter: filter.toFilter(),
+        airport: airport,
       );
 }

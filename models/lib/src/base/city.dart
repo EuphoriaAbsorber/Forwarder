@@ -12,6 +12,7 @@ class City  with _$City {
     required String name,
     required String imgSrc,
     required String country,
+    required String airport,
     required Coords coords,
     required String description,
     required Filter filter,

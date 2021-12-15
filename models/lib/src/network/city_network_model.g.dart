@@ -17,6 +17,7 @@ CityNetworkModel _$CityNetworkModelFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String,
       filter:
           FilterNetworkModel.fromJson(json['filters'] as Map<String, dynamic>),
+      airport: json['airport'] as String,
     );
 
 Map<String, dynamic> _$CityNetworkModelToJson(CityNetworkModel instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$CityNetworkModelToJson(CityNetworkModel instance) =>
       'coords': instance.coords,
       'description': instance.description,
       'filters': instance.filter,
+      'airport': instance.airport,
     };
