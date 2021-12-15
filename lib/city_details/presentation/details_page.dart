@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
+import 'package:weather/weather.dart';
 
 import '../../di.dart';
 import '../../map/presentation/map_info.dart';
-import '../../weather/presentation/weather_info.dart';
+import '../../weather/presentation/weather_info_list.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -19,7 +20,8 @@ class _DetailsPageState extends State<DetailsPage> {
   final _mapKey = GlobalKey();
   final _appBarKey = GlobalKey();
 
-  final _cityWorker = Dependencies.instance.cityWorker;
+  final _cityManager = Dependencies.instance.cityManager;
+  final _weatherManager = Dependencies.instance.weatherManager;
 
   @override
   void didChangeDependencies() {
@@ -130,54 +132,19 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [BoxShadow(blurRadius: 2.0)],
-                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                      ),
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text('Weather', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: WeatherInfo(),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: WeatherInfo(),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: WeatherInfo(),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: WeatherInfo(),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: WeatherInfo(),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: WeatherInfo(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: FutureBuilder<List<Weather>>(
+                      future: _weatherManager.getForecast(
+                          city.coords.lat, city.coords.lng),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return WeatherInfoList(
+                              weatherList: snapshot.data ?? []);
+                        } else {
+                          return const Material();
+                        }
+                      },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -187,11 +154,11 @@ class _DetailsPageState extends State<DetailsPage> {
 
   void _addToFavorite(City item) {
     if (isFavorite) {
-      _cityWorker.removeFromFavorites(item);
+      _cityManager.removeFromFavorites(item);
       isFavorite = false;
       //_showSnack('Удалено из избраного');
     } else {
-      _cityWorker.addToFavorites(item);
+      _cityManager.addToFavorites(item);
       isFavorite = true;
       //_showSnack('Добавлено в избранные');
     }

@@ -22,10 +22,10 @@ class _CityCardState extends State<CityCard> {
   Widget build(BuildContext context) => Hero(
         tag: widget.city.id,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.grey,
-            borderRadius: BorderRadius.all(Radius.circular(16.0)),
-            boxShadow: [BoxShadow(blurRadius: 2.0)],
+            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+            boxShadow: [BoxShadow(blurRadius: 6.0, color: Colors.black.withOpacity(0.5), offset: Offset(0.0, 3.0))],
           ),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(16.0)),

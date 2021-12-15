@@ -16,7 +16,7 @@ class CityListPage extends StatefulWidget {
 class _CityListPageState extends State<CityListPage> {
   late final TextEditingController _textController;
 
-  final _cityWorker = Dependencies.instance.cityWorker;
+  final _cityWorker = Dependencies.instance.cityManager;
   late Future<Map<City, bool>> _cityItemsFuture = _cityWorker.getLatest();
 
   final _appBarKey = GlobalKey();
@@ -60,18 +60,17 @@ class _CityListPageState extends State<CityListPage> {
                 elevation: 0.0,
                 title: SizedBox(
                   height: 40.0,
-                  child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                        boxShadow: [BoxShadow(blurRadius: 2.0)],
-                      ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     child: TextField(
                       controller: _textController,
                       scrollPhysics: const BouncingScrollPhysics(),
                       cursorColor: Colors.deepOrange,
+                      textAlignVertical: TextAlignVertical.center,
                       style: const TextStyle(color: Colors.black, fontSize: 18.0),
                       decoration: InputDecoration(
+                        fillColor: Colors.grey[300],
+                        filled: true,
                         prefixIcon:
                             const Icon(Icons.search, color: Colors.black54),
                         suffixIcon: IconButton(
@@ -79,20 +78,8 @@ class _CityListPageState extends State<CityListPage> {
                           icon: const Icon(Icons.clear, color: Colors.black54),
                           onPressed: () => _textController.text = '',
                         ),
-                        contentPadding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
-                        hintText: 'Search your journey...',
-                        hintStyle: const TextStyle(
-                            color: Colors.black38, fontSize: 18.0),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.grey, width: 0.5),
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.deepOrange, width: 2.5),
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
+                        hintText: 'Найди свое...',
+                        border: InputBorder.none
                       ),
                     ),
                   ),
@@ -187,7 +174,7 @@ class _CityListPageState extends State<CityListPage> {
       );
 
 bool check(Filter key, Filter value) =>
-    value.price >= key.price &&
+    value.price <= key.price &&
         value.sea >= key.sea &&
         value.mountains >= key.mountains &&
         value.culture >= key.culture &&
