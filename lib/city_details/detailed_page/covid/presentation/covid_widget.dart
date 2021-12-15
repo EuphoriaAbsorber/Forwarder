@@ -1,3 +1,4 @@
+import 'package:anyway/city_details/detailed_page/covid/models/covid_model.dart';
 import 'package:flutter/material.dart';
 
 import '../services/covid_service.dart';
@@ -15,9 +16,9 @@ class CovidWidget extends StatefulWidget {
 class _CovidWidgetState extends State<CovidWidget> {
   //CityItem city = CityItem(id: \, name: name, imgSrc: imgSrc)// хотим брать сверху из состояния странички города
 
-  Future<void> getNews() async {
+  Future<List<CovidModel>?> getNews() async {
     final service = CovidService();
-    await service.fetchCovidInfo();
+    return service.fetchCovidInfo();
   }
 
   @override

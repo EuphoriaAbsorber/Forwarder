@@ -149,7 +149,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       }
                     },
                   ),
-                   InfoWidget(title: 'Билеты', child: TicketsWidget(city.name, /*city.airport*/ 'AER')),
+                   InfoWidget(title: 'Билеты', child: TicketsWidget(city.name, city.airport)),
                    const InfoWidget(title: 'Covid-19', child: CovidWidget()),
                 ],
               ),
