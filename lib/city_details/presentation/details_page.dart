@@ -46,6 +46,7 @@ class _DetailsPageState extends State<DetailsPage> {
             nature: 0,
           ),
           country: 'undefined',
+          airport: 'undefined',
           coords: Coords(lat: 0.0, lng: 0.0),
           description: 'undefined',
         );
