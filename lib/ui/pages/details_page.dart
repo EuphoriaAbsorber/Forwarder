@@ -5,7 +5,6 @@ import '../../city_details/detailed_page/covid/presentation/covid_widget.dart';
 import '../../city_details/detailed_page/info_widget.dart';
 import '../../city_details/detailed_page/tickets/presentation/tickets_widget.dart';
 import '../../city_details/detailed_page/weather/presentation/weather_widget.dart';
-import '../../detailed_page/tickets/presentation/tickets_widget.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -23,7 +22,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    /*dynamic arguments = ModalRoute.of(context)?.settings.arguments;
+    /*final dynamic arguments = ModalRoute.of(context)?.settings.arguments;
     id = arguments['id'] ?? -1;
     name = arguments['name'] ?? 'undefined';
     imgSrc = arguments['imgSrc'] ?? 'undefined';
