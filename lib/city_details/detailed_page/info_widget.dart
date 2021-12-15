@@ -10,7 +10,7 @@ class InfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(8),
       child: Container(
         //width: double.infinity,
         padding: const EdgeInsets.all(5),

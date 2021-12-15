@@ -14,7 +14,7 @@
 *.ipr
 *.iws
 .idea/
-/lib/city_details/detailed_page/weather/climat_widget
+/lib/city_details/detailed_page/weather_agatha/climat_widget
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line

@@ -16,7 +16,7 @@ class _CovidWidgetState extends State<CovidWidget> {
   //CityItem city = CityItem(id: \, name: name, imgSrc: imgSrc)// хотим брать сверху из состояния странички города
 
   Future<void> getNews() async {
-    CovidService service = CovidService();
+    final service = CovidService();
     await service.fetchCovidInfo();
   }
 
@@ -27,13 +27,11 @@ class _CovidWidgetState extends State<CovidWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       children:[
             NewsCard(),
             NewsCard(),
             NewsCard(),
           ],
     );
-  }
 }

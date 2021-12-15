@@ -4,8 +4,11 @@ import 'package:models/models.dart';
 import 'package:weather/weather.dart';
 
 import '../../di.dart';
-import '../../map/presentation/map_info.dart';
-import '../../weather/presentation/weather_info_list.dart';
+import '../detailed_page/covid/presentation/covid_widget.dart';
+import '../detailed_page/info_widget.dart';
+import '../detailed_page/map/presentation/map_info.dart';
+import '../detailed_page/tickets/presentation/tickets_widget.dart';
+import '../detailed_page/weather/presentation/weather_info_list.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -123,28 +126,30 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: MapInfo(
                       key: _mapKey,
                       lat: city.coords.lat,
                       lng: city.coords.lng,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FutureBuilder<List<Weather>>(
-                      future: _weatherManager.getForecast(
-                          city.coords.lat, city.coords.lng),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return WeatherInfoList(
-                              weatherList: snapshot.data ?? []);
-                        } else {
-                          return const Material();
-                        }
-                      },
-                    ),
+                  FutureBuilder<List<Weather>>(
+                    future: _weatherManager.getForecast(
+                        city.coords.lat, city.coords.lng),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return InfoWidget(
+                          title: 'Погода',
+                          child: WeatherInfoList(
+                              weatherList: snapshot.data ?? []),
+                        );
+                      } else {
+                        return const Material();
+                      }
+                    },
                   ),
+                   InfoWidget(title: 'Билеты', child: TicketsWidget(city.name, /*city.airport*/ 'AER')),
+                   const InfoWidget(title: 'Covid-19', child: CovidWidget()),
                 ],
               ),
             ),

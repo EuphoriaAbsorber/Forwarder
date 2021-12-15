@@ -1,10 +1,10 @@
+import 'city_details/detailed_page/weather/weather_manager.dart';
 import 'city_list/city_manager.dart';
 import 'city_list/services/city_api.dart';
 import 'city_list/services/city_dao.dart';
 import 'store_builders/dio_builder.dart';
 import 'store_builders/hive_builder.dart';
 import 'store_builders/weather_api_builder.dart';
-import 'weather/weather_manager.dart';
 
 class Dependencies {
   final CityManager cityManager;

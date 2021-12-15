@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import '../../../../city.dart';
 import '../models/ticket_price_model.dart';
 import '../tickets_service.dart';
 import 'city_name_card.dart';
 
 class TicketsWidget extends StatefulWidget {
-  const TicketsWidget({Key? key}) : super(key: key);
+  final String endCityName;
+  final String airport;
+  const TicketsWidget(this.endCityName, this.airport, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TicketsWidgetState();
 }
 
 class _TicketsWidgetState extends State<TicketsWidget> {
-  City city = City('Chicago', 'US');
   String startCityName = 'Москва';
-  String endCityName = 'Санкт-Петербург';
-  String? ticketsCost;
 
   Future<TicketPriceModel?> getTickets() async {
     final service = TicketsService();
-    return service.fetchTickets();
+    return service.fetchTickets(widget.airport);
   }
 
   @override
@@ -39,7 +37,7 @@ class _TicketsWidgetState extends State<TicketsWidget> {
                   Icons.arrow_right_alt_rounded,
                   color: Colors.black,
                 ),
-                CityNameCard(cityName: endCityName)
+                CityNameCard(cityName: widget.endCityName)
               ],
             ),
           ),
