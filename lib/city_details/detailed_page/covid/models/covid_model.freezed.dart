@@ -22,16 +22,10 @@ class _$CovidModelTearOff {
   const _$CovidModelTearOff();
 
   _CovidModel call(
-      {@JsonKey(name: 'Confirmed') int? confirmed,
-      @JsonKey(name: 'Deaths') int? deaths,
-      @JsonKey(name: 'Recovered') int? recovered,
-      @JsonKey(name: 'Active') int? active,
+      {@JsonKey(name: 'Cases') int? confirmed,
       @JsonKey(name: 'Date') String? date}) {
     return _CovidModel(
       confirmed: confirmed,
-      deaths: deaths,
-      recovered: recovered,
-      active: active,
       date: date,
     );
   }
@@ -46,14 +40,8 @@ const $CovidModel = _$CovidModelTearOff();
 
 /// @nodoc
 mixin _$CovidModel {
-  @JsonKey(name: 'Confirmed')
+  @JsonKey(name: 'Cases')
   int? get confirmed => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Deaths')
-  int? get deaths => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Recovered')
-  int? get recovered => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Active')
-  int? get active => throw _privateConstructorUsedError;
   @JsonKey(name: 'Date')
   String? get date => throw _privateConstructorUsedError;
 
@@ -69,10 +57,7 @@ abstract class $CovidModelCopyWith<$Res> {
           CovidModel value, $Res Function(CovidModel) then) =
       _$CovidModelCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'Confirmed') int? confirmed,
-      @JsonKey(name: 'Deaths') int? deaths,
-      @JsonKey(name: 'Recovered') int? recovered,
-      @JsonKey(name: 'Active') int? active,
+      {@JsonKey(name: 'Cases') int? confirmed,
       @JsonKey(name: 'Date') String? date});
 }
 
@@ -87,27 +72,12 @@ class _$CovidModelCopyWithImpl<$Res> implements $CovidModelCopyWith<$Res> {
   @override
   $Res call({
     Object? confirmed = freezed,
-    Object? deaths = freezed,
-    Object? recovered = freezed,
-    Object? active = freezed,
     Object? date = freezed,
   }) {
     return _then(_value.copyWith(
       confirmed: confirmed == freezed
           ? _value.confirmed
           : confirmed // ignore: cast_nullable_to_non_nullable
-              as int?,
-      deaths: deaths == freezed
-          ? _value.deaths
-          : deaths // ignore: cast_nullable_to_non_nullable
-              as int?,
-      recovered: recovered == freezed
-          ? _value.recovered
-          : recovered // ignore: cast_nullable_to_non_nullable
-              as int?,
-      active: active == freezed
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
               as int?,
       date: date == freezed
           ? _value.date
@@ -124,10 +94,7 @@ abstract class _$CovidModelCopyWith<$Res> implements $CovidModelCopyWith<$Res> {
       __$CovidModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'Confirmed') int? confirmed,
-      @JsonKey(name: 'Deaths') int? deaths,
-      @JsonKey(name: 'Recovered') int? recovered,
-      @JsonKey(name: 'Active') int? active,
+      {@JsonKey(name: 'Cases') int? confirmed,
       @JsonKey(name: 'Date') String? date});
 }
 
@@ -144,27 +111,12 @@ class __$CovidModelCopyWithImpl<$Res> extends _$CovidModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? confirmed = freezed,
-    Object? deaths = freezed,
-    Object? recovered = freezed,
-    Object? active = freezed,
     Object? date = freezed,
   }) {
     return _then(_CovidModel(
       confirmed: confirmed == freezed
           ? _value.confirmed
           : confirmed // ignore: cast_nullable_to_non_nullable
-              as int?,
-      deaths: deaths == freezed
-          ? _value.deaths
-          : deaths // ignore: cast_nullable_to_non_nullable
-              as int?,
-      recovered: recovered == freezed
-          ? _value.recovered
-          : recovered // ignore: cast_nullable_to_non_nullable
-              as int?,
-      active: active == freezed
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
               as int?,
       date: date == freezed
           ? _value.date
@@ -178,34 +130,22 @@ class __$CovidModelCopyWithImpl<$Res> extends _$CovidModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CovidModel implements _CovidModel {
   _$_CovidModel(
-      {@JsonKey(name: 'Confirmed') this.confirmed,
-      @JsonKey(name: 'Deaths') this.deaths,
-      @JsonKey(name: 'Recovered') this.recovered,
-      @JsonKey(name: 'Active') this.active,
+      {@JsonKey(name: 'Cases') this.confirmed,
       @JsonKey(name: 'Date') this.date});
 
   factory _$_CovidModel.fromJson(Map<String, dynamic> json) =>
       _$$_CovidModelFromJson(json);
 
   @override
-  @JsonKey(name: 'Confirmed')
+  @JsonKey(name: 'Cases')
   final int? confirmed;
-  @override
-  @JsonKey(name: 'Deaths')
-  final int? deaths;
-  @override
-  @JsonKey(name: 'Recovered')
-  final int? recovered;
-  @override
-  @JsonKey(name: 'Active')
-  final int? active;
   @override
   @JsonKey(name: 'Date')
   final String? date;
 
   @override
   String toString() {
-    return 'CovidModel(confirmed: $confirmed, deaths: $deaths, recovered: $recovered, active: $active, date: $date)';
+    return 'CovidModel(confirmed: $confirmed, date: $date)';
   }
 
   @override
@@ -214,9 +154,6 @@ class _$_CovidModel implements _CovidModel {
         (other.runtimeType == runtimeType &&
             other is _CovidModel &&
             const DeepCollectionEquality().equals(other.confirmed, confirmed) &&
-            const DeepCollectionEquality().equals(other.deaths, deaths) &&
-            const DeepCollectionEquality().equals(other.recovered, recovered) &&
-            const DeepCollectionEquality().equals(other.active, active) &&
             const DeepCollectionEquality().equals(other.date, date));
   }
 
@@ -224,9 +161,6 @@ class _$_CovidModel implements _CovidModel {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(confirmed),
-      const DeepCollectionEquality().hash(deaths),
-      const DeepCollectionEquality().hash(recovered),
-      const DeepCollectionEquality().hash(active),
       const DeepCollectionEquality().hash(date));
 
   @JsonKey(ignore: true)
@@ -242,27 +176,15 @@ class _$_CovidModel implements _CovidModel {
 
 abstract class _CovidModel implements CovidModel {
   factory _CovidModel(
-      {@JsonKey(name: 'Confirmed') int? confirmed,
-      @JsonKey(name: 'Deaths') int? deaths,
-      @JsonKey(name: 'Recovered') int? recovered,
-      @JsonKey(name: 'Active') int? active,
+      {@JsonKey(name: 'Cases') int? confirmed,
       @JsonKey(name: 'Date') String? date}) = _$_CovidModel;
 
   factory _CovidModel.fromJson(Map<String, dynamic> json) =
       _$_CovidModel.fromJson;
 
   @override
-  @JsonKey(name: 'Confirmed')
+  @JsonKey(name: 'Cases')
   int? get confirmed;
-  @override
-  @JsonKey(name: 'Deaths')
-  int? get deaths;
-  @override
-  @JsonKey(name: 'Recovered')
-  int? get recovered;
-  @override
-  @JsonKey(name: 'Active')
-  int? get active;
   @override
   @JsonKey(name: 'Date')
   String? get date;

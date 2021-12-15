@@ -47,7 +47,7 @@ class _TicketsWidgetState extends State<TicketsWidget> {
                 builder: (context, snapshot) => Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Самый дешёвый билет за 2 дня стоит ${snapshot.data?.data?[0].price}',
+                        'Самый дешёвый билет по данным за последние 2 дня стоит ${snapshot.data?.data?[0].price}',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 24,

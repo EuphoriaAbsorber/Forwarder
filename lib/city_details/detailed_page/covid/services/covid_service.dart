@@ -1,15 +1,21 @@
-import 'package:anyway/city_details/detailed_page/covid/models/covid_model.dart';
 import 'package:dio/dio.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../models/covid_model.dart';
 
 class CovidService {
-  Future<List<CovidModel>?> fetchCovidInfo() async {
+  Future<List<CovidModel>?> fetchCovidInfo(String country) async {
     try {
       final Dio client = Dio();
-      const url = 'https://api.covid19api.com/live/country/south-africa/status/confirmed/date/2021-12-08';
+      print(country);
+      //var lcountry = country.toLowerCase().split(' ').join('-');
+      var lcountry = 'south-africa';
+      var dateTo = DateTime.now().subtract(Duration(days: 1));
+      var dateFrom = dateTo.subtract(Duration(days: 7));
+      var url = 'https://api.covid19api.com/country/${lcountry}/status/confirmed/live?from=${dateFrom.toIso8601String()}&to=${dateTo.toIso8601String()}';
+      print(url);
       var response = await client.get(url);
       final list = <CovidModel>[];
-      for(final date in response.data) {
+      for(var date in response.data) {
         list.add(CovidModel.fromJson(date));
       }
       return list;
