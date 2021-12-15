@@ -50,7 +50,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 children: [
                   ChoiceChip(
                     label: const Text(
-                      'дёшево',
+                      'дорого',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     selected: filter.price != 0,

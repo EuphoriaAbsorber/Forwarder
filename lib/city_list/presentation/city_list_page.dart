@@ -174,7 +174,7 @@ class _CityListPageState extends State<CityListPage> {
       );
 
 bool check(Filter key, Filter value) =>
-    value.price <= key.price &&
+    value.price >= key.price &&
         value.sea >= key.sea &&
         value.mountains >= key.mountains &&
         value.culture >= key.culture &&
