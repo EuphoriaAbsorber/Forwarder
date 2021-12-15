@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swipe_cards/swipe_cards.dart';
@@ -13,22 +15,58 @@ class QuestionPage extends StatefulWidget {
 
 class _QuestionPageState extends State<QuestionPage> {
 
-  List<SwipeItem> _swipeItems = <SwipeItem>[];
+  final List<SwipeItem> _swipeItems = <SwipeItem>[];
   late MatchEngine _matchEngine;
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  List<String> _names = <String>["Red", "Blue", "Green", "Yellow", "Orange"];
-  List<Color> _colors = <Color>[
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.yellow,
-    Colors.orange
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  final List<String> _names = <String>[
+    'Что думаете по поводу поездки ',
+    'Не хотите отправиться ',
+    'Что насчёт поездки '
   ];
+  final List<String> _namesPart2 = <String>[
+    'на море?',
+    'в горы?',
+    'на природу?'
+  ];
+
+  final List<String> _names2 = <String>[
+    'Хотите посетить ',
+    'Собираетесь посетить ',
+    'Отправитесь в ',
+  ];
+
+  final List<String> _names2Part2 = <String>[
+    'музеи, театры или галереи?',
+    'торговые центры и магазины сувениров?',
+    'развлекательные места?'
+  ];
+  final List<String> _names3 = <String>[
+    'Важна ли вам ',
+    'Имеет ли значение ',
+  ];
+
+  final List<String> _names3Part2 = <String>[
+    'архитектура города?',
+    'бюджетность поездки?'
+  ];
+
   @override
   void initState() {
-    for (var i = 0; i < _names.length; i++) {
+    List<String> questions = <String>[];
+    for (var i = 0; i < _namesPart2.length; i++) {
+      questions.add(_names[Random().nextInt(_namesPart2.length)] + _namesPart2[i]);
+    }
+    for (var i = 0; i < _names2Part2.length; i++) {
+      questions.add(_names2[Random().nextInt(_names2Part2.length)] + _names2Part2[i]);
+    }
+    for (var i = 0; i < _names3Part2.length; i++) {
+      questions.add(_names3[Random().nextInt(_names3Part2.length)] + _names3Part2[i]);
+    }
+    questions.shuffle();
+    for (var i = 0; i < 8; i++) {
       _swipeItems.add(SwipeItem(
-          content: Content(text: _names[i], color: _colors[i]),
+          content: Content(text: questions[i]),
           likeAction: () {
 
           },
@@ -49,16 +87,17 @@ class _QuestionPageState extends State<QuestionPage> {
       key: _scaffoldKey,
       body: Column(children: [
         SizedBox(
-          height: 550,
+          height: 650,
           child: SwipeCards(
             matchEngine: _matchEngine,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 alignment: Alignment.center,
-                color: _swipeItems[index].content.color as Color,
+                color: Colors.white,
+
                 child: Text(
                   _swipeItems[index].content.text as String,
-                  style: TextStyle(fontSize: 100),
+                  style: TextStyle(fontSize: 20),
                 ),
               );
             },
@@ -93,7 +132,6 @@ class _QuestionPageState extends State<QuestionPage> {
 
 class Content {
   final String text;
-  final Color color;
 
-  Content({required this.text, required this.color});
+  Content({required this.text});
 }
