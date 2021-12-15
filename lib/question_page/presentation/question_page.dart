@@ -94,8 +94,10 @@ class _QuestionPageState extends State<QuestionPage> {
   Widget build(BuildContext context) => Scaffold(
       key: _scaffoldKey,
       body: SafeArea(
-        child: Center(
-          child: Column(children: [
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+              children: [
             SizedBox(
               height: 600,
               child: SwipeCards(
@@ -190,7 +192,7 @@ class _QuestionPageState extends State<QuestionPage> {
             )
           ]),
         ),
-      ));
+      );
 }
 
 class Content {
