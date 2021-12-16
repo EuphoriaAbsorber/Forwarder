@@ -36,9 +36,11 @@ jobs:
       #- run: flutter analyze
         
       - run: flutter test
+      
       - run: flutter build apk --release
+          
       - uses: actions/upload-artifact@v1
         with:
          name: APK for QA
-         path: anyway.apk
+         path: build/app/outputs/apk/release/app-release.apk
 
