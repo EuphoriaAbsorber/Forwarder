@@ -41,6 +41,6 @@ jobs:
           
       - uses: actions/upload-artifact@v1
         with:
-         name: APK for QA
+         name: anyway
          path: build/app/outputs/apk/release/app-release.apk
 
