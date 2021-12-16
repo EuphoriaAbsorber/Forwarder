@@ -121,7 +121,7 @@ class BottomSheetFilter extends StatelessWidget {
                   ),
                   FilterChoiceChip(
                     selected: filter.entertainment != 0,
-                    onSelected: (selected) => onFilterChanged(
+                    onSelected: () => onFilterChanged(
                       filter.copyWith(entertainment: filter.entertainment ^ 1),
                     ),
                     category: 'развлечения',

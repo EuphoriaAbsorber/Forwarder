@@ -21,7 +21,6 @@ class _DetailsPageState extends State<DetailsPage> {
   late City city;
   late bool isFavorite;
   final _mapKey = GlobalKey();
-  final _appBarKey = GlobalKey();
 
   final _cityManager = Dependencies.instance.cityManager;
   final _weatherManager = Dependencies.instance.weatherManager;
@@ -63,7 +62,6 @@ class _DetailsPageState extends State<DetailsPage> {
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
-                key: _appBarKey,
                 pinned: true,
                 title: Material(
                   color: Colors.transparent,
@@ -164,11 +162,9 @@ class _DetailsPageState extends State<DetailsPage> {
     if (isFavorite) {
       _cityManager.removeFromFavorites(item);
       isFavorite = false;
-      //_showSnack('Удалено из избраного');
     } else {
       _cityManager.addToFavorites(item);
       isFavorite = true;
-      //_showSnack('Добавлено в избранные');
     }
     setState(() {});
   }

@@ -70,19 +70,11 @@ class _CityListPageState extends State<CityListPage> {
                       ),
                       context: context,
                       builder: (context) => StreamBuilder<Filter>(
-                          stream: _cityManager.stateController.filterStream,
+                          stream: _cityManager.stateController.getStream,
+                          initialData: _cityManager.stateController.currentFilter,
                           builder: (context, snapshot) => BottomSheetFilter(
-                                filter: snapshot.data ??
-                                    Filter(
-                                      price: 0,
-                                      sea: 0,
-                                      mountains: 0,
-                                      culture: 0,
-                                      architecture: 0,
-                                      shopping: 0,
-                                      entertainment: 0,
-                                      nature: 0,
-                                    ),
+                                // filter: snapshot.hasData ? snapshot.requireData : _cityManager.stateController.currentFilter,
+                                filter: snapshot.requireData,
                                 onFilterChanged: (changes) => _cityManager
                                     .stateController
                                     .updateFilter(changes),
@@ -102,7 +94,7 @@ class _CityListPageState extends State<CityListPage> {
                     final cities = cityListSnapshot.requireData;
 
                     return StreamBuilder<Filter>(
-                        stream: _cityManager.stateController.filterStream,
+                        stream: _cityManager.stateController.getStream,
                         builder: (context, filterSnapshot) {
                           final citiesFiltered = filterSnapshot.hasData
                               ? cities

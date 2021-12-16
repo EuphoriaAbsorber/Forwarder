@@ -24,7 +24,7 @@ class StateController {
 
   Stream<List<Pair<City, bool>>> get cityListStream => _cityListStreamController.stream;
 
-  Filter _currentFilter = Filter(
+  Filter currentFilter = Filter(
       price: 0,
       sea: 0,
       mountains: 0,
@@ -36,13 +36,21 @@ class StateController {
 
   final _filterStreamController = StreamController<Filter>.broadcast();
   void updateFilter(Filter data) {
-    _currentFilter = data;
-    _filterStreamController.add(_currentFilter);
+    currentFilter = data;
+    _filterStreamController.add(currentFilter);
   }
-  Stream<Filter> get filterStream => _filterStreamController.stream;
 
 
-  String _search = "";
+  // Stream<Filter> get filterStream => _filterStreamController.stream;
+
+  // Stream<Filter> get filterStream => getStream;
+
+  Stream<Filter> get getStream async* {
+    yield currentFilter;
+    yield* _filterStreamController.stream;
+  }
+
+  String _search = '';
 
   final _searchStreamController = StreamController<String>.broadcast();
   void updateSearch(String data) {
