@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:models/models.dart';
 
 class StateController {
-  final List<Pair<City, bool>> _currentCityData = [];
+  List<Pair<City, bool>> _currentCityData = [];
 
   final _cityListStreamController = StreamController<List<Pair<City, bool>>>.broadcast();
 
-  void updateCityList(List<Pair<City, bool>> data) => _cityListStreamController.add(data);
+  void updateCityList(List<Pair<City, bool>> data) {
+    _currentCityData = data;
+    _cityListStreamController.add(_currentCityData);
+  }
 
-  void setCityFlag(City city, bool flag) {
+  void setCityFlag(City city, {required bool isFavorite}) {
     for(var i = 0; i<_currentCityData.length; ++i) {
       if(_currentCityData[i].first.id == city.id) {
-        _currentCityData[i] = Pair(first: city, second: flag);
+        _currentCityData[i] = Pair(first: city, second: isFavorite);
         break;
       }
     }

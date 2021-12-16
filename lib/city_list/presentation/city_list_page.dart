@@ -1,4 +1,3 @@
-import 'package:anyway/city_list/presentation/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
@@ -6,6 +5,7 @@ import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
 import 'bottom_sheet_filter.dart';
 import 'city_card_widget.dart';
+import 'widgets/search_field.dart';
 
 class CityListPage extends StatefulWidget {
   const CityListPage({Key? key}) : super(key: key);
@@ -46,13 +46,11 @@ class _CityListPageState extends State<CityListPage> {
                 shadowColor: Colors.transparent,
                 elevation: 0.0,
                 title: SizedBox(
-                  height: 40.0,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    child: SearchWidget(textController: _textController, text: 'Найди свое...',
-                    ),
-                  ),
-                ),
+                    height: 40.0,
+                    child: SearchField(
+                      hint: 'Найди свое...',
+                      textController: _textController,
+                    )),
                 actions: [
                   IconButton(
                     splashRadius: 24.0,
@@ -115,8 +113,7 @@ class _CityListPageState extends State<CityListPage> {
                               : cities;
 
                           return StreamBuilder<String>(
-                              stream:
-                                  _cityManager.stateController.searchStream,
+                              stream: _cityManager.stateController.searchStream,
                               builder: (context, searchNameSnapshot) {
                                 final citiesSearchedAndFiltered =
                                     searchNameSnapshot.hasData
@@ -183,17 +180,17 @@ class _CityListPageState extends State<CityListPage> {
           ),
         ),
       );
-
-  bool check(Filter key, Filter value) =>
-      value.price >= key.price &&
-      value.sea >= key.sea &&
-      value.mountains >= key.mountains &&
-      value.culture >= key.culture &&
-      value.architecture >= key.architecture &&
-      value.shopping >= key.shopping &&
-      value.entertainment >= key.entertainment &&
-      value.nature >= key.nature;
 }
+
+bool check(Filter key, Filter value) =>
+    value.price >= key.price &&
+    value.sea >= key.sea &&
+    value.mountains >= key.mountains &&
+    value.culture >= key.culture &&
+    value.architecture >= key.architecture &&
+    value.shopping >= key.shopping &&
+    value.entertainment >= key.entertainment &&
+    value.nature >= key.nature;
 
 class NotAnimatedRoute extends PageRouteBuilder {
   NotAnimatedRoute({required Widget page, required RouteSettings settings})
