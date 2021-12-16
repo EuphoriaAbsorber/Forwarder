@@ -1,3 +1,4 @@
+import 'package:anyway/city_list/presentation/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
@@ -48,26 +49,7 @@ class _CityListPageState extends State<CityListPage> {
                   height: 40.0,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    child: TextField(
-                      controller: _textController,
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      cursorColor: Colors.deepOrange,
-                      textAlignVertical: TextAlignVertical.center,
-                      style:
-                          const TextStyle(color: Colors.black, fontSize: 18.0),
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey[300],
-                          filled: true,
-                          prefixIcon:
-                              const Icon(Icons.search, color: Colors.black54),
-                          suffixIcon: IconButton(
-                            splashRadius: 16.0,
-                            icon:
-                                const Icon(Icons.clear, color: Colors.black54),
-                            onPressed: () => _textController.text = '',
-                          ),
-                          hintText: 'Найди свое...',
-                          border: InputBorder.none),
+                    child: SearchWidget(textController: _textController, text: 'Найди свое...',
                     ),
                   ),
                 ),

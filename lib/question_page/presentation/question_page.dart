@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:models/models.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+
+import '../../di.dart';
 
 class QuestionPage extends StatefulWidget {
   const QuestionPage({Key? key}) : super(key: key);
@@ -13,9 +16,20 @@ class QuestionPage extends StatefulWidget {
 }
 
 class _QuestionPageState extends State<QuestionPage> {
+  Filter filter = Filter(
+    price: 0,
+    sea: 0,
+    mountains: 0,
+    culture: 0,
+    architecture: 0,
+    shopping: 0,
+    entertainment: 0,
+    nature: 0,
+  );
   final List<SwipeItem> _swipeItems = <SwipeItem>[];
   late MatchEngine _matchEngine;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final _cityManager = Dependencies.instance.cityManager;
 
   final List<String> _names = <String>[
     'Что думаете по поводу поездки ',
@@ -79,7 +93,34 @@ class _QuestionPageState extends State<QuestionPage> {
     for (var i = 0; i < 8; i++) {
       _swipeItems.add(SwipeItem(
           content: Content(text: questions[i], imgUrl: _imgs[i]),
-          likeAction: () {},
+          likeAction: () {
+            switch (i) {
+              case 0:
+                filter = filter.copyWith(sea: 1);
+                break;
+              case 1:
+                filter = filter.copyWith(mountains: 1);
+                break;
+              case 2:
+                filter = filter.copyWith(nature: 1);
+                break;
+              case 3:
+                filter = filter.copyWith(culture: 1);
+                break;
+              case 4:
+                filter = filter.copyWith(shopping: 1);
+                break;
+              case 5:
+                filter = filter.copyWith(entertainment: 1);
+                break;
+              case 6:
+                filter = filter.copyWith(architecture: 1);
+                break;
+              case 7:
+                filter = filter.copyWith(price: 1);
+                break;
+            }
+          },
           nopeAction: () {},
           superlikeAction: () {
             //Navigator.pop(context);
@@ -92,21 +133,17 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      key: _scaffoldKey,
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 15),
-        child: SafeArea(
-
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+        key: _scaffoldKey,
+        body: Padding(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: SafeArea(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 child: SizedBox(
-
                   child: SwipeCards(
                     matchEngine: _matchEngine,
                     itemBuilder: (BuildContext context, int index) => Container(
-
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -114,12 +151,14 @@ class _QuestionPageState extends State<QuestionPage> {
                       ),
                       //alignment: Alignment.center,
                       child: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(16.0)),
                         child: Stack(children: [
                           Positioned.fill(
                             child: CachedNetworkImage(
                               fit: BoxFit.fitHeight,
-                              imageUrl: _swipeItems[index].content.imgUrl as String,
+                              imageUrl:
+                                  _swipeItems[index].content.imgUrl as String,
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             ),
@@ -135,7 +174,8 @@ class _QuestionPageState extends State<QuestionPage> {
                                     padding: const EdgeInsets.all(10),
                                     child: Center(
                                       child: Text(
-                                        _swipeItems[index].content.text as String,
+                                        _swipeItems[index].content.text
+                                            as String,
                                         style: TextStyle(
                                             fontSize: 30, color: Colors.white),
                                       ),
@@ -150,6 +190,8 @@ class _QuestionPageState extends State<QuestionPage> {
                       ),
                     ),
                     onStackFinished: () {
+                      //print(filter.sea);
+                      _cityManager.stateController.updateFilter(filter);
                       Navigator.pop(context);
                     },
                   ),
@@ -165,38 +207,47 @@ class _QuestionPageState extends State<QuestionPage> {
                       onPressed: () {
                         _matchEngine.currentItem?.nope();
                       },
-                      icon: Icon(Icons.close,
+                      icon: Icon(
+                        Icons.close,
                         color: Colors.red,
-                        size: 30.0,),
+                        size: 30.0,
+                      ),
                     ),
                   ),
                   CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.lightBlue.withOpacity(0.2),
                     child: IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.home,
+                      onPressed: () => {
+                      _cityManager.stateController.updateFilter(filter),
+                        Navigator.pop(context),
+                      },
+                      icon: Icon(
+                        Icons.home,
                         color: Colors.blue,
-                        size: 30.0,),
+                        size: 30.0,
+                      ),
                     ),
                   ),
                   CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.lightGreen.withOpacity(0.2),
                     child: IconButton(
-                        onPressed: () {
-                          _matchEngine.currentItem?.like();
-                        },
-                        icon: Icon(Icons.done,
-                            color: Colors.green,
-                            size: 30.0,),
-                        ),
+                      onPressed: () {
+                        _matchEngine.currentItem?.like();
+                      },
+                      icon: Icon(
+                        Icons.done,
+                        color: Colors.green,
+                        size: 30.0,
+                      ),
+                    ),
                   )
                 ],
               )
             ]),
           ),
-      ),
+        ),
       );
 }
 
