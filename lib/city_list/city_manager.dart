@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:models/models.dart';
 
+import '../state/city_list_state.dart';
+import '../state/filter_state.dart';
+import '../state/search_state.dart';
 import '../utils/network_info.dart';
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
-import 'state_controller.dart';
 
 class CityManager {
   final CityDao _cityDao;
@@ -13,38 +15,52 @@ class CityManager {
 
   final _networkInfo = NetworkInfo();
 
-  final stateController = StateController();
+  final cityListState = CityListState(initState: []);
+  final searchState = SearchState(initState: '');
+  final filterState = FilterState(
+    initState: Filter(
+      price: 0,
+      sea: 0,
+      mountains: 0,
+      culture: 0,
+      architecture: 0,
+      shopping: 0,
+      entertainment: 0,
+      nature: 0,
+    ),
+  );
+
+
 
   CityManager(this._cityDao, this._cityApi);
 
-  Future<void> fetchCities() async => stateController.updateCityList(await getLatest());
+  Future<void> fetchCities() async =>
+      cityListState.update(await getLatest());
 
   Future<void> addToFavorites(City item) async {
     await _cityDao.save(item);
-    stateController.setCityFlag(item, isFavorite: true);
+    cityListState.setFlag(item, isFavorite: true);
   }
 
   Future<void> removeFromFavorites(City item) async {
     await _cityDao.delete(item);
-    stateController.setCityFlag(item, isFavorite: false);
+    cityListState.setFlag(item, isFavorite: false);
   }
 
-  Future<List<Pair<City, bool>>> getLatest() async {
+  Future<List<CityWithStatus>> getLatest() async {
     if (await _networkInfo.isConnected) {
-      try {
-        final items = await _cityApi.getLatest();
-        final favorites = await _cityDao.getAll();
-        final favoriteIds = favorites.map((e) => e.id).toSet();
-        return items.map((e) =>
-            Pair(first: e, second: favoriteIds.contains(e.id))).toList();
-      } catch (e) {
-        final favorites = await _cityDao.getAll();
-
-        return favorites.map((e) => Pair(first: e, second: true)).toList();
-      }
+      final items = await _cityApi.getLatest();
+      final favorites = await _cityDao.getAll();
+      final favoriteIds = favorites.map((c) => c.id).toSet();
+      return items
+          .map((c) =>
+              CityWithStatus(city: c, isFavorite: favoriteIds.contains(c.id)))
+          .toList();
     } else {
       final favorites = await _cityDao.getAll();
-      return favorites.map((e) => Pair(first: e, second: true)).toList();
+      return favorites
+          .map((c) => CityWithStatus(city: c, isFavorite: true))
+          .toList();
     }
   }
 }

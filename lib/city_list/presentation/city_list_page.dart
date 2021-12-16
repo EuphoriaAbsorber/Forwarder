@@ -23,9 +23,8 @@ class _CityListPageState extends State<CityListPage> {
     super.initState();
     _cityManager.fetchCities();
     _textController = TextEditingController();
-    _textController.addListener(() {
-      _cityManager.stateController.updateSearch(_textController.text);
-    });
+    _textController.addListener(
+        () => _cityManager.searchState.update(_textController.text));
   }
 
   @override
@@ -70,14 +69,13 @@ class _CityListPageState extends State<CityListPage> {
                       ),
                       context: context,
                       builder: (context) => StreamBuilder<Filter>(
-                          stream: _cityManager.stateController.getStream,
-                          initialData: _cityManager.stateController.currentFilter,
+                          stream: _cityManager.filterState.stream,
+                          initialData: _cityManager.filterState.state,
                           builder: (context, snapshot) => BottomSheetFilter(
                                 // filter: snapshot.hasData ? snapshot.requireData : _cityManager.stateController.currentFilter,
                                 filter: snapshot.requireData,
-                                onFilterChanged: (changes) => _cityManager
-                                    .stateController
-                                    .updateFilter(changes),
+                                onFilterChanged: (changes) =>
+                                    _cityManager.filterState.update(changes),
                               )),
                     ),
                   )
@@ -87,25 +85,25 @@ class _CityListPageState extends State<CityListPage> {
             ],
             body: RefreshIndicator(
               onRefresh: () => _cityManager.fetchCities(),
-              child: StreamBuilder<List<Pair<City, bool>>>(
-                stream: _cityManager.stateController.cityListStream,
+              child: StreamBuilder<List<CityWithStatus>>(
+                stream: _cityManager.cityListState.stream,
                 builder: (context, cityListSnapshot) {
                   if (cityListSnapshot.hasData) {
                     final cities = cityListSnapshot.requireData;
 
                     return StreamBuilder<Filter>(
-                        stream: _cityManager.stateController.getStream,
+                        stream: _cityManager.filterState.stream,
                         builder: (context, filterSnapshot) {
                           final citiesFiltered = filterSnapshot.hasData
                               ? cities
-                                  .where((element) => check(
+                                  .where((c) => check(
                                       filterSnapshot.requireData,
-                                      element.first.filter))
+                                      c.city.filter))
                                   .toList()
                               : cities;
 
                           return StreamBuilder<String>(
-                              stream: _cityManager.stateController.searchStream,
+                              stream: _cityManager.searchState.stream,
                               builder: (context, searchNameSnapshot) {
                                 final citiesSearchedAndFiltered =
                                     searchNameSnapshot.hasData
@@ -114,7 +112,7 @@ class _CityListPageState extends State<CityListPage> {
                                                 searchNameSnapshot.requireData
                                                     .toLowerCase()
                                                     .isSubsequence(element
-                                                        .first.name
+                                                        .city.name
                                                         .toLowerCase()))
                                             .toList()
                                         : citiesFiltered;
@@ -131,14 +129,19 @@ class _CityListPageState extends State<CityListPage> {
                                     childAspectRatio: 0.75,
                                   ),
                                   itemCount: citiesSearchedAndFiltered.length,
-                                  itemBuilder: (context, index) =>
-                                      GestureDetector(
-                                    child: CityCard(
-                                        city: citiesSearchedAndFiltered[index]
-                                            .first,
-                                        isFavorite:
-                                            citiesSearchedAndFiltered[index]
-                                                .second),
+                                  itemBuilder: (context, index) => CityCard(
+                                    city: citiesSearchedAndFiltered[index].city,
+                                    isFavorite: citiesSearchedAndFiltered[index]
+                                        .isFavorite,
+                                    onSelect: () =>
+                                        citiesSearchedAndFiltered[index]
+                                                .isFavorite
+                                            ? _cityManager.removeFromFavorites(
+                                                citiesSearchedAndFiltered[index]
+                                                    .city)
+                                            : _cityManager.addToFavorites(
+                                                citiesSearchedAndFiltered[index]
+                                                    .city),
                                     onTap: () => Navigator.push(
                                       context,
                                       NotAnimatedRoute(
@@ -147,10 +150,10 @@ class _CityListPageState extends State<CityListPage> {
                                           arguments: {
                                             'city':
                                                 citiesSearchedAndFiltered[index]
-                                                    .first,
+                                                    .city,
                                             'isFavorite':
                                                 citiesSearchedAndFiltered[index]
-                                                    .second,
+                                                    .isFavorite,
                                           },
                                         ),
                                       ),

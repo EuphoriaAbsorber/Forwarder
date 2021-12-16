@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:models/models.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 
@@ -76,7 +75,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   void initState() {
-    List<String> questions = <String>[];
+    final questions = <String>[];
     for (var i = 0; i < _namesPart2.length; i++) {
       questions
           .add(_names[Random().nextInt(_namesPart2.length)] + _namesPart2[i]);
@@ -143,7 +142,7 @@ class _QuestionPageState extends State<QuestionPage> {
                 child: SizedBox(
                   child: SwipeCards(
                     matchEngine: _matchEngine,
-                    itemBuilder: (BuildContext context, int index) => Container(
+                    itemBuilder: (context, index) => Container(
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -157,8 +156,7 @@ class _QuestionPageState extends State<QuestionPage> {
                           Positioned.fill(
                             child: CachedNetworkImage(
                               fit: BoxFit.fitHeight,
-                              imageUrl:
-                                  _swipeItems[index].content.imgUrl as String,
+                              imageUrl: _swipeItems[index].content.imgUrl as String,
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             ),
@@ -176,7 +174,7 @@ class _QuestionPageState extends State<QuestionPage> {
                                       child: Text(
                                         _swipeItems[index].content.text
                                             as String,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 30, color: Colors.white),
                                       ),
                                     ),
@@ -191,7 +189,7 @@ class _QuestionPageState extends State<QuestionPage> {
                     ),
                     onStackFinished: () {
                       //print(filter.sea);
-                      _cityManager.stateController.updateFilter(filter);
+                      _cityManager.filterState.update(filter);
                       Navigator.pop(context);
                     },
                   ),
@@ -207,7 +205,7 @@ class _QuestionPageState extends State<QuestionPage> {
                       onPressed: () {
                         _matchEngine.currentItem?.nope();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.close,
                         color: Colors.red,
                         size: 30.0,
@@ -219,10 +217,10 @@ class _QuestionPageState extends State<QuestionPage> {
                     backgroundColor: Colors.lightBlue.withOpacity(0.2),
                     child: IconButton(
                       onPressed: () => {
-                      _cityManager.stateController.updateFilter(filter),
+                      _cityManager.filterState.update(filter),
                         Navigator.pop(context),
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.home,
                         color: Colors.blue,
                         size: 30.0,
@@ -236,7 +234,7 @@ class _QuestionPageState extends State<QuestionPage> {
                       onPressed: () {
                         _matchEngine.currentItem?.like();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.done,
                         color: Colors.green,
                         size: 30.0,

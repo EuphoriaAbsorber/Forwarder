@@ -7,9 +7,3 @@ export 'src/database/filter_hive_model.dart';
 export 'src/network/city_list_network_model.dart';
 export 'src/network/city_network_model.dart';
 export 'src/network/coords_network_model.dart';
-
-class Pair<T,R> {
-  final T first;
-  final R second;
-  const Pair({required this.first, required this.second});
-}

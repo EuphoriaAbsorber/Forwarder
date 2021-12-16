@@ -18,3 +18,9 @@ class City  with _$City {
     required Filter filter,
   }) = _City;
 }
+
+class CityWithStatus {
+  final City city;
+  final bool isFavorite;
+  const CityWithStatus({required this.city, required this.isFavorite});
+}
