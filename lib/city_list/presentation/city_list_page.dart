@@ -201,17 +201,17 @@ class _CityListPageState extends State<CityListPage> {
           ),
         ),
       );
-
-  bool check(Filter key, Filter value) =>
-      value.price >= key.price &&
-      value.sea >= key.sea &&
-      value.mountains >= key.mountains &&
-      value.culture >= key.culture &&
-      value.architecture >= key.architecture &&
-      value.shopping >= key.shopping &&
-      value.entertainment >= key.entertainment &&
-      value.nature >= key.nature;
 }
+
+bool check(Filter key, Filter value) =>
+    value.price >= key.price &&
+        value.sea >= key.sea &&
+        value.mountains >= key.mountains &&
+        value.culture >= key.culture &&
+        value.architecture >= key.architecture &&
+        value.shopping >= key.shopping &&
+        value.entertainment >= key.entertainment &&
+        value.nature >= key.nature;
 
 class NotAnimatedRoute extends PageRouteBuilder {
   NotAnimatedRoute({required Widget page, required RouteSettings settings})

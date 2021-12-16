@@ -11,25 +11,26 @@ class CovidService {
       //var lcountry = 'luxemburg';
       var dateTo = DateTime.now().subtract(Duration(days: 1));
       var dateFrom = dateTo.subtract(Duration(days: 7));
-      var url = 'https://api.covid19api.com/country/${lcountry}/status/confirmed/live?from=${dateFrom.toIso8601String()}&to=${dateTo.toIso8601String()}';
+      var url =
+          'https://api.covid19api.com/country/${lcountry}/status/confirmed/live?from=${dateFrom.toIso8601String()}&to=${dateTo.toIso8601String()}';
       print(url);
       final response = await client.get(url);
       final list = <CovidModel>[];
-<<<<<<< Updated upstream
-      for(var date in response.data) {
-        list.add(CovidModel.fromJson(date as Map<String,dynamic>));
-=======
-      final usedDates = <String?>{};
-      for(Map<String, dynamic> date in response.data) {
-        var item = CovidModel.fromJson(date as Map<String,dynamic>);
-        if (!usedDates.contains(item.date)) {
-          list.add(item);
-          usedDates.add(item.date);
+
+      for (var date in response.data) {
+        list.add(CovidModel.fromJson(date as Map<String, dynamic>));
+
+        final usedDates = <String?>{};
+        for (Map<String, dynamic> date in response.data) {
+          var item = CovidModel.fromJson(date as Map<String, dynamic>);
+          if (!usedDates.contains(item.date)) {
+            list.add(item);
+            usedDates.add(item.date);
+          }
         }
->>>>>>> Stashed changes
+        print(list);
+        return list;
       }
-      print(list);
-      return list;
     } on DioError catch (e) {
       print(e.toString());
     }
