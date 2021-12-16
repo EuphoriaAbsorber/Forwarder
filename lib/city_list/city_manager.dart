@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:models/models.dart';
 
-import '../city_details/detailed_page/state_controller.dart';
 import '../utils/network_info.dart';
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
+import 'state_controller.dart';
 
 class CityManager {
   final CityDao _cityDao;
