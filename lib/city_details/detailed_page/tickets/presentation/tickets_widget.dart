@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/ticket_price_model.dart';
 import '../tickets_service.dart';
 import 'city_name_card.dart';
@@ -47,7 +48,7 @@ class _TicketsWidgetState extends State<TicketsWidget> {
                 builder: (context, snapshot) => Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Самый дешёвый билет по данным за последние 2 дня стоит ${snapshot.data?.data?[0].price}',
+                        'Самый дешёвый билет по данным за последние 2 дня стоит ${plurals(snapshot.data?.data?[0].price??0)}.',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 24,
@@ -58,4 +59,14 @@ class _TicketsWidgetState extends State<TicketsWidget> {
           ),
         ],
       );
+  String plurals(int quantity) => Intl.plural(
+      quantity,
+      zero: '...',
+      one: '$quantity рубль',
+      few: '$quantity рубля',
+      many: '$quantity рублей',
+      name: 'рубль',
+      args: [quantity], other: '$quantity рублей',
+    locale: 'ru'
+    );
 }

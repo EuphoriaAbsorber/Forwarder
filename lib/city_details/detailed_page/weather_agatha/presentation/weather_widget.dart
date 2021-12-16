@@ -35,7 +35,6 @@ List<double> testMonthsData = [-3, -1, 13, 18, 22, 25, 25, 20, 16, 10, 0, -5];
 ];*/
 
 class WeatherWidget extends StatefulWidget {
-// Хз statefl или stateless
   const WeatherWidget({Key? key}) : super(key: key);
 
   @override
@@ -47,13 +46,6 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   bool isRead = false;
   List<int> t5 = [0, 0, 0, 0, 0];
   List<DateTime> dates = [];
-
-/*double maxTemp = testMonthsData.reduce(max);
-  double minTemp = testMonthsData.reduce(min);*/
-
-//City city = City('Chicago', 'US');
-
-  //WeatherModel? _months;
 
   Future<List<Weather>?> getWeather() async {
     final wf = WeatherFactory('660591836ec3ecb62d7152096a6026b5',
