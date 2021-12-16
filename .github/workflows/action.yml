@@ -33,7 +33,7 @@ jobs:
       # Runs a single command using the runners shell
       - run: flutter pub get
         
-      - run: flutter analyze
+      #- run: flutter analyze
         
       - run: flutter test
       - run: flutter build apk --release
