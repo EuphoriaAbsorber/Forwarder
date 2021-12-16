@@ -6,34 +6,58 @@ import '../utils/network_info.dart';
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
 
+class Pair<T,R> {
+  final T first;
+  final R second;
+  const Pair({required this.first, required this.second});
+}
 
-class CityManager extends BaseManager<Map<City, bool>> {
+class CityManager extends BaseManager<List<Pair<City, bool>>> {
   final CityDao _cityDao;
   final CityApi _cityApi;
+
+  List<Pair<City, bool>> currentCityData = [];
 
   final _networkInfo = NetworkInfo();
 
   CityManager(this._cityDao, this._cityApi);
 
   Future<void> fetchCities() async {
-    final data = await getLatest();
-    super.addData(data);
+    currentCityData = await getLatest();
+    super.addData(currentCityData);
   }
 
-  Future<void> addToFavorites(City item) => _cityDao.save(item);
+  Future<void> addToFavorites(City item) async {
+    await _cityDao.save(item);
+    for(var i = 0; i<currentCityData.length; ++i) {
+      if(currentCityData[i].first.id == item.id) {
+        currentCityData[i] = Pair(first: item, second: true);
+        break;
+      }
+    }
+    super.addData(currentCityData);
+  }
 
-  Future<void> removeFromFavorites(City item) => _cityDao.delete(item);
+  Future<void> removeFromFavorites(City item) async {
+    await _cityDao.delete(item);
+    for(var i = 0; i<currentCityData.length; ++i) {
+      if(currentCityData[i].first.id == item.id) {
+        currentCityData[i] = Pair(first: item, second: false);
+        break;
+      }
+    }
+    super.addData(currentCityData);
+  }
 
-  Future<Map<City, bool>> getLatest() async {
+  Future<List<Pair<City, bool>>> getLatest() async {
     if (await _networkInfo.isConnected) {
       final items = await _cityApi.getLatest();
       final favorites = await _cityDao.getAll();
       final favoriteIds = favorites.map((e) => e.id).toSet();
-      return Map.fromEntries(
-          items.map((e) => MapEntry(e, favoriteIds.contains(e.id))));
+      return items.map((e) => Pair(first: e, second: favoriteIds.contains(e.id))).toList();
     } else {
       final favorites = await _cityDao.getAll();
-      return Map.fromEntries(favorites.map((e) => MapEntry(e, true)));
+      return favorites.map((e) => Pair(first: e, second: true)).toList();
     }
   }
 }

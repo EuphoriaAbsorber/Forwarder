@@ -3,6 +3,7 @@ import 'package:models/models.dart';
 
 import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
+import '../city_manager.dart';
 import 'bottom_sheet_filter.dart';
 import 'city_card_widget.dart';
 
@@ -115,17 +116,16 @@ class _CityListPageState extends State<CityListPage> {
             ],
             body: RefreshIndicator(
               onRefresh: () => _cityManager.fetchCities(),
-              child: StreamBuilder<Map<City, bool>>(
+              child: StreamBuilder<List<Pair<City, bool>>>(
                 stream: _cityManager.stream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final data = snapshot.requireData;
-                    final cities = data.keys
+                    final cities = data
                         .where((element) =>
-                            _textController.text
-                                .toLowerCase()
-                                .isSubsequence(element.name.toLowerCase()) &&
-                            check(filter, element.filter))
+                            _textController.text.toLowerCase().isSubsequence(
+                                element.first.name.toLowerCase()) &&
+                            check(filter, element.first.filter))
                         .toList();
 
                     return GridView.builder(
@@ -141,16 +141,16 @@ class _CityListPageState extends State<CityListPage> {
                       itemCount: cities.length,
                       itemBuilder: (context, index) => GestureDetector(
                         child: CityCard(
-                            city: cities[index],
-                            isFavorite: data[cities[index]] ?? false),
+                            city: cities[index].first,
+                            isFavorite: cities[index].second),
                         onTap: () => Navigator.push(
                           context,
                           NotAnimatedRoute(
                             page: const DetailsPage(),
                             settings: RouteSettings(
                               arguments: {
-                                'city': cities[index],
-                                'isFavorite': data[cities[index]] ?? false,
+                                'city': cities[index].first,
+                                'isFavorite': cities[index].second,
                               },
                             ),
                           ),
@@ -184,8 +184,11 @@ class _CityListPageState extends State<CityListPage> {
 
 class NotAnimatedRoute extends PageRouteBuilder {
   NotAnimatedRoute({required Widget page, required RouteSettings settings})
-      : super(settings: settings, pageBuilder: (context, animation, secondaryAnimation) =>
-                page, transitionsBuilder: (context, animation, secondaryAnimation, child) => child);
+      : super(
+            settings: settings,
+            pageBuilder: (context, animation, secondaryAnimation) => page,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) => child);
 }
 
 extension StringExtension on String {
