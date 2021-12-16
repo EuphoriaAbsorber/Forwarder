@@ -3,7 +3,6 @@ import 'package:models/models.dart';
 
 import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
-import '../city_manager.dart';
 import 'bottom_sheet_filter.dart';
 import 'city_card_widget.dart';
 
@@ -18,23 +17,13 @@ class _CityListPageState extends State<CityListPage> {
   late final TextEditingController _textController;
   final _cityManager = Dependencies.instance.cityManager;
 
-  Filter filter = Filter(
-      price: 0,
-      sea: 0,
-      mountains: 0,
-      culture: 0,
-      architecture: 0,
-      shopping: 0,
-      entertainment: 0,
-      nature: 0);
-
   @override
   void initState() {
     super.initState();
     _cityManager.fetchCities();
     _textController = TextEditingController();
     _textController.addListener(() {
-      setState(() {});
+      _cityManager.stateController.updateSearch(_textController.text);
     });
   }
 
@@ -100,14 +89,24 @@ class _CityListPageState extends State<CityListPage> {
                         ),
                       ),
                       context: context,
-                      builder: (context) => BottomSheetFilter(
-                        initFilter: filter,
-                        onFilterChanged: (changes) {
-                          setState(() {
-                            filter = changes;
-                          });
-                        },
-                      ),
+                      builder: (context) => StreamBuilder<Filter>(
+                          stream: _cityManager.stateController.filterStream,
+                          builder: (context, snapshot) => BottomSheetFilter(
+                                filter: snapshot.data ??
+                                    Filter(
+                                      price: 0,
+                                      sea: 0,
+                                      mountains: 0,
+                                      culture: 0,
+                                      architecture: 0,
+                                      shopping: 0,
+                                      entertainment: 0,
+                                      nature: 0,
+                                    ),
+                                onFilterChanged: (changes) => _cityManager
+                                    .stateController
+                                    .updateFilter(changes),
+                              )),
                     ),
                   )
                 ],
@@ -117,47 +116,79 @@ class _CityListPageState extends State<CityListPage> {
             body: RefreshIndicator(
               onRefresh: () => _cityManager.fetchCities(),
               child: StreamBuilder<List<Pair<City, bool>>>(
-                stream: _cityManager.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final data = snapshot.requireData;
-                    final cities = data
-                        .where((element) =>
-                            _textController.text.toLowerCase().isSubsequence(
-                                element.first.name.toLowerCase()) &&
-                            check(filter, element.first.filter))
-                        .toList();
+                stream: _cityManager.stateController.cityListStream,
+                builder: (context, cityListSnapshot) {
+                  if (cityListSnapshot.hasData) {
+                    final cities = cityListSnapshot.requireData;
 
-                    return GridView.builder(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 32.0),
-                      physics: const BouncingScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16.0,
-                        mainAxisSpacing: 16.0,
-                        childAspectRatio: 0.75,
-                      ),
-                      itemCount: cities.length,
-                      itemBuilder: (context, index) => GestureDetector(
-                        child: CityCard(
-                            city: cities[index].first,
-                            isFavorite: cities[index].second),
-                        onTap: () => Navigator.push(
-                          context,
-                          NotAnimatedRoute(
-                            page: const DetailsPage(),
-                            settings: RouteSettings(
-                              arguments: {
-                                'city': cities[index].first,
-                                'isFavorite': cities[index].second,
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
+                    return StreamBuilder<Filter>(
+                        stream: _cityManager.stateController.filterStream,
+                        builder: (context, filterSnapshot) {
+                          final citiesFiltered = filterSnapshot.hasData
+                              ? cities
+                                  .where((element) => check(
+                                      filterSnapshot.requireData,
+                                      element.first.filter))
+                                  .toList()
+                              : cities;
+
+                          return StreamBuilder<String>(
+                              stream:
+                                  _cityManager.stateController.searchStream,
+                              builder: (context, searchNameSnapshot) {
+                                final citiesSearchedAndFiltered =
+                                    searchNameSnapshot.hasData
+                                        ? citiesFiltered
+                                            .where((element) =>
+                                                searchNameSnapshot.requireData
+                                                    .toLowerCase()
+                                                    .isSubsequence(element
+                                                        .first.name
+                                                        .toLowerCase()))
+                                            .toList()
+                                        : citiesFiltered;
+
+                                return GridView.builder(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      8.0, 8.0, 8.0, 32.0),
+                                  physics: const BouncingScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 16.0,
+                                    mainAxisSpacing: 16.0,
+                                    childAspectRatio: 0.75,
+                                  ),
+                                  itemCount: citiesSearchedAndFiltered.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    child: CityCard(
+                                        city: citiesSearchedAndFiltered[index]
+                                            .first,
+                                        isFavorite:
+                                            citiesSearchedAndFiltered[index]
+                                                .second),
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      NotAnimatedRoute(
+                                        page: const DetailsPage(),
+                                        settings: RouteSettings(
+                                          arguments: {
+                                            'city':
+                                                citiesSearchedAndFiltered[index]
+                                                    .first,
+                                            'isFavorite':
+                                                citiesSearchedAndFiltered[index]
+                                                    .second,
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        });
+                  } else if (cityListSnapshot.hasError) {
                     return const Center(
                       child: Icon(Icons.error),
                     );
@@ -170,17 +201,17 @@ class _CityListPageState extends State<CityListPage> {
           ),
         ),
       );
-
-  bool check(Filter key, Filter value) =>
-      value.price >= key.price &&
-      value.sea >= key.sea &&
-      value.mountains >= key.mountains &&
-      value.culture >= key.culture &&
-      value.architecture >= key.architecture &&
-      value.shopping >= key.shopping &&
-      value.entertainment >= key.entertainment &&
-      value.nature >= key.nature;
 }
+
+bool check(Filter key, Filter value) =>
+    value.price >= key.price &&
+        value.sea >= key.sea &&
+        value.mountains >= key.mountains &&
+        value.culture >= key.culture &&
+        value.architecture >= key.architecture &&
+        value.shopping >= key.shopping &&
+        value.entertainment >= key.entertainment &&
+        value.nature >= key.nature;
 
 class NotAnimatedRoute extends PageRouteBuilder {
   NotAnimatedRoute({required Widget page, required RouteSettings settings})

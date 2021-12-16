@@ -5,48 +5,28 @@ import 'package:models/models.dart';
 import '../utils/network_info.dart';
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
+import 'state_controller.dart';
 
-class Pair<T,R> {
-  final T first;
-  final R second;
-  const Pair({required this.first, required this.second});
-}
-
-class CityManager extends BaseManager<List<Pair<City, bool>>> {
+class CityManager {
   final CityDao _cityDao;
   final CityApi _cityApi;
 
-  List<Pair<City, bool>> currentCityData = [];
-
   final _networkInfo = NetworkInfo();
+
+  final stateController = StateController();
 
   CityManager(this._cityDao, this._cityApi);
 
-  Future<void> fetchCities() async {
-    currentCityData = await getLatest();
-    super.addData(currentCityData);
-  }
+  Future<void> fetchCities() async => stateController.updateCityList(await getLatest());
 
   Future<void> addToFavorites(City item) async {
     await _cityDao.save(item);
-    for(var i = 0; i<currentCityData.length; ++i) {
-      if(currentCityData[i].first.id == item.id) {
-        currentCityData[i] = Pair(first: item, second: true);
-        break;
-      }
-    }
-    super.addData(currentCityData);
+    stateController.setCityFlag(item, true);
   }
 
   Future<void> removeFromFavorites(City item) async {
     await _cityDao.delete(item);
-    for(var i = 0; i<currentCityData.length; ++i) {
-      if(currentCityData[i].first.id == item.id) {
-        currentCityData[i] = Pair(first: item, second: false);
-        break;
-      }
-    }
-    super.addData(currentCityData);
+    stateController.setCityFlag(item, false);
   }
 
   Future<List<Pair<City, bool>>> getLatest() async {
@@ -60,14 +40,4 @@ class CityManager extends BaseManager<List<Pair<City, bool>>> {
       return favorites.map((e) => Pair(first: e, second: true)).toList();
     }
   }
-}
-
-abstract class BaseManager<T> {
-  final _streamController = StreamController<T>.broadcast();
-
-  void addData(T data) {
-    _streamController.add(data);
-  }
-
-  Stream<T> get stream => _streamController.stream;
 }
