@@ -31,10 +31,17 @@ class CityManager {
 
   Future<List<Pair<City, bool>>> getLatest() async {
     if (await _networkInfo.isConnected) {
-      final items = await _cityApi.getLatest();
-      final favorites = await _cityDao.getAll();
-      final favoriteIds = favorites.map((e) => e.id).toSet();
-      return items.map((e) => Pair(first: e, second: favoriteIds.contains(e.id))).toList();
+      try {
+        final items = await _cityApi.getLatest();
+        final favorites = await _cityDao.getAll();
+        final favoriteIds = favorites.map((e) => e.id).toSet();
+        return items.map((e) =>
+            Pair(first: e, second: favoriteIds.contains(e.id))).toList();
+      } catch (e) {
+        final favorites = await _cityDao.getAll();
+
+        return favorites.map((e) => Pair(first: e, second: true)).toList();
+      }
     } else {
       final favorites = await _cityDao.getAll();
       return favorites.map((e) => Pair(first: e, second: true)).toList();

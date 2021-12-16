@@ -5,6 +5,7 @@ import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
 import 'bottom_sheet_filter.dart';
 import 'city_card_widget.dart';
+import 'widgets/search_field.dart';
 
 class CityListPage extends StatefulWidget {
   const CityListPage({Key? key}) : super(key: key);
@@ -45,32 +46,11 @@ class _CityListPageState extends State<CityListPage> {
                 shadowColor: Colors.transparent,
                 elevation: 0.0,
                 title: SizedBox(
-                  height: 40.0,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    child: TextField(
-                      controller: _textController,
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      cursorColor: Colors.deepOrange,
-                      textAlignVertical: TextAlignVertical.center,
-                      style:
-                          const TextStyle(color: Colors.black, fontSize: 18.0),
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey[300],
-                          filled: true,
-                          prefixIcon:
-                              const Icon(Icons.search, color: Colors.black54),
-                          suffixIcon: IconButton(
-                            splashRadius: 16.0,
-                            icon:
-                                const Icon(Icons.clear, color: Colors.black54),
-                            onPressed: () => _textController.text = '',
-                          ),
-                          hintText: 'Найди свое...',
-                          border: InputBorder.none),
-                    ),
-                  ),
-                ),
+                    height: 40.0,
+                    child: SearchField(
+                      hint: 'Найди свое...',
+                      textController: _textController,
+                    )),
                 actions: [
                   IconButton(
                     splashRadius: 24.0,
@@ -133,8 +113,7 @@ class _CityListPageState extends State<CityListPage> {
                               : cities;
 
                           return StreamBuilder<String>(
-                              stream:
-                                  _cityManager.stateController.searchStream,
+                              stream: _cityManager.stateController.searchStream,
                               builder: (context, searchNameSnapshot) {
                                 final citiesSearchedAndFiltered =
                                     searchNameSnapshot.hasData
@@ -205,13 +184,13 @@ class _CityListPageState extends State<CityListPage> {
 
 bool check(Filter key, Filter value) =>
     value.price >= key.price &&
-        value.sea >= key.sea &&
-        value.mountains >= key.mountains &&
-        value.culture >= key.culture &&
-        value.architecture >= key.architecture &&
-        value.shopping >= key.shopping &&
-        value.entertainment >= key.entertainment &&
-        value.nature >= key.nature;
+    value.sea >= key.sea &&
+    value.mountains >= key.mountains &&
+    value.culture >= key.culture &&
+    value.architecture >= key.architecture &&
+    value.shopping >= key.shopping &&
+    value.entertainment >= key.entertainment &&
+    value.nature >= key.nature;
 
 class NotAnimatedRoute extends PageRouteBuilder {
   NotAnimatedRoute({required Widget page, required RouteSettings settings})
