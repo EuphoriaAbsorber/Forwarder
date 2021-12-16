@@ -7,6 +7,7 @@ class SearchWidget extends StatelessWidget {
   const SearchWidget({Key? key, required this.textController, required this.text}) : super(key: key);
 
 
+
   @override
   Widget build(BuildContext context) => TextField(
       controller: textController,
