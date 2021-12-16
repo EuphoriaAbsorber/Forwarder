@@ -4,18 +4,14 @@ import 'package:models/models.dart';
 class BottomSheetFilter extends StatefulWidget {
   final Filter initFilter;
   final Function(Filter) onFilterChanged;
-
-  const BottomSheetFilter({
-    required this.onFilterChanged,
-    required this.initFilter,
-    Key? key,
-  }) : super(key: key);
+  const BottomSheetFilter({required this.onFilterChanged, required this.initFilter, Key? key}) : super(key: key);
 
   @override
   _BottomSheetFilterState createState() => _BottomSheetFilterState();
 }
 
 class _BottomSheetFilterState extends State<BottomSheetFilter> {
+
   late Filter filter;
 
   @override
@@ -236,6 +232,41 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                         widget.onFilterChanged(filter);
                       },
                     ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                      child: FittedBox(
+                        child: OutlinedButton(
+
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade300),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+
+                                    )
+                                )),
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(children: const [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                  child: Icon(
+                                    Icons.quiz,
+                                    color: Colors.blue,
+                                    size: 30.0,
+                                  ),
+                                ),
+                                Material(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      'Пройти опрос',
+                                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                                    )),
+                              ]),
+                            ),
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/questions')),
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -244,4 +275,3 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
         ),
       );
 }
-
