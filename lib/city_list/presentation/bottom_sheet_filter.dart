@@ -166,30 +166,6 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                         children: const [
                           Padding(
                             padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(Icons.account_balance_rounded,
-                                color: Colors.grey),
-                          ),
-                          Text(
-                            'архитектура',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      selected: filter.architecture != 0,
-                      onSelected: (selected) {
-                        setState(() {
-                          filter = filter.copyWith(
-                              architecture: filter.architecture ^ 1);
-                        });
-                        widget.onFilterChanged(filter);
-                      },
-                    ),
-                    ChoiceChip(
-                      label: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.0),
                             child: Icon(Icons.shopping_bag,
                                 color: Colors.orange),
                           ),
@@ -204,6 +180,30 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                         setState(() {
                           filter =
                               filter.copyWith(shopping: filter.shopping ^ 1);
+                        });
+                        widget.onFilterChanged(filter);
+                      },
+                    ),
+                    ChoiceChip(
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.account_balance_rounded,
+                                color: Colors.grey),
+                          ),
+                          Text(
+                            'архитектура',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      selected: filter.architecture != 0,
+                      onSelected: (selected) {
+                        setState(() {
+                          filter = filter.copyWith(
+                              architecture: filter.architecture ^ 1);
                         });
                         widget.onFilterChanged(filter);
                       },
@@ -232,39 +232,40 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                         widget.onFilterChanged(filter);
                       },
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                      child: FittedBox(
-                        child: OutlinedButton(
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15.0),
+                        child: FittedBox(
+                          child: OutlinedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade300),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18.0),
 
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade300),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-
-                                    )
-                                )),
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(children: const [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.0),
-                                  child: Icon(
-                                    Icons.quiz,
-                                    color: Colors.blue,
-                                    size: 30.0,
+                                      )
+                                  )),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Row(children: const [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Icon(
+                                      Icons.quiz,
+                                      color: Colors.blue,
+                                      size: 30.0,
+                                    ),
                                   ),
-                                ),
-                                Material(
-                                    color: Colors.transparent,
-                                    child: Text(
-                                      'Пройти опрос',
-                                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-                                    )),
-                              ]),
-                            ),
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/questions')),
+                                  Material(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        'Пройти опрос',
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                                      )),
+                                ]),
+                              ),
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, '/questions')),
+                        ),
                       ),
                     ),
                   ],
