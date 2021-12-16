@@ -17,3 +17,5 @@ dev_dependencies:
   hive_generator: ^1.1.1
   json_serializable: ^6.1.1
   freezed: ^1.1.0
+  flutter_test:
+    sdk: flutter
