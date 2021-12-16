@@ -15,7 +15,7 @@ class CovidService {
       print(url);
       final response = await client.get(url);
       final list = <CovidModel>[];
-      for(var date in response.data) {
+      for(Map<String, dynamic> date in response.data) {
         list.add(CovidModel.fromJson(date as Map<String,dynamic>));
       }
       return list;
