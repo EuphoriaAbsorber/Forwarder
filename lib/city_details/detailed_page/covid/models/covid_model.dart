@@ -6,10 +6,7 @@ part 'covid_model.g.dart';
 @freezed
 class CovidModel with _$CovidModel {
   factory CovidModel({
-    @JsonKey(name: 'Confirmed') int? confirmed,
-    @JsonKey(name: 'Deaths') int? deaths,
-    @JsonKey(name: 'Recovered') int? recovered,
-    @JsonKey(name: 'Active') int? active,
+    @JsonKey(name: 'Cases') int? confirmed,
     @JsonKey(name: 'Date') String? date,
   }) = _CovidModel;
 

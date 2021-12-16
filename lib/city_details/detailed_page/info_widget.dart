@@ -18,6 +18,14 @@ class InfoWidget extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(20)),
           border: Border.all(color: Colors.grey),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius:1.0,
+              spreadRadius: 0.0,
+              offset: Offset(0, 0), // shadow direction: bottom right
+            )
+          ],
         ),
         child: Column(
           children: [
