@@ -21,12 +21,12 @@ class CityManager {
 
   Future<void> addToFavorites(City item) async {
     await _cityDao.save(item);
-    stateController.setCityFlag(item, true);
+    stateController.setCityFlag(item, isFavorite: true);
   }
 
   Future<void> removeFromFavorites(City item) async {
     await _cityDao.delete(item);
-    stateController.setCityFlag(item, false);
+    stateController.setCityFlag(item, isFavorite: false);
   }
 
   Future<List<Pair<City, bool>>> getLatest() async {
