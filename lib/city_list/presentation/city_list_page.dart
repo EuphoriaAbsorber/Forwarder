@@ -15,10 +15,7 @@ class CityListPage extends StatefulWidget {
 
 class _CityListPageState extends State<CityListPage> {
   late final TextEditingController _textController;
-
   final _cityManager = Dependencies.instance.cityManager;
-
-  final _appBarKey = GlobalKey();
 
   Filter filter = Filter(
       price: 0,
@@ -54,7 +51,6 @@ class _CityListPageState extends State<CityListPage> {
             physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
               SliverAppBar(
-                // key: _appBarKey,
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
                 elevation: 0.0,
@@ -94,25 +90,24 @@ class _CityListPageState extends State<CityListPage> {
                       Icons.sort,
                       color: Colors.black54,
                     ),
-                    onPressed: () {
-                      showModalBottomSheet<void>(
-                        // barrierColor: Colors.bla.withOpacity(0.1),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(32.0)),
+                    onPressed: () => showModalBottomSheet<void>(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(
+                            32.0,
+                          ),
                         ),
-                        context: context,
-                        builder: (context) => BottomSheetFilter(
-                          initFilter: filter,
-                          onFilterChanged: (changes) {
-                            setState(() {
-                              filter = changes;
-                            });
-                          },
-                        ),
-                      ).whenComplete(() => print(
-                          "Closed!")); //ToDo: Применять поиск когда закрывается!
-                    },
+                      ),
+                      context: context,
+                      builder: (context) => BottomSheetFilter(
+                        initFilter: filter,
+                        onFilterChanged: (changes) {
+                          setState(() {
+                            filter = changes;
+                          });
+                        },
+                      ),
+                    ),
                   )
                 ],
                 forceElevated: innerBoxIsScrolled,
@@ -123,7 +118,6 @@ class _CityListPageState extends State<CityListPage> {
               child: StreamBuilder<Map<City, bool>>(
                 stream: _cityManager.stream,
                 builder: (context, snapshot) {
-                  print('futureBuilder ${snapshot.hasData}');
                   if (snapshot.hasData) {
                     final data = snapshot.requireData;
                     final cities = data.keys
@@ -151,7 +145,7 @@ class _CityListPageState extends State<CityListPage> {
                             isFavorite: data[cities[index]] ?? false),
                         onTap: () => Navigator.push(
                           context,
-                          FadeRoute(
+                          NotAnimatedRoute(
                             page: const DetailsPage(),
                             settings: RouteSettings(
                               arguments: {
@@ -188,23 +182,10 @@ class _CityListPageState extends State<CityListPage> {
       value.nature >= key.nature;
 }
 
-class FadeRoute extends PageRouteBuilder {
-  FadeRoute({required Widget page, required RouteSettings settings})
-      : super(
-            settings: settings,
-            pageBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-            ) =>
-                page,
-            transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-            ) =>
-                child);
+class NotAnimatedRoute extends PageRouteBuilder {
+  NotAnimatedRoute({required Widget page, required RouteSettings settings})
+      : super(settings: settings, pageBuilder: (context, animation, secondaryAnimation) =>
+                page, transitionsBuilder: (context, animation, secondaryAnimation, child) => child);
 }
 
 extension StringExtension on String {
@@ -217,7 +198,7 @@ extension StringExtension on String {
       return false;
     }
 
-    for (int i = 0, j = 0; i < other.length; ++i) {
+    for (var i = 0, j = 0; i < other.length; ++i) {
       if (this[j] == other[i]) {
         if (++j == length) {
           return true;

@@ -55,9 +55,9 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) =>
-      // Hero(
-      //   tag: city.id,
-      //   child:
+      Hero(
+        tag: city.id,
+        child:
         Scaffold(
           backgroundColor: Colors.white,
           body: NestedScrollView(
@@ -110,15 +110,12 @@ class _DetailsPageState extends State<DetailsPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        color: Colors.red,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fitWidth,
+                        imageUrl: city.imgSrc,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
-                      // child: CachedNetworkImage(
-                      //   fit: BoxFit.fitWidth,
-                      //   imageUrl: city.imgSrc,
-                      //   errorWidget: (context, url, error) =>
-                      //       const Icon(Icons.error),
-                      //),
                     ),
                   ),
                   Padding(
@@ -160,7 +157,7 @@ class _DetailsPageState extends State<DetailsPage> {
               ),
             ),
           ),
-    //    ),
+        ),
       );
 
   void _addToFavorite(City item) {

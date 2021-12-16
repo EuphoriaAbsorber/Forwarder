@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../city_details/presentation/details_page.dart';
-import '../city_list/presentation/city_list_page.dart';
-import '../di.dart';
+import 'city_details/presentation/details_page.dart';
+import 'city_list/presentation/city_list_page.dart';
+import 'di.dart';
 
 class AnyWayApp extends StatefulWidget {
   const AnyWayApp({Key? key}) : super(key: key);

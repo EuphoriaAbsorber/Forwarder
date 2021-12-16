@@ -6,18 +6,10 @@ import '../utils/network_info.dart';
 import 'services/city_api.dart';
 import 'services/city_dao.dart';
 
-class Pair<T,R> {
-  final T first;
-  final R second;
-
-  const Pair({required this.first, required this.second});
-}
 
 class CityManager extends BaseManager<Map<City, bool>> {
   final CityDao _cityDao;
   final CityApi _cityApi;
-
-  // final _streamController = StreamController<bool>.broadcast();
 
   final _networkInfo = NetworkInfo();
 
