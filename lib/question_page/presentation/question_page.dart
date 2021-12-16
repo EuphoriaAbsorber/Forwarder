@@ -93,105 +93,110 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
       key: _scaffoldKey,
-      body: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: SafeArea(
 
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-            SizedBox(
-              height: 600,
-              child: SwipeCards(
-                matchEngine: _matchEngine,
-                itemBuilder: (BuildContext context, int index) => Container(
-                  height: 600,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    boxShadow: [BoxShadow(blurRadius: 2.0)],
-                  ),
-                  //alignment: Alignment.center,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                    child: Stack(children: [
-                      Positioned.fill(
-                        child: CachedNetworkImage(
-                          fit: BoxFit.fitHeight,
-                          imageUrl: _swipeItems[index].content.imgUrl as String,
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+              Expanded(
+                child: SizedBox(
+
+                  child: SwipeCards(
+                    matchEngine: _matchEngine,
+                    itemBuilder: (BuildContext context, int index) => Container(
+
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                        boxShadow: [BoxShadow(blurRadius: 2.0)],
                       ),
-                      Column(
-                        children: [
-                          const Expanded(flex: 5, child: SizedBox.shrink()),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              color: Colors.black.withOpacity(0.4),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Center(
-                                  child: Text(
-                                    _swipeItems[index].content.text as String,
-                                    style: TextStyle(
-                                        fontSize: 30, color: Colors.white),
+                      //alignment: Alignment.center,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                        child: Stack(children: [
+                          Positioned.fill(
+                            child: CachedNetworkImage(
+                              fit: BoxFit.fitHeight,
+                              imageUrl: _swipeItems[index].content.imgUrl as String,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              const Expanded(flex: 5, child: SizedBox.shrink()),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.4),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Center(
+                                      child: Text(
+                                        _swipeItems[index].content.text as String,
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          const Expanded(flex: 2, child: SizedBox.shrink()),
-                        ],
-                      )
-                    ]),
-                  ),
-                ),
-                onStackFinished: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.red.withOpacity(0.2),
-                  child: IconButton(
-                    onPressed: () {
-                      _matchEngine.currentItem?.nope();
-                    },
-                    icon: Icon(Icons.close,
-                      color: Colors.red,
-                      size: 30.0,),
-                  ),
-                ),
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.lightBlue.withOpacity(0.2),
-                  child: IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.home,
-                      color: Colors.blue,
-                      size: 30.0,),
-                  ),
-                ),
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.lightGreen.withOpacity(0.2),
-                  child: IconButton(
-                      onPressed: () {
-                        _matchEngine.currentItem?.like();
-                      },
-                      icon: Icon(Icons.done,
-                          color: Colors.green,
-                          size: 30.0,),
+                              const Expanded(flex: 2, child: SizedBox.shrink()),
+                            ],
+                          )
+                        ]),
                       ),
-                )
-              ],
-            )
-          ]),
-        ),
+                    ),
+                    onStackFinished: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.red.withOpacity(0.2),
+                    child: IconButton(
+                      onPressed: () {
+                        _matchEngine.currentItem?.nope();
+                      },
+                      icon: Icon(Icons.close,
+                        color: Colors.red,
+                        size: 30.0,),
+                    ),
+                  ),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.lightBlue.withOpacity(0.2),
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.home,
+                        color: Colors.blue,
+                        size: 30.0,),
+                    ),
+                  ),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                    child: IconButton(
+                        onPressed: () {
+                          _matchEngine.currentItem?.like();
+                        },
+                        icon: Icon(Icons.done,
+                            color: Colors.green,
+                            size: 30.0,),
+                        ),
+                  )
+                ],
+              )
+            ]),
+          ),
+      ),
       );
 }
 
