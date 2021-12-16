@@ -61,7 +61,7 @@ class _TicketsWidgetState extends State<TicketsWidget> {
       );
   String plurals(int quantity) => Intl.plural(
       quantity,
-      zero: '...',
+      zero: '... рублей',
       one: '$quantity рубль',
       few: '$quantity рубля',
       many: '$quantity рублей',
