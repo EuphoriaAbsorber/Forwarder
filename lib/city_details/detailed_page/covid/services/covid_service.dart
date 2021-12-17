@@ -15,21 +15,16 @@ class CovidService {
       print(url);
       final response = await client.get(url);
       final list = <CovidModel>[];
-
-      for (var date in response.data) {
-        list.add(CovidModel.fromJson(date as Map<String, dynamic>));
-
-        final usedDates = <String?>{};
-        for (Map<String, dynamic> date in response.data) {
-          var item = CovidModel.fromJson(date as Map<String, dynamic>);
-          if (!usedDates.contains(item.date)) {
-            list.add(item);
-            usedDates.add(item.date);
-          }
+      final usedDates = <String?>{};
+      for(Map<String, dynamic> date in response.data) {
+        var item = CovidModel.fromJson(date as Map<String,dynamic>);
+        if (!usedDates.contains(item.date)) {
+          list.add(item);
+          usedDates.add(item.date);
         }
-        print(list);
-        return list;
       }
+      print(list);
+      return list;
     } on DioError catch (e) {
       print(e.toString());
     }
