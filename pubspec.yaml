@@ -37,7 +37,7 @@ dev_dependencies:
   json_serializable: ^6.1.1
 
   flutter_lints: ^1.0.0
-
+  flutter_native_splash: ^1.3.2
 
 flutter:
   uses-material-design: true
@@ -72,3 +72,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - assets/
+
+
+#flutter pub run flutter_native_splash:create
+#flutter pub run flutter_native_splash:remove
+flutter_native_splash:
+  color: "#222222"
+  image: assets/logo.png
