@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
-import 'widgets/filter_choice_chip.dart';
+import 'filter_choice_chip.dart';
 
 class BottomSheetFilter extends StatelessWidget {
   final Filter filter;

@@ -1,4 +1,4 @@
-import 'city_details/detailed_page/weather/weather_manager.dart';
+import 'city_details/features/weather/weather_manager.dart';
 import 'city_list/city_manager.dart';
 import 'city_list/services/city_api.dart';
 import 'city_list/services/city_dao.dart';

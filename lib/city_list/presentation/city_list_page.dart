@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:models/models.dart';
@@ -7,7 +6,7 @@ import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
 import 'bottom_sheet_filter.dart';
 import 'city_card_widget.dart';
-import 'widgets/search_field.dart';
+import 'search_field.dart';
 
 class CityListPage extends StatefulWidget {
   const CityListPage({Key? key}) : super(key: key);
@@ -201,7 +200,7 @@ class _CityListPageState extends State<CityListPage> {
                   } else {
                     return Material(
                       child: Center(
-                        child: Lottie.asset('assets/loading_animation.json'),
+                        child: Lottie.asset('assets/launch_animation.json'),
                       ),
                     );
                   }

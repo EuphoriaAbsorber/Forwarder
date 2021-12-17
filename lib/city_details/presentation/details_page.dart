@@ -4,11 +4,11 @@ import 'package:models/models.dart';
 import 'package:weather/weather.dart';
 
 import '../../di.dart';
-import '../detailed_page/covid/presentation/covid_widget.dart';
-import '../detailed_page/info_widget.dart';
-import '../detailed_page/map/presentation/map_info.dart';
-import '../detailed_page/tickets/presentation/tickets_widget.dart';
-import '../detailed_page/weather/presentation/weather_info_list.dart';
+import '../features/covid/presentation/covid_widget.dart';
+import '../features/info_widget.dart';
+import '../features/map/map_info.dart';
+import '../features/tickets/presentation/tickets_widget.dart';
+import '../features/weather/presentation/weather_info_list.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
