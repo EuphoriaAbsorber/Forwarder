@@ -25,6 +25,7 @@ class _QuestionPageState extends State<QuestionPage> {
     entertainment: 0,
     nature: 0,
   );
+
   final List<SwipeItem> _swipeItems = <SwipeItem>[];
   late MatchEngine _matchEngine;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
@@ -90,7 +91,8 @@ class _QuestionPageState extends State<QuestionPage> {
     }
 
     for (var i = 0; i < 8; i++) {
-      _swipeItems.add(SwipeItem(
+      _swipeItems.add(
+        SwipeItem(
           content: Content(text: questions[i], imgUrl: _imgs[i]),
           likeAction: () {
             switch (i) {
@@ -121,9 +123,8 @@ class _QuestionPageState extends State<QuestionPage> {
             }
           },
           nopeAction: () {},
-          superlikeAction: () {
-            //Navigator.pop(context);
-          }));
+        ),
+      );
     }
     _swipeItems.shuffle();
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
@@ -152,13 +153,12 @@ class _QuestionPageState extends State<QuestionPage> {
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(16.0)),
-                        child: Stack(
-                          clipBehavior: Clip.antiAlias,
-                            children: [
+                        child: Stack(clipBehavior: Clip.antiAlias, children: [
                           Positioned.fill(
                             child: CachedNetworkImage(
                               fit: BoxFit.fitHeight,
-                              imageUrl: _swipeItems[index].content.imgUrl as String,
+                              imageUrl:
+                                  _swipeItems[index].content.imgUrl as String,
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             ),

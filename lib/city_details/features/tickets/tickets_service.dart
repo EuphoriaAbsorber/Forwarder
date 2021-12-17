@@ -22,11 +22,10 @@ class TicketsService {
       final data = response.data;
       if (data != null) {
         final ticketPrice = TicketPriceModel.fromJson(data);
-        print(ticketPrice.data?[0].price);
         return ticketPrice;
       }
     } on DioError catch (e) {
-      print(e.toString());
+      print(e.toString()); // :(
     }
   }
 }

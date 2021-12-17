@@ -7,82 +7,66 @@ import '../../info_widget.dart';
 import '../models/covid_model.dart';
 import '../services/covid_service.dart';
 
-class CovidWidget extends StatefulWidget {
-  // Stateful нужен наверное, для хранения
-  // на этой странице того какой сейчас город
+List<Color> gradientColors = [
+  const Color(0xff23b6e6),
+  const Color(0xff02d39a),
+];
+
+class CovidWidget extends StatelessWidget {
   final String country;
   const CovidWidget(this.country, {Key? key}) : super(key: key);
 
-  @override
-  State<CovidWidget> createState() => _CovidWidgetState();
-}
-
-class _CovidWidgetState extends State<CovidWidget> {
-  //CityItem city = CityItem(id: \, name: name, imgSrc: imgSrc)// хотим брать сверху из состояния странички города
-
-  List<Color> gradientColors = [
-    const Color(0xff23b6e6),
-    const Color(0xff02d39a),
-  ];
-
-  bool showAvg = false;
-
   Future<List<CovidModel>?> getCovidData() async {
     final service = CovidService();
-    return service.fetchCovidInfo(widget.country);
+    return service.fetchCovidInfo(country);
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) => InfoWidget(
-        title: 'Covid-19',
-        child: FutureBuilder<List<CovidModel>?>(
-            future: getCovidData(),
-            builder: (context, snapshot) =>
-            snapshot.data != null ?
-            Column(
-              children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'График количества заболевших в стране.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                AspectRatio(
-                  aspectRatio: 1.70,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(18),
+  Widget build(BuildContext context) => FutureBuilder<List<CovidModel>?>(
+        future: getCovidData(),
+        builder: (context, snapshot) => snapshot.data != null
+            ? InfoWidget(
+                title: 'Covid-19',
+                child: Column(
+                  children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'График количества заболевших в стране.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          right: 18.0, left: 12.0, top: 24, bottom: 12),
-                      child: LineChart(
-                        mainData(snapshot.data),
+                    AspectRatio(
+                      aspectRatio: 1.70,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(18),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 18.0, left: 12.0, top: 24, bottom: 12),
+                          child: LineChart(
+                            mainData(snapshot.data),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ) : const Material(),
-        ),
+              )
+            : const Material(),
       );
 
   LineChartData mainData(List<CovidModel>? covidData) {
-    var list = List.generate(covidData?.length ?? 5,
+    final list = List.generate(covidData?.length ?? 5,
         (index) => covidData?[index].confirmed?.toDouble() ?? index);
-    var dates = List.generate(
+    final dates = List.generate(
         covidData?.length ?? 5,
         (index) => DateTime.parse(
             covidData?[index].date ?? DateTime.now().toString()));
@@ -98,8 +82,7 @@ class _CovidWidgetState extends State<CovidWidget> {
         touchTooltipData: LineTouchTooltipData(
             maxContentWidth: 100,
             tooltipBgColor: Colors.blueGrey,
-            getTooltipItems: (touchedSpots) =>
-                touchedSpots.map((LineBarSpot touchedSpot) {
+            getTooltipItems: (touchedSpots) => touchedSpots.map((touchedSpot) {
                   const textStyle = TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -142,7 +125,9 @@ class _CovidWidgetState extends State<CovidWidget> {
         ),
       ),
       borderData: FlBorderData(
-          show: true, border: Border.all(color: Colors.grey, width: 1)),
+        show: true,
+        border: Border.all(color: Colors.grey),
+      ),
       minX: 0,
       maxX: list.length.toDouble() - 1,
       minY: 0,
@@ -150,27 +135,41 @@ class _CovidWidgetState extends State<CovidWidget> {
       lineBarsData: [
         LineChartBarData(
           spots: List.generate(
-              list.length, (i) => FlSpot(i.toDouble(), list[i].toDouble())),
+            list.length,
+            (i) => FlSpot(
+              i.toDouble(),
+              list[i].toDouble(),
+            ),
+          ),
           isCurved: true,
           colors: [
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!,
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!,
+            ColorTween(
+              begin: gradientColors[0],
+              end: gradientColors[1],
+            ).lerp(0.2)!,
+            ColorTween(
+              begin: gradientColors[0],
+              end: gradientColors[1],
+            ).lerp(0.2)!,
           ],
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
           ),
-          belowBarData: BarAreaData(show: true, colors: [
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!
-                .withOpacity(0.1),
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)!
-                .withOpacity(0.1),
-          ]),
+          belowBarData: BarAreaData(
+            show: true,
+            colors: [
+              ColorTween(
+                begin: gradientColors[0],
+                end: gradientColors[1],
+              ).lerp(0.2)!.withOpacity(0.1),
+              ColorTween(
+                begin: gradientColors[0],
+                end: gradientColors[1],
+              ).lerp(0.2)!.withOpacity(0.1),
+            ],
+          ),
         ),
       ],
     );
