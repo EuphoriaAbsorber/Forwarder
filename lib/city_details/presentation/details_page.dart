@@ -130,9 +130,9 @@ class _DetailsPageState extends State<DetailsPage> {
                       _cityWithStatus!.city.name,
                       _cityWithStatus!.city.airport,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 36.0),
-                      child: CovidWidget('russia'),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 36.0),
+                      child: CovidWidget(_cityWithStatus!.city.country),
                     ),
                   ],
                 ),
