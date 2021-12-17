@@ -1,24 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:untitled/ui/pages/details_page.dart';
-import 'package:untitled/ui/pages/home_page.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'app.dart';
 
-void main() => runApp(const AnyWayApp());
-
-class AnyWayApp extends StatelessWidget {
-  const AnyWayApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        brightness: Brightness.light
-      ),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => const HomePage(),
-        '/details': (context) => const DetailsPage(),
-      },
-    );
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  initializeDateFormatting('ru');
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
+  runApp(const AnyWayApp());
 }
