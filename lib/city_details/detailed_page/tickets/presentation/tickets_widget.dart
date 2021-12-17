@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../info_widget.dart';
 import '../models/ticket_price_model.dart';
 import '../tickets_service.dart';
 import 'city_name_card.dart';
@@ -6,7 +7,8 @@ import 'city_name_card.dart';
 class TicketsWidget extends StatefulWidget {
   final String endCityName;
   final String airport;
-  const TicketsWidget(this.endCityName, this.airport, {Key? key}) : super(key: key);
+  const TicketsWidget(this.endCityName, this.airport, {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TicketsWidgetState();
@@ -26,36 +28,36 @@ class _TicketsWidgetState extends State<TicketsWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CityNameCard(cityName: startCityName),
-                const Icon(
-                  Icons.arrow_right_alt_rounded,
-                  color: Colors.black,
+  Widget build(BuildContext context) => InfoWidget(
+        title: 'Билеты',
+        child: FutureBuilder<TicketPriceModel?>(
+          future: getTickets(),
+          builder: (context, snapshot) => snapshot.data != null ? Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CityNameCard(cityName: startCityName),
+                  const Icon(
+                    Icons.arrow_right_alt_rounded,
+                    color: Colors.black,
+                  ),
+                  CityNameCard(cityName: widget.endCityName),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Самый дешёвый билет по данным за последние 2 дня стоит ${snapshot.data?.data?[0].price}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
                 ),
-                CityNameCard(cityName: widget.endCityName)
-              ],
-            ),
-          ),
-          Center(
-            child: FutureBuilder<TicketPriceModel?>(
-                future: getTickets(),
-                builder: (context, snapshot) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Самый дешёвый билет по данным за последние 2 дня стоит ${snapshot.data?.data?[0].price}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
-                        ),
-                      ),
-                    )),
-          ),
-        ],
+              )
+            ],
+          ) : const Material(),
+        ),
       );
 }

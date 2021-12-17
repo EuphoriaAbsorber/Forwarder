@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../info_widget.dart';
 import '../models/covid_model.dart';
 import '../services/covid_service.dart';
 
@@ -10,8 +11,7 @@ class CovidWidget extends StatefulWidget {
   // Stateful нужен наверное, для хранения
   // на этой странице того какой сейчас город
   final String country;
-  const CovidWidget(this.country, {Key? key}) :
-        super(key: key);
+  const CovidWidget(this.country, {Key? key}) : super(key: key);
 
   @override
   State<CovidWidget> createState() => _CovidWidgetState();
@@ -38,39 +38,45 @@ class _CovidWidgetState extends State<CovidWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'График количества заболевших в стране.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          AspectRatio(
-            aspectRatio: 1.70,
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
+  Widget build(BuildContext context) => InfoWidget(
+        title: 'Covid-19',
+        child: FutureBuilder<List<CovidModel>?>(
+            future: getCovidData(),
+            builder: (context, snapshot) =>
+            snapshot.data != null ?
+            Column(
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'График количества заболевших в стране.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    right: 18.0, left: 12.0, top: 24, bottom: 12),
-                child: FutureBuilder<List<CovidModel>?>(
-                    future: getCovidData(),
-                    builder: (context, snapshot) => LineChart(
-                          mainData(snapshot.data),
-                        )),
-              ),
-            ),
-          ),
-        ],
+                AspectRatio(
+                  aspectRatio: 1.70,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(18),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 18.0, left: 12.0, top: 24, bottom: 12),
+                      child: LineChart(
+                        mainData(snapshot.data),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ) : const Material(),
+        ),
       );
 
   LineChartData mainData(List<CovidModel>? covidData) {
@@ -83,7 +89,8 @@ class _CovidWidgetState extends State<CovidWidget> {
     final maxItem = list.reduce(max);
     final minItem = list.reduce(min);
     for (var i = 0; i < list.length; i++) {
-      list[i] = (list[i] - minItem)/ (maxItem-minItem)*6 + minItem/maxItem;
+      list[i] =
+          (list[i] - minItem) / (maxItem - minItem) * 6 + minItem / maxItem;
     }
     return LineChartData(
       lineTouchData: LineTouchData(
@@ -91,16 +98,19 @@ class _CovidWidgetState extends State<CovidWidget> {
         touchTooltipData: LineTouchTooltipData(
             maxContentWidth: 100,
             tooltipBgColor: Colors.blueGrey,
-            getTooltipItems: (touchedSpots) => touchedSpots.map((LineBarSpot touchedSpot) {
-                const textStyle = TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                );
-                return LineTooltipItem(
-                    (covidData?[touchedSpot.x.toInt()].confirmed)?.toStringAsFixed(0) ?? '',
-                    textStyle);
-              }).toList()),
+            getTooltipItems: (touchedSpots) =>
+                touchedSpots.map((LineBarSpot touchedSpot) {
+                  const textStyle = TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  );
+                  return LineTooltipItem(
+                      (covidData?[touchedSpot.x.toInt()].confirmed)
+                              ?.toStringAsFixed(0) ??
+                          '',
+                      textStyle);
+                }).toList()),
       ),
       gridData: FlGridData(
         show: true,
@@ -123,11 +133,10 @@ class _CovidWidgetState extends State<CovidWidget> {
           showTitles: false,
         ),
         topTitles: SideTitles(
-          showTitles: true,
-          getTitles: (value) => (value*2.toInt()) % 4 == 0
-              ? '${dates[value.toInt()].day}.${dates[value.toInt()].month}'
-              : ''
-        ),
+            showTitles: true,
+            getTitles: (value) => (value * 2.toInt()) % 4 == 0
+                ? '${dates[value.toInt()].day}.${dates[value.toInt()].month}'
+                : ''),
         rightTitles: SideTitles(
           showTitles: false,
         ),

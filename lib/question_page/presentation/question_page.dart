@@ -136,10 +136,10 @@ class _QuestionPageState extends State<QuestionPage> {
         body: Padding(
           padding: const EdgeInsets.only(bottom: 15),
           child: SafeArea(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Expanded(
-                child: SizedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
                   child: SwipeCards(
                     matchEngine: _matchEngine,
                     itemBuilder: (context, index) => Container(
@@ -152,7 +152,9 @@ class _QuestionPageState extends State<QuestionPage> {
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(16.0)),
-                        child: Stack(children: [
+                        child: Stack(
+                          clipBehavior: Clip.antiAlias,
+                            children: [
                           Positioned.fill(
                             child: CachedNetworkImage(
                               fit: BoxFit.fitHeight,
@@ -181,7 +183,9 @@ class _QuestionPageState extends State<QuestionPage> {
                                   ),
                                 ),
                               ),
-                              const Expanded(flex: 2, child: SizedBox.shrink()),
+                              const Spacer(
+                                flex: 2,
+                              ),
                             ],
                           )
                         ]),
@@ -194,56 +198,56 @@ class _QuestionPageState extends State<QuestionPage> {
                     },
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.red.withOpacity(0.2),
-                    child: IconButton(
-                      onPressed: () {
-                        _matchEngine.currentItem?.nope();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                        size: 30.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.red.withOpacity(0.2),
+                      child: IconButton(
+                        onPressed: () {
+                          _matchEngine.currentItem?.nope();
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.red,
+                          size: 30.0,
+                        ),
                       ),
                     ),
-                  ),
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.lightBlue.withOpacity(0.2),
-                    child: IconButton(
-                      onPressed: () => {
-                      _cityManager.filterState.update(filter),
-                        Navigator.pop(context),
-                      },
-                      icon: const Icon(
-                        Icons.home,
-                        color: Colors.blue,
-                        size: 30.0,
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.lightBlue.withOpacity(0.2),
+                      child: IconButton(
+                        onPressed: () => {
+                          _cityManager.filterState.update(filter),
+                          Navigator.pop(context),
+                        },
+                        icon: const Icon(
+                          Icons.home,
+                          color: Colors.blue,
+                          size: 30.0,
+                        ),
                       ),
                     ),
-                  ),
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.lightGreen.withOpacity(0.2),
-                    child: IconButton(
-                      onPressed: () {
-                        _matchEngine.currentItem?.like();
-                      },
-                      icon: const Icon(
-                        Icons.done,
-                        color: Colors.green,
-                        size: 30.0,
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.lightGreen.withOpacity(0.2),
+                      child: IconButton(
+                        onPressed: () {
+                          _matchEngine.currentItem?.like();
+                        },
+                        icon: const Icon(
+                          Icons.done,
+                          color: Colors.green,
+                          size: 30.0,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              )
-            ]),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );

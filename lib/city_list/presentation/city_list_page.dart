@@ -148,12 +148,7 @@ class _CityListPageState extends State<CityListPage> {
                                         page: const DetailsPage(),
                                         settings: RouteSettings(
                                           arguments: {
-                                            'city':
-                                                citiesSearchedAndFiltered[index]
-                                                    .city,
-                                            'isFavorite':
-                                                citiesSearchedAndFiltered[index]
-                                                    .isFavorite,
+                                            'CityWithStatus' : citiesSearchedAndFiltered[index]
                                           },
                                         ),
                                       ),
