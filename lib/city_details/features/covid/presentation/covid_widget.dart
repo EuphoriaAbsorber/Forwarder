@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../info_widget.dart';
 import '../models/covid_model.dart';
@@ -23,12 +22,12 @@ class CovidWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => InfoWidget(
-        title: 'Covid-19',
-        child: FutureBuilder<List<CovidModel>?>(
-          future: getCovidData(),
-          builder: (context, snapshot) => snapshot.data != null
-              ? Column(
+  Widget build(BuildContext context) => FutureBuilder<List<CovidModel>?>(
+        future: getCovidData(),
+        builder: (context, snapshot) => snapshot.data != null
+            ? InfoWidget(
+                title: 'Covid-19',
+                child: Column(
                   children: <Widget>[
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -59,11 +58,9 @@ class CovidWidget extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
-              : Center(
-                  child: Lottie.asset('assets/loading_animation.json'),
                 ),
-        ),
+              )
+            : const Material(),
       );
 
   LineChartData mainData(List<CovidModel>? covidData) {

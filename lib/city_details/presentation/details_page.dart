@@ -114,17 +114,18 @@ class _DetailsPageState extends State<DetailsPage> {
                         lng: _cityWithStatus!.city.coords.lng,
                       ),
                     ),
-                    InfoWidget(
-                      title: 'Погода',
-                      child: FutureBuilder<List<Weather>>(
-                        future: _weatherManager.getForecast(
-                          _cityWithStatus!.city.coords.lat,
-                          _cityWithStatus!.city.coords.lng,
-                        ),
-                        builder: (context, snapshot) => snapshot.hasData
-                            ? WeatherInfoList(weatherList: snapshot.data ?? [])
-                            : const Material(),
+                    FutureBuilder<List<Weather>>(
+                      future: _weatherManager.getForecast(
+                        _cityWithStatus!.city.coords.lat,
+                        _cityWithStatus!.city.coords.lng,
                       ),
+                      builder: (context, snapshot) => snapshot.hasData
+                          ? InfoWidget(
+                              title: 'Погода',
+                              child: WeatherInfoList(
+                                  weatherList: snapshot.data ?? []),
+                            )
+                          : const Material(),
                     ),
                     TicketsWidget(
                       _cityWithStatus!.city.name,
