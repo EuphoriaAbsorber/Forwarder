@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:models/models.dart';
 
 import '../../city_details/presentation/details_page.dart';
 import '../../di.dart';
 import 'bottom_sheet_filter.dart';
 import 'city_card_widget.dart';
-import 'widgets/search_field.dart';
+import 'search_field.dart';
 
 class CityListPage extends StatefulWidget {
   const CityListPage({Key? key}) : super(key: key);
@@ -117,52 +118,91 @@ class _CityListPageState extends State<CityListPage> {
                                             .toList()
                                         : citiesFiltered;
 
-                                return GridView.builder(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      8.0, 8.0, 8.0, 32.0),
-                                  physics: const BouncingScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 16.0,
-                                    mainAxisSpacing: 16.0,
-                                    childAspectRatio: 0.75,
-                                  ),
-                                  itemCount: citiesSearchedAndFiltered.length,
-                                  itemBuilder: (context, index) => CityCard(
-                                    city: citiesSearchedAndFiltered[index].city,
-                                    isFavorite: citiesSearchedAndFiltered[index]
-                                        .isFavorite,
-                                    onSelect: () =>
-                                        citiesSearchedAndFiltered[index]
-                                                .isFavorite
-                                            ? _cityManager.removeFromFavorites(
-                                                citiesSearchedAndFiltered[index]
-                                                    .city)
-                                            : _cityManager.addToFavorites(
-                                                citiesSearchedAndFiltered[index]
-                                                    .city),
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      NotAnimatedRoute(
-                                        page: const DetailsPage(),
-                                        settings: RouteSettings(
-                                          arguments: {
-                                            'CityWithStatus' : citiesSearchedAndFiltered[index]
-                                          },
+                                if (citiesSearchedAndFiltered.isEmpty) {
+                                  return Material(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Lottie.asset(
+                                            'assets/empty_search_animation.json'),
+                                        const Text(
+                                          'Не нашлось',
+                                          style: TextStyle(
+                                            fontSize: 36,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return GridView.builder(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        8.0, 8.0, 8.0, 32.0),
+                                    physics: const BouncingScrollPhysics(),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 16.0,
+                                      mainAxisSpacing: 16.0,
+                                      childAspectRatio: 0.75,
+                                    ),
+                                    itemCount: citiesSearchedAndFiltered.length,
+                                    itemBuilder: (context, index) => CityCard(
+                                      city:
+                                          citiesSearchedAndFiltered[index].city,
+                                      isFavorite:
+                                          citiesSearchedAndFiltered[index]
+                                              .isFavorite,
+                                      onSelect: () => citiesSearchedAndFiltered[
+                                                  index]
+                                              .isFavorite
+                                          ? _cityManager.removeFromFavorites(
+                                              citiesSearchedAndFiltered[index]
+                                                  .city)
+                                          : _cityManager.addToFavorites(
+                                              citiesSearchedAndFiltered[index]
+                                                  .city),
+                                      onTap: () => Navigator.push(
+                                        context,
+                                        NotAnimatedRoute(
+                                          page: const DetailsPage(),
+                                          settings: RouteSettings(
+                                            arguments: {
+                                              'CityWithStatus':
+                                                  citiesSearchedAndFiltered[
+                                                      index]
+                                            },
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               });
                         });
                   } else if (cityListSnapshot.hasError) {
-                    return const Center(
-                      child: Icon(Icons.error),
+                    return Material(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset('assets/error_animation.json'),
+                          const Text(
+                            'Ошибка',
+                            style: TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return Material(
+                      child: Center(
+                        child: Lottie.asset('assets/launch_animation.json'),
+                      ),
+                    );
                   }
                 },
               ),

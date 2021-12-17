@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
 
 void main() {
+
   test('check search: func isSubsequence', () {
     const str1 = 'Мск';
     expect(str1.isSubsequence('Москва'), equals(true));

@@ -13,8 +13,6 @@ class MapInfo extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) => SizedBox(
       height: 240,

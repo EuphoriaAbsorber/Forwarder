@@ -1,4 +1,4 @@
-import 'package:anyway/city_list/presentation/widgets/filter_choice_chip.dart';
+import 'package:anyway/city_list/presentation/filter_choice_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,8 +17,8 @@ void main() {
         body: FilterChoiceChip(
           selected: false,
           onSelected: (bool selected) => selected = !selected,
-          category: "дёшево",
-          icon: Icon(
+          category: 'дёшево',
+          icon: const Icon(
             Icons.paid,
             color: Colors.yellow,
           ),
@@ -29,7 +29,7 @@ void main() {
     );
 
     final keyFinder = find.byKey(testKey);
-    final textFinder = find.text("дёшево");
+    final textFinder = find.text('дёшево');
 
     expect(textFinder, findsOneWidget);
     expect(keyFinder, findsOneWidget);
