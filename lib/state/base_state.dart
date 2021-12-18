@@ -14,4 +14,7 @@ abstract class BaseState<T> {
   }
 
   Stream<T> get stream => _streamController.stream;
+
+  void dispose() => _streamController.close();
 }
+

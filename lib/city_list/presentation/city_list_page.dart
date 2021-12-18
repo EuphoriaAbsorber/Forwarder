@@ -31,6 +31,8 @@ class _CityListPageState extends State<CityListPage> {
   @override
   void dispose() {
     _textController.dispose();
+    _cityManager.disposeSubscriptions();
+    print('dispose');
     super.dispose();
   }
 

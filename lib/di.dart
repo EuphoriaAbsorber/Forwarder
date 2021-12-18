@@ -15,7 +15,6 @@ class Dependencies {
   Dependencies._({required this.cityManager, required this.weatherManager});
 
   static Future<Dependencies> build() async {
-
     final dio = DioBuilder.build();
     final hive = await HiveBuilder.build();
     final citiesDao = CityDao(hive.cityBox);
@@ -25,6 +24,11 @@ class Dependencies {
     final weatherFactory = WeatherApiBuilder.build();
     final weatherManager = WeatherManager(weatherFactory);
 
-    return instance = Dependencies._(cityManager: cityManager, weatherManager: weatherManager);
+    return instance = Dependencies._(
+      cityManager: cityManager,
+      weatherManager: weatherManager,
+    );
   }
 }
+
+

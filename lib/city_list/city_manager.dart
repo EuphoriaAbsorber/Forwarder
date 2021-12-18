@@ -30,7 +30,11 @@ class CityManager {
     ),
   );
 
-
+  void disposeSubscriptions() {
+    cityListState.dispose();
+    searchState.dispose();
+    filterState.dispose();
+  }
 
   CityManager(this._cityDao, this._cityApi);
 
