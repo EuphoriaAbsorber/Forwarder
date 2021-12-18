@@ -50,5 +50,5 @@ flutter:
 #flutter pub run flutter_native_splash:create
 #flutter pub run flutter_native_splash:remove
 flutter_native_splash:
-  color: "#222222"
-  image: assets/logo.webp
+  color: "#ffffff"
+  image: assets/img.png
